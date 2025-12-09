@@ -1,0 +1,131 @@
+    <!-- Login Card -->
+    <div class="relative w-full max-w-md">
+        <div class="glass-effect rounded-2xl card-shadow p-8 md:p-10">
+            
+            <!-- Logo/Icon -->
+            <div class="flex justify-center mb-6">
+                <div class="w-20 h-20 bg-linear-to-br from-purple-500 to-indigo-600 rounded-full flex items-center justify-center shadow-lg">
+                    <i class="pi pi-user text-white text-4xl"></i>
+                </div>
+            </div>
+
+            <!-- Title -->
+            <h2 class="text-3xl font-bold text-center mb-2 text-gray-800">
+                Bienvenido
+            </h2>
+            <p class="text-center text-gray-500 mb-8">
+                Ingresa tus credenciales para continuar
+            </p>
+
+            <!-- Form -->
+            <form class="flex flex-col gap-5">
+
+                <!-- Email Field -->
+                <div class="relative">
+                    <label class="block text-sm font-semibold mb-2 text-gray-700">
+                        <i class="pi pi-envelope mr-2 text-purple-600"></i>
+                        Correo Electrónico
+                    </label>
+                    <div class="relative">
+                        <input 
+                            type="email" 
+                            pInputText 
+                            placeholder="correo@ejemplo.com" 
+                            class="w-full pl-12 pr-4 py-3 border-2 border-gray-200 rounded-lg focus:border-purple-500 focus:ring-2 focus:ring-purple-200 transition-all"
+                            required
+                        />
+                        <i class="pi pi-at absolute left-4 top-1/2 -translate-y-1/2 text-gray-400"></i>
+                    </div>
+                </div>
+
+                <!-- Password Field -->
+                <div class="relative">
+                    <label class="block text-sm font-semibold mb-2 text-gray-700">
+                        <i class="pi pi-lock mr-2 text-purple-600"></i>
+                        Contraseña
+                    </label>
+                    <p-password
+                        [feedback]="false"
+                        placeholder="••••••••"
+                        inputStyleClass="w-full pl-12 pr-4 py-3 border-2 border-gray-200 rounded-lg focus:border-purple-500 focus:ring-2 focus:ring-purple-200"
+                        styleClass="w-full"
+                        [toggleMask]="true"
+                    >
+                       
+                    </p-password>
+                     <ng-template pTemplate="hideicon">
+                            <i class="pi pi-eye-slash"></i>
+                        </ng-template>
+                        <ng-template pTemplate="showicon">
+                            <i class="pi pi-eye"></i>
+                        </ng-template>
+                    <i class="pi pi-key absolute left-4 top-12 text-gray-400"></i>
+                </div>
+
+                <!-- Remember & Forgot -->
+                <div class="flex items-center justify-between text-sm">
+                    <label class="flex items-center cursor-pointer group">
+                        <input type="checkbox" class="w-4 h-4 text-purple-600 border-gray-300 rounded focus:ring-purple-500 cursor-pointer">
+                        <span class="ml-2 text-gray-600 group-hover:text-purple-600 transition-colors">Recordarme</span>
+                    </label>
+                    <a routerLink="/auth/recover" class="text-purple-600 hover:text-purple-700 font-medium hover:underline transition-all">
+                        ¿Olvidaste tu contraseña?
+                    </a>
+                </div>
+
+                <!-- Login Button -->
+                <button
+                    routerLink="/dashboard"
+                    type="submit"
+                    pButton
+                    label="Iniciar Sesión"
+                    icon="pi pi-sign-in"
+                    class="w-full mt-2 bg-linear-to-r from-purple-600 to-indigo-600 hover:from-purple-700 hover:to-indigo-700 text-white font-semibold py-3 rounded-lg shadow-lg hover:shadow-xl transform hover:scale-[1.02] transition-all duration-200"
+                ></button>
+
+                <!-- Divider -->
+                <div class="relative my-4">
+                    <div class="absolute inset-0 flex items-center">
+                        <div class="w-full border-t border-gray-300"></div>
+                    </div>
+                    <div class="relative flex justify-center text-sm">
+                        <span class="px-4 bg-white text-gray-500">o continúa con</span>
+                    </div>
+                </div>
+
+                <!-- Social Login Buttons -->
+                <div class="grid grid-cols-2 gap-3">
+                    <button
+                        type="button"
+                        class="flex items-center justify-center gap-2 px-4 py-3 border-2 border-gray-200 rounded-lg hover:border-gray-300 hover:bg-gray-50 transition-all cursor-pointer"
+                    >
+                        <i class="pi pi-google text-red-500 text-lg"></i>
+                        <span class="font-medium text-gray-700">Google</span>
+                    </button>
+                    <button
+                        type="button"
+                        class="flex items-center justify-center gap-2 px-4 py-3 border-2 border-gray-200 rounded-lg hover:border-gray-300 hover:bg-gray-50 transition-all"
+                    >
+                        <i class="pi pi-facebook text-blue-600 text-lg"></i>
+                        <span class="font-medium text-gray-700">Facebook</span>
+                    </button>
+                </div>
+
+                <!-- Sign Up Link -->
+                <div class="text-center mt-4">
+                    <span class="text-gray-600">¿No tienes cuenta? </span>
+                    <a routerLink="/auth/register" class="text-purple-600 hover:text-purple-700 font-semibold hover:underline transition-all">
+                        Regístrate aquí
+                    </a>
+                </div>
+
+            </form>
+        </div>
+
+        <!-- Footer Note -->
+        <p class="text-center text-white text-sm mt-6 opacity-80">
+            <i class="pi pi-shield mr-2"></i>
+            Tus datos están protegidos y seguros
+        </p>
+    </div>
+
