@@ -12,6 +12,9 @@ export const AUTH_ROUTES: Routes = [
   {
     path:'recover',
     loadComponent:()=>import('./pages/recover-component/recover-component').then(m=>m.RecoverComponent),
+  },{
+    path:'callback',
+    loadComponent:()=>import('../../core/components/auth-callback/auth-callback').then(m=>m.AuthCallback)
   },
   {
     path: '',

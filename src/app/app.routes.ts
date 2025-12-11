@@ -2,6 +2,7 @@ import { Routes } from '@angular/router';
 import { AuthLayoutComponent } from './layout/auth-layout/auth-layout-component/auth-layout-component';
 import { AUTH_ROUTES } from './features/auth/auth.routes';
 import { MainLayoutComponent } from './layout/main-layout/main-layout-component/main-layout-component';
+import { DASHBOARD_ROUTES } from './features/dashboard/dashboard.routes';
 
 export const routes: Routes = [
    {
@@ -11,7 +12,8 @@ export const routes: Routes = [
    },
    {
       path: 'dashboard',
-      component: MainLayoutComponent
+      component: MainLayoutComponent,
+      children:DASHBOARD_ROUTES
    },
    {
       path: '',

@@ -96,6 +96,7 @@
                 <!-- Social Login Buttons -->
                 <div class="grid grid-cols-2 gap-3">
                     <button
+                        (click)="loginWithGoogle()"
                         type="button"
                         class="flex items-center justify-center gap-2 px-4 py-3 border-2 border-gray-200 rounded-lg hover:border-gray-300 hover:bg-gray-50 transition-all cursor-pointer"
                     >
@@ -104,7 +105,7 @@
                     </button>
                     <button
                         type="button"
-                        class="flex items-center justify-center gap-2 px-4 py-3 border-2 border-gray-200 rounded-lg hover:border-gray-300 hover:bg-gray-50 transition-all"
+                        class="flex items-center justify-center gap-2 px-4 py-3 border-2 border-gray-200 rounded-lg hover:border-gray-300 hover:bg-gray-50 transition-all cursor-pointer"
                     >
                         <i class="pi pi-facebook text-blue-600 text-lg"></i>
                         <span class="font-medium text-gray-700">Facebook</span>
