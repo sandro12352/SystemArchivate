@@ -20,11 +20,11 @@ import { Validators } from '@angular/forms';
 export class LoginComponent implements OnInit{
   
   private _supabaseClient = inject(SupabaseService).supabaseClient;
-  messageService = inject(MessageService);
+  public messageService = inject(MessageService);
   private formBuilder = inject(FormBuilder);
   private router = inject(Router);
   public loginForm!:FormGroup;
-
+  public isGoogleLoading = false;
 
   
   ngOnInit(): void {
@@ -49,12 +49,17 @@ export class LoginComponent implements OnInit{
       this.loginForm.markAllAsTouched();
       return
     }
+
+    
+
     return this.router.navigate(['/dashboard'])
   }
 
 
 
   async loginWithGoogle() {
+    if (this.isGoogleLoading) return;
+    this.isGoogleLoading = true;
     const { data, error } = await this._supabaseClient.auth.signInWithOAuth({
       provider:'google',
       options:{

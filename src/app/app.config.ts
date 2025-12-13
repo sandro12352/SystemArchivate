@@ -6,6 +6,7 @@ import { providePrimeNG } from 'primeng/config';
 import Aura from '@primeuix/themes/aura'
 import { definePreset } from '@primeuix/themes';
 import { MessageService } from 'primeng/api';
+import { provideHttpClient } from '@angular/common/http';
 
 // Personalizar Aura con negro como primario
   const MyPreset = definePreset(Aura, {
@@ -33,6 +34,7 @@ export const appConfig: ApplicationConfig = {
     provideBrowserGlobalErrorListeners(),
     provideRouter(routes),
     MessageService,
+    provideHttpClient(),
     providePrimeNG({
       theme:{
         preset:MyPreset,

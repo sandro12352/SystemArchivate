@@ -1,31 +1,110 @@
-    <div class="flex flex-col items-center justify-center gap-6 p-12 max-w-md w-full">
-        
-        <!-- Spinner Container con efecto de resplandor -->
+ <form  class="flex flex-col gap-5">
+
+    <!-- Encabezado -->
+  <div class="text-center mb-2">
+    <h2 class="text-2xl font-bold text-gray-800">
+      Completa tus datos por favor
+    </h2>
+    <p class="text-gray-500 text-sm mt-1">
+      Necesitamos esta información para continuar
+    </p>
+  </div>
+      
+      <!-- Tipo de Persona -->
+      <div class="relative">
+        <label class="block text-sm font-semibold mb-2 text-gray-700">
+          <i class="pi pi-apple
+ mr-2 text-purple-600"></i>
+          Tipo de Persona
+        </label>
+        <p-select 
+          [options]="tiposPersona" 
+          formControlName="tipoPersona"
+          optionLabel="label" 
+          optionValue="value"
+          placeholder="Selecciona una opción"
+          class="w-full"
+        />
+      </div>
+
+      <!-- Nombre -->
+      <div class="relative">
+        <label class="block text-sm font-semibold mb-2 text-gray-700">
+          Nombre Completo
+        </label>
         <div class="relative">
-            <div class="absolute inset-0 bg-blue-400 rounded-full blur-2xl opacity-20 animate-pulse"></div>
-            <p-progress-spinner 
-                ariaLabel="loading" 
-                strokeWidth="4"
-                fill="transparent"
-                animationDuration="1s"
-                class="fill-yellow-300"
-                styleClass=""
-            />
+          <input 
+            type="text" 
+            pInputText 
+            formControlName="nombre"
+            placeholder="Nombre"
+            class="w-full pl-12 pr-4 py-3 border-2 border-gray-200 rounded-lg focus:border-purple-500 focus:ring-2 focus:ring-purple-200 transition-all"
+            required
+          />
+          <span class="pi pi-user absolute left-4 top-1/2 -translate-y-1/2 text-gray-400 text-xl"></span>
         </div>
+      </div>
 
-        <!-- Contenido de texto -->
-        <div class="text-center space-y-3">
-            <h1 class="text-3xl font-bold text-gray-800 tracking-tight">
-                Verificando Datos
-            </h1>
+      <!-- Apellidos -->
+      <div class="relative">
+        <label class="block text-sm font-semibold mb-2 text-gray-700">
+          Apellidos Completos
+        </label>
+        <div class="relative">
+          <input 
+            type="text" 
+            pInputText 
+            formControlName="apellidos"
+            placeholder="Apellidos"
+            class="w-full pl-12 pr-4 py-3 border-2 border-gray-200 rounded-lg focus:border-purple-500 focus:ring-2 focus:ring-purple-200 transition-all"
+            required
+          />
+          <span class="pi pi-user absolute left-4 top-1/2 -translate-y-1/2 text-gray-400 text-xl"></span>
         </div>
+      </div>
 
-
-        <!-- Mensaje de seguridad opcional -->
-        <div class="flex items-center gap-2 text-sm text-gray-500 bg-gray-50 px-4 py-2 rounded-lg">
-            <svg class="w-4 h-4 text-green-600" fill="currentColor" viewBox="0 0 20 20">
-                <path fill-rule="evenodd" d="M2.166 4.999A11.954 11.954 0 0010 1.944 11.954 11.954 0 0017.834 5c.11.65.166 1.32.166 2.001 0 5.225-3.34 9.67-8 11.317C5.34 16.67 2 12.225 2 7c0-.682.057-1.35.166-2.001zm11.541 3.708a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clip-rule="evenodd"/>
-            </svg>
-            <span>Conexión segura</span>
+      <div class="relative">
+        <label class="block text-sm font-semibold mb-2 text-gray-700">
+          DNI O RUC
+        </label>
+        <div class="relative">
+          <input 
+            type="text" 
+            pInputText 
+            formControlName="apellidos"
+            placeholder="Ingrese Dni o Ruc"
+            class="w-full pl-12 pr-4 py-3 border-2 border-gray-200 rounded-lg focus:border-purple-500 focus:ring-2 focus:ring-purple-200 transition-all"
+            required
+          />
+          <span class="pi pi-user absolute left-4 top-1/2 -translate-y-1/2 text-gray-400 text-xl"></span>
         </div>
+      </div>
 
+      <!-- Teléfono -->
+      <div class="relative">
+        <label class="block text-sm font-semibold mb-2 text-gray-700">
+          Teléfono
+        </label>
+        <div class="relative">
+          <input 
+            type="tel" 
+            pInputText 
+            formControlName="telefono"
+            placeholder="Número de teléfono"
+            class="w-full pl-12 pr-4 py-3 border-2 border-gray-200 rounded-lg focus:border-purple-500 focus:ring-2 focus:ring-purple-200 transition-all"
+            required
+          />
+          <span class="pi pi-phone absolute left-4 top-1/2 -translate-y-1/2 text-gray-400 text-xl"></span>
+        </div>
+      </div>
+
+      <!-- Submit Button -->
+      <button
+        type="submit"
+        pButton
+        class="w-full mt-2 bg-linear-to-r from-purple-600 to-indigo-600 hover:from-purple-700 hover:to-indigo-700 text-white font-semibold py-3 rounded-lg shadow-lg hover:shadow-xl transform hover:scale-[1.02] transition-all duration-200 disabled:opacity-50 disabled:cursor-not-allowed"
+      >
+      Continuar
+      <i class="pi pi-arrow-right"></i> 
+    </button>
+    </form>
