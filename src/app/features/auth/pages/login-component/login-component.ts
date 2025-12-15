@@ -63,7 +63,7 @@ export class LoginComponent implements OnInit{
     const { data, error } = await this._supabaseClient.auth.signInWithOAuth({
       provider:'google',
       options:{
-        redirectTo:`${environment.API_URL}/auth/callback`,
+        redirectTo:`http://localhost:4200/auth/callback`,
       }
     });
 

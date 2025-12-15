@@ -1,26 +1,26 @@
 import { Component, inject, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
-import { SupabaseService } from '../../services/supabase-service';
 import { ProgressSpinnerModule } from 'primeng/progressspinner';
-import { HttpClient } from '@angular/common/http';
-import { environment } from '../../../../environments/environment';
 import { SelectModule } from 'primeng/select';
 import { ButtonDirective } from "primeng/button";
 import { InputText } from "primeng/inputtext";
+import { AuthService } from '../../../features/auth/services/auth-service';
+import { User } from '../../../features/auth/interfaces/user.interface';
+import { CommonModule } from '@angular/common';
 
 
 @Component({
   selector: 'app-auth-callback',
   standalone:true,
-  imports: [ProgressSpinnerModule, SelectModule, ButtonDirective, InputText],
+  imports: [ProgressSpinnerModule, SelectModule, ButtonDirective, InputText,CommonModule],
   templateUrl: './auth-callback.html',
   styleUrl: './auth-callback.css',
 })
 export class AuthCallback implements OnInit{
   
-  private _supabaseClient = inject(SupabaseService).supabaseClient;
+  private authService = inject(AuthService);
   private router = inject(Router);
-  private http = inject(HttpClient);
+  public userLogin?:User;
 
   tiposPersona = [
     { label: 'Persona Natural', value: 'natural' },
@@ -28,28 +28,25 @@ export class AuthCallback implements OnInit{
   ];
 
   async ngOnInit() {
-    const {data:{session},error} = await this._supabaseClient.auth.getSession();
-    
-  
-    if(session){ 
-      localStorage.setItem("token",session.access_token);
-      console.log(session.access_token);
+    const token = await this.authService.getSessionToken();
 
-      this.http.post(`http://localhost:3000/api/auth/google`,{
-        id_token:session.access_token
-      }).subscribe({
-        next:(resp)=>{
-          this.router.navigate(['/dashboard']);
-        },
-        error(err){
-          console.log(err);
-        }
-      })
-
-    }else{
-      console.log(error);
-      this.router.navigate(['/login'])
+    if (!token) {
+        this.router.navigate(['/login']);
+        return;
     }
+
+    this.authService.sendTokenToBackend(token).subscribe({
+      next:(resp)=>{
+        this.userLogin = resp.user;
+        console.log(this.userLogin)
+        
+      },
+      error:(err)=>{
+        console.log(err);
+      }
+    })
+
+
   }
 
 
