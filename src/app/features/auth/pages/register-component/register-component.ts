@@ -1,11 +1,14 @@
-import { Component, inject, OnInit } from '@angular/core';
+import { Component, inject, OnInit, signal } from '@angular/core';
 import { RouterLink } from "@angular/router";
 import { Password } from "primeng/password";
 import { InputTextModule } from 'primeng/inputtext';
 import { ButtonModule } from 'primeng/button';
 import { SupabaseService } from '../../../../core/services/supabase-service';
-import { FormBuilder, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
+import { AbstractControl, FormBuilder, FormGroup, ReactiveFormsModule, ValidationErrors, Validators } from '@angular/forms';
 import { CommonModule } from '@angular/common';
+import { AuthService } from '../../services/auth-service';
+import { UserService } from '../../../users/services/user-service';
+import { User } from '../../../users/interfaces/user.interface';
 @Component({
   selector: 'app-register-component',
   imports: [RouterLink, Password,InputTextModule,ButtonModule,CommonModule,ReactiveFormsModule],
@@ -16,17 +19,24 @@ export class RegisterComponent implements OnInit{
   
   private _supabaseClient = inject(SupabaseService).supabaseClient;
   private formBuilder = inject(FormBuilder);
+  private authService = inject(AuthService);
+  private userService = inject(UserService);
+
   public registerForm!:FormGroup;
-  public errorMessage?:string;
-  emailSent = false;
+  emailSent = signal(false);
+  errorMessage = signal('');
+  loadingCreate = signal(false);
   
   ngOnInit(): void {
-    console.log("inicio de pagina : " , this.emailSent)
     this.registerForm =  this.formBuilder.group({
       email:['',[Validators.required,Validators.email]],
-      password:['',[Validators.required,Validators.minLength(6)]],
-      confirmPaswword:['',[Validators.required,Validators.minLength(6)]]
-    })   
+      password:['',[Validators.required,Validators.pattern(/^(?=.*[a-z])(?=.*[A-Z])(?=.*\d).{8,}$/)]],
+      confirmPassword:['',[Validators.required,Validators.minLength(6)]]
+    },
+    {
+      validators:this.passwordMatchValidator
+    }
+  )   
   }
 
   get email(){
@@ -34,36 +44,88 @@ export class RegisterComponent implements OnInit{
     
   }
 
+  get password(){
+    return this.registerForm.get('password');
+  }
 
-  async loginWithEmail(){
-    if(this.registerForm.invalid) return;
-
-    const {email,password,confirmPaswword}= this.registerForm.value;
-
-    if(password != confirmPaswword){
-      this.errorMessage = "Contraseñas no coinciden";
-      return ;
-    }
-
-
-    const {data,error} = await this._supabaseClient.auth.signUp({
-      email,
-      password
-    })
-
-     if (error) {
-      this.errorMessage = error.message;
-      return;
-    }
-
-
-     // Estado de éxito
-    this.emailSent = true;
+  get confirmPassword(){
+    return this.registerForm.get('confirmPassword');
   }
 
 
+   async loginWithEmail(){
+    if(this.registerForm.invalid){
+      this.registerForm.markAllAsTouched();
+      return
+    }
+    this.loadingCreate.set(true);
+    this.errorMessage.set('');
+
+      const user:User = {
+            ...this.registerForm.value,
+            id_rol:2
+        }
+
+    this.userService.createUser(user).subscribe({
+      next:async()=>{
+        try {
+          const {email,password,confirmPassword}= this.registerForm.value;
+
+          if(password != confirmPassword){
+            this.errorMessage.set("Contraseñas no coinciden");
+            return ;
+          }
+            const { data, error } = await this._supabaseClient.auth.signUp({
+              email,
+              password
+            });
+
+          if (error) {
+            console.error('Supabase signup error:', error);
+
+            if (error.code === 'email_address_invalid') {
+              this.errorMessage.set('Este correo no existe o no es válido');
+            } else if (error.code === 'validation_failed') {
+              this.errorMessage.set('La contraseña no cumple con los requisitos');
+            } else {
+              this.errorMessage.set(
+                error.message || 'Error al crear la cuenta. Intenta de nuevo.'
+              );
+            }
+
+            return;
+          }
+          // ✅ TODO OK
+          this.emailSent.set(true);
+
+        } catch (err) {
+          console.error('Error inesperado:', err);
+          this.errorMessage.set('Error inesperado. Por favor, intenta de nuevo.');
+        } finally {
+          this.loadingCreate.set(false);
+        }
+      },
+        error:(err)=>{
+          this.errorMessage.set(err.mes);
+        }
+      });
 
 
+  }
 
+
+ 
+
+
+  passwordMatchValidator(control: AbstractControl): ValidationErrors | null {
+    const password = control.get('password')?.value;
+    const confirmPassword = control.get('confirmPassword')?.value;
+
+    if (!password || !confirmPassword) {
+      return null;
+    }
+
+    return password === confirmPassword ? null : { passwordMismatch: true };
+  }
 
 }

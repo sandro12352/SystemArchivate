@@ -5,8 +5,8 @@ import { SelectModule } from 'primeng/select';
 import { ButtonDirective } from "primeng/button";
 import { InputText } from "primeng/inputtext";
 import { AuthService } from '../../../features/auth/services/auth-service';
-import { User } from '../../../features/auth/interfaces/user.interface';
 import { CommonModule } from '@angular/common';
+import { User } from '../../../features/users/interfaces/user.interface';
 
 
 @Component({

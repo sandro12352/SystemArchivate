@@ -1,7 +1,7 @@
 import { HttpClient } from '@angular/common/http';
 import { inject, Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
-import { ResponseLogin } from '../interfaces/user.interface';
+import { ResponseLogin } from '../interfaces/auth.interface';
 import { SupabaseService } from '../../../core/services/supabase-service';
 import { environment } from '../../../../environments/environment';
 
@@ -29,14 +29,11 @@ export class AuthService {
   }
 
    sendTokenToBackend(token: string): Observable<ResponseLogin> {
-    return this.http.post<ResponseLogin>( `http://localhost:3000/api/auth/google`,{},
+    return this.http.post<ResponseLogin>( `http://localhost:3000/api/auth`,{},
        {
         headers: {Authorization: `Bearer ${token}`},
       }
       );
     }
-
-
-
 
 }

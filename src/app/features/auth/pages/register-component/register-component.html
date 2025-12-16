@@ -1,4 +1,4 @@
- @if (emailSent) {
+ @if (emailSent()) {
     <div 
      class="text-center bg-purple-50 border border-purple-200 rounded-2xl p-8 shadow-sm">
 
@@ -7,35 +7,25 @@
             <i class="pi pi-envelope text-white text-2xl"></i>
             </div>
         </div>
-
         <h2 class="text-2xl font-bold text-gray-800 mb-2">
             Verifica tu correo
         </h2>
-
         <p class="text-gray-600 mb-4">
-            Hemos enviado un mensaje a
-        
+            Hemos enviado un mensaje a {{registerForm.get('email')?.value}}
+      
         </p>
-
         <p class="text-sm text-gray-500 mb-6">
             Revisa tu bandeja de entrada y confirma tu correo
             para poder iniciar sesión.
         </p>
-
-        <a routerLink="/auth/login"
-            class="inline-block text-purple-600 font-semibold hover:underline">
-            Ir al inicio de sesión
-        </a>
         </div>
-
-
  }
  
  
 
  
 
-@if (!emailSent) {
+@if (!emailSent()) {
     
     <div class="flex justify-center mb-6">
                 <div class="w-20 h-20 bg-linear-to-br from-purple-500 to-indigo-600 rounded-full flex items-center justify-center shadow-lg">
@@ -71,7 +61,10 @@
                         required
                     />
                     <i class="pi pi-at absolute left-4 top-1/2 -translate-y-1/2 text-gray-400"></i>
-                    @if (email?.invalid && (email?.dirty || email?.touched)) {
+                 
+
+                </div>
+                   @if (email?.invalid && (email?.dirty || email?.touched)) {
                         <p class="text-sm text-red-600 mt-1">
                             @if (email?.hasError('required')) {
                             El correo es obligatorio
@@ -80,9 +73,7 @@
                             El correo no tiene un formato válido
                             }
                         </p>
-                        }
-
-                </div>
+                    }
             </div>
     
             <!-- Password Field -->
@@ -101,8 +92,17 @@
                     name="password"
                     formControlName="password"
                 >
-                
                 </p-password>
+                   @if (password?.invalid && (password?.dirty || password?.touched)) {
+                        <p class="text-sm text-red-600 mt-1">
+                            @if (password?.hasError('required')) {
+                            Contraseña es obligatoria
+                            }
+                            @if (password?.hasError('pattern')) {
+                            Contraseña invalida
+                        }
+                        </p>
+                }
                 <ng-template pTemplate="hideicon">
                         <i class="pi pi-eye-slash"></i>
                     </ng-template>
@@ -126,11 +126,33 @@
                     styleClass="w-full"
                     [toggleMask]="true"
                     id="confirmPaswword"
-                    name="confirmPaswword"
-                    formControlName="confirmPaswword"
-                >
-                
+                    name="confirmPassword"
+                    formControlName="confirmPassword"
+                    >
+                    
                 </p-password>
+                @if (confirmPassword?.invalid && (confirmPassword?.dirty || confirmPassword?.touched)) {
+                        <p class="text-sm text-red-600 mt-1">
+                            @if (confirmPassword?.hasError('required')) {
+                                Contraseña es obligatoria
+                            }
+                            @if (confirmPassword?.hasError('password')) {
+                                Confirme su contraseña
+                            }
+                        </p>
+                }
+                @if ( registerForm.hasError('passwordMismatch') ) {
+                        <p class="text-sm  text-red-600 mt-1">
+                            Contraseñas no coinciden
+                        </p>
+                }
+
+                @if (errorMessage()) {
+                    <p class="text-sm text-red-600 mt-1">
+                        {{errorMessage()}}
+                    </p>
+                }
+
                 <ng-template pTemplate="hideicon">
                         <i class="pi pi-eye-slash"></i>
                     </ng-template>
@@ -176,11 +198,15 @@
         <button
                 pButton
                 type="submit"
+                [loading]="loadingCreate()"
+                [disabled]="!registerForm.valid || loadingCreate()"
                 class="w-full mt-2 bg-linear-to-r from-purple-600 to-indigo-600 hover:from-purple-700 hover:to-indigo-700 text-white font-semibold py-3 rounded-lg shadow-lg hover:shadow-xl transform hover:scale-[1.02] transition-all duration-200"
             >
-            Crear Cuenta
-            <i class="pi pi-arrow-right"></i> 
-        </button>
+            @if(!loadingCreate()){
+                Crear cuenta
+                <i class="pi pi-arrow-right ml-2"></i>
+            }
+            </button>
     
             <!-- Divider -->
             <div class="relative my-4">

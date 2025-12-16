@@ -43,10 +43,10 @@
                      @if (email?.invalid && (email?.dirty || email?.touched)) {
                             <div class="text-red-500 text-[15px] pt-1">
                                 @if (email?.hasError('required')) {
-                                <div>Email es requerido</div>
+                                <p class="text-sm text-red-600 mt-1">Email es requerido</p>
                                 }
                                 @if (email?.hasError('email')) {
-                                    <div>Email inválido.</div>
+                                    <p class="text-sm text-red-600 mt-1">Email inválido.</p>
                                 }
                             </div>
                         }
@@ -73,7 +73,7 @@
                     @if (password?.invalid && (password?.dirty || password?.touched)) {
                         <div class="text-red-500 text-[15px] pt-1">
                                 @if (password?.hasError('required')) {
-                                    <div>Contraseña requerida</div>
+                                    <p class="text-sm text-red-600 mt-1">Contraseña requerida</p>
                                 }
                         </div>
                     }
@@ -98,15 +98,31 @@
                         ¿Olvidaste tu contraseña?
                     </a>
                 </div>
-
+                 @if (errorMessage()) {
+                       <div class="bg-red-50 border-l-4 border-red-500 p-4 rounded-r-lg ">
+                        <div class="flex items-start gap-3">
+                            <i class="pi pi-exclamation-circle text-red-500 text-xl mt-0.5"></i>
+                            <div>
+                                <p class="text-sm font-semibold text-red-800">Error de autenticación</p>
+                                <p class="text-sm text-red-600 mt-1">{{errorMessage()}}</p>
+                            </div>
+                        </div>
+                    </div>
+                    }
+                
+               
                 <!-- Login Button -->
                 <button
                     type="submit"
                     pButton
-                    label="Iniciar Sesión"
-                    icon="pi pi-sign-in"
+                    [loading]="isEmailLoading()"
+                    [disabled]="isEmailLoading()"
                     class="w-full mt-2 bg-linear-to-r from-purple-600 to-indigo-600 hover:from-purple-700 hover:to-indigo-700 text-white font-semibold py-3 rounded-lg shadow-lg hover:shadow-xl transform hover:scale-[1.02] transition-all duration-200"
-                ></button>
+                > @if (!isEmailLoading()) {
+                    <i class="pi pi-sign-in"></i>
+                    Iniciar Sesión
+                }   
+            </button>
 
                 <!-- Divider -->
                 <div class="relative my-4">
