@@ -29,7 +29,7 @@ export class AuthService {
   }
 
    sendTokenToBackend(token: string): Observable<ResponseLogin> {
-    return this.http.post<ResponseLogin>( `http://localhost:3000/api/auth`,{},
+    return this.http.post<ResponseLogin>( `${environment.API_URL}/api/auth`,{},
        {
         headers: {Authorization: `Bearer ${token}`},
       }
