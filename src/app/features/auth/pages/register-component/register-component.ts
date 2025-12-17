@@ -6,9 +6,9 @@ import { ButtonModule } from 'primeng/button';
 import { SupabaseService } from '../../../../core/services/supabase-service';
 import { AbstractControl, FormBuilder, FormGroup, ReactiveFormsModule, ValidationErrors, Validators } from '@angular/forms';
 import { CommonModule } from '@angular/common';
-import { AuthService } from '../../services/auth-service';
 import { UserService } from '../../../users/services/user-service';
 import { User } from '../../../users/interfaces/user.interface';
+
 @Component({
   selector: 'app-register-component',
   imports: [RouterLink, Password,InputTextModule,ButtonModule,CommonModule,ReactiveFormsModule],
@@ -19,7 +19,6 @@ export class RegisterComponent implements OnInit{
   
   private _supabaseClient = inject(SupabaseService).supabaseClient;
   private formBuilder = inject(FormBuilder);
-  private authService = inject(AuthService);
   private userService = inject(UserService);
 
   public registerForm!:FormGroup;
@@ -31,7 +30,8 @@ export class RegisterComponent implements OnInit{
     this.registerForm =  this.formBuilder.group({
       email:['',[Validators.required,Validators.email]],
       password:['',[Validators.required,Validators.pattern(/^(?=.*[a-z])(?=.*[A-Z])(?=.*\d).{8,}$/)]],
-      confirmPassword:['',[Validators.required,Validators.minLength(6)]]
+      confirmPassword:['',[Validators.required,Validators.minLength(6)]],
+      terms:[false,[Validators.requiredTrue]]
     },
     {
       validators:this.passwordMatchValidator
@@ -62,8 +62,8 @@ export class RegisterComponent implements OnInit{
     this.errorMessage.set('');
 
       const user:User = {
+            id_rol:2,
             ...this.registerForm.value,
-            id_rol:2
         }
 
     this.userService.createUser(user).subscribe({
@@ -106,7 +106,8 @@ export class RegisterComponent implements OnInit{
         }
       },
         error:(err)=>{
-          this.errorMessage.set(err.mes);
+          this.errorMessage.set(err.error.error);
+          this.loadingCreate.set(false)
         }
       });
 

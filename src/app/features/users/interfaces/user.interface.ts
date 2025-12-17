@@ -3,5 +3,5 @@ export interface User {
     email:           string;
     id_rol:             number;
     nombre_completo?: string;
-    foto_perfil:     string;
+    foto_perfil?:     string;
 }

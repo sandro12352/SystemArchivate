@@ -1,0 +1,6 @@
+.bg-auth {
+  background-image: url('https://www.cesuma.mx/blog/wp-content/uploads/2023/04/b2ap3_large_el-marketing-mix.png'); /* ajusta la ruta */
+  background-size: cover;
+  background-position: center;
+  background-repeat: no-repeat;
+}
