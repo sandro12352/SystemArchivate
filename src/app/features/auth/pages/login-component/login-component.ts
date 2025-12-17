@@ -84,18 +84,7 @@ export class LoginComponent implements OnInit{
         return;
       }
 
-      this.authService.sendTokenToBackend(data.session.access_token).subscribe({
-        next:(resp:ResponseLogin)=>{
-            this.user= resp.user;
-        },
-        error:(err)=>{
-
-        }
-      });
-
-      // ✅ TODO OK → ENTRAR
-      this.router.navigate(['/dashboard']);
-
+       this.router.navigate(['auth/callback']);
     } catch (err) {
       this.errorMessage.set('Error inesperado. Intenta nuevamente.');
     }finally{
@@ -111,7 +100,7 @@ export class LoginComponent implements OnInit{
     const { data, error } = await this._supabaseClient.auth.signInWithOAuth({
       provider:'google',
       options:{
-        redirectTo:`${environment.PATH}/auth/callback`,
+        redirectTo:`http://localhost:4200/auth/callback`,
       }
     });
 

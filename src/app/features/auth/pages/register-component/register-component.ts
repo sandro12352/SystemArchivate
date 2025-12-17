@@ -117,8 +117,8 @@ export class RegisterComponent implements OnInit{
 
  
 
-
-  passwordMatchValidator(control: AbstractControl): ValidationErrors | null {
+//METODO REPETIDO UNIFICARLO DESPUES
+public passwordMatchValidator(control: AbstractControl): ValidationErrors | null {
     const password = control.get('password')?.value;
     const confirmPassword = control.get('confirmPassword')?.value;
 

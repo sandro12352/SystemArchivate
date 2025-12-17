@@ -7,12 +7,14 @@ import { InputText } from "primeng/inputtext";
 import { AuthService } from '../../../features/auth/services/auth-service';
 import { CommonModule } from '@angular/common';
 import { User } from '../../../features/users/interfaces/user.interface';
-
-
+import { DatePickerModule } from 'primeng/datepicker';
+import { FormBuilder, FormGroup, Validators } from '@angular/forms';
+import { InputTextModule } from 'primeng/inputtext';
+import { FloatLabel } from 'primeng/floatlabel';
 @Component({
   selector: 'app-auth-callback',
   standalone:true,
-  imports: [ProgressSpinnerModule, SelectModule, ButtonDirective, InputText,CommonModule],
+  imports: [ProgressSpinnerModule, SelectModule, ButtonDirective, InputText,CommonModule,DatePickerModule,InputTextModule,FloatLabel],
   templateUrl: './auth-callback.html',
   styleUrl: './auth-callback.css',
 })
@@ -21,6 +23,11 @@ export class AuthCallback implements OnInit{
   private authService = inject(AuthService);
   private router = inject(Router);
   public userLogin?:User;
+  public formBuilder = inject(FormBuilder);
+
+  
+  private clientForm!:FormGroup;
+
 
   tiposPersona = [
     { label: 'Persona Natural', value: 'natural' },
@@ -28,8 +35,17 @@ export class AuthCallback implements OnInit{
   ];
 
   async ngOnInit() {
-    const token = await this.authService.getSessionToken();
+    this.clientForm = this.formBuilder.group({
+      nombres:['',[Validators.required]],
+      apellidos:['',[Validators.required]],
+      documento:['',[Validators.required]],
+      fecha_nacimiento:[]
+    })
 
+
+
+    const token = await this.authService.getSessionToken();
+    console.log(token)
     if (!token) {
         this.router.navigate(['/login']);
         return;

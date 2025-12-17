@@ -1,111 +1,125 @@
- <form  class="flex flex-col gap-5">
 
-    <!-- Encabezado -->
+
+
+<form class="flex flex-col gap-5">
+
   <div class="text-center mb-2">
+    <div class="flex justify-center mb-6">
+                <div class="w-20 h-20 bg-linear-to-br from-purple-500 to-indigo-600 rounded-full flex items-center justify-center shadow-lg">
+                    <img src="images/logo.webp" width="100" height="100" class="w-full h-full object-cover ">
+                </div>
+            </div>
     <h2 class="text-2xl font-bold text-gray-800">
-      Completa tus datos por favor
+      Configuración de Perfil
     </h2>
     <p class="text-gray-500 text-sm mt-1">
-      Necesitamos esta información para continuar
+      Por favor, completa los siguientes campos para personalizar tu experiencia
     </p>
   </div>
-      
-      <!-- Tipo de Persona -->
-      <div class="relative">
-        <label class="block text-sm font-semibold mb-2 text-gray-700">
-          <i class="pi pi-apple
- mr-2 text-purple-600"></i>
-          Tipo de Persona
-        </label>
-        <p-select 
-          [options]="tiposPersona" 
-          formControlName="tipoPersona"
-          optionLabel="label" 
-          optionValue="value"
-          placeholder="Selecciona una opción"
-          class="w-full"
-          required
+    
+  <div class="relative">
+    <label class="block text-sm font-semibold mb-2 text-gray-700">
+      <i class="pi pi-tag mr-2 text-purple-600"></i>
+      Tipo de Persona
+    </label>
+    <p-select 
+      [options]="tiposPersona" 
+      formControlName="tipoPersona"
+      optionLabel="label" 
+      optionValue="value"
+      placeholder="Selecciona una opción"
+      class="w-full "
+    />
+  </div>
+
+  <div class="relative">
+
+    <div class="relative">
+      <p-floatlabel>
+        <input 
+          type="text" 
+          pInputText 
+          id="over_label"
+          pSize="small"
+          formControlName="nombre"
+          class="w-full pl-12  py-2.5 border-2 border-gray-200 rounded-lg focus:border-purple-500 focus:ring-2 focus:ring-purple-200 transition-all"
         />
-      </div>
+        <label for="over_label"><i class="pi pi-user "></i>Over Label</label>
 
-      <!-- Nombre -->
-      <div class="relative">
-        <label class="block text-sm font-semibold mb-2 text-gray-700">
-          Nombre Completo
-        </label>
-        <div class="relative">
-          <input 
-            type="text" 
-            pInputText 
-            formControlName="nombre"
-            placeholder="Nombre"
-            class="w-full pl-12 pr-4 py-3 border-2 border-gray-200 rounded-lg focus:border-purple-500 focus:ring-2 focus:ring-purple-200 transition-all"
-            required
-          />
-          <span class="pi pi-user absolute left-4 top-1/2 -translate-y-1/2 text-gray-400 text-xl"></span>
-        </div>
-      </div>
+      </p-floatlabel>
+    </div>
+  </div>
 
-      <!-- Apellidos -->
-      <div class="relative">
-        <label class="block text-sm font-semibold mb-2 text-gray-700">
-          Apellidos Completos
-        </label>
-        <div class="relative">
-          <input 
-            type="text" 
-            pInputText 
-            formControlName="apellidos"
-            placeholder="Apellidos"
-            class="w-full pl-12 pr-4 py-3 border-2 border-gray-200 rounded-lg focus:border-purple-500 focus:ring-2 focus:ring-purple-200 transition-all"
-            required
-          />
-          <span class="pi pi-user absolute left-4 top-1/2 -translate-y-1/2 text-gray-400 text-xl"></span>
-        </div>
-      </div>
+  <div class="relative">
+    <label class="block text-sm font-semibold mb-2 text-gray-700">
+      Apellidos Completos
+    </label>
+    <div class="relative">
+      <input 
+        type="text" 
+        pInputText 
+        pSize="small"
+        formControlName="apellidos"
+        placeholder="Ej. García López"
+        class="w-full pl-12 py-2.5 border-2 border-gray-200 rounded-lg focus:border-purple-500 focus:ring-2 focus:ring-purple-200 transition-all"
+      />
+      <span class="pi pi-id-card absolute left-4 top-1/2 -translate-y-1/2 text-gray-400 text-xl"></span>
+    </div>
+  </div>
 
-      <div class="relative">
-        <label class="block text-sm font-semibold mb-2 text-gray-700">
-          DNI O RUC
-        </label>
-        <div class="relative">
-          <input 
-            type="text" 
-            pInputText 
-            formControlName="apellidos"
-            placeholder="Ingrese Dni o Ruc"
-            class="w-full pl-12 pr-4 py-3 border-2 border-gray-200 rounded-lg focus:border-purple-500 focus:ring-2 focus:ring-purple-200 transition-all"
-            required
-          />
-          <span class="pi pi-user absolute left-4 top-1/2 -translate-y-1/2 text-gray-400 text-xl"></span>
-        </div>
-      </div>
+  <div class="relative">
+    <label class="block text-sm font-semibold mb-2 text-gray-700">
+      Documento de Identidad (DNI o RUC)
+    </label>
+    <div class="relative">
+      <input 
+        type="text" 
+        pInputText 
+        pSize="small"
+        formControlName="documento"
+        placeholder="Número de documento"
+        class="w-full pl-12  py-2.5 border-2 border-gray-200 rounded-lg focus:border-purple-500 focus:ring-2 focus:ring-purple-200 transition-all"
+      />
+      <span class="pi pi-info-circle absolute left-4 top-1/2 -translate-y-1/2 text-gray-400 text-xl"></span>
+    </div>
+  </div>
 
-      <!-- Teléfono -->
-      <div class="relative">
-        <label class="block text-sm font-semibold mb-2 text-gray-700">
-          Teléfono
-        </label>
-        <div class="relative">
-          <input 
-            type="tel" 
-            pInputText 
-            formControlName="telefono"
-            placeholder="Número de teléfono"
-            class="w-full pl-12 pr-4 py-3 border-2 border-gray-200 rounded-lg focus:border-purple-500 focus:ring-2 focus:ring-purple-200 transition-all"
-            required
-          />
-          <span class="pi pi-phone absolute left-4 top-1/2 -translate-y-1/2 text-gray-400 text-xl"></span>
-        </div>
-      </div>
+  
 
-      <!-- Submit Button -->
-      <button
-        type="submit"
-        pButton
-        class="w-full mt-2 bg-linear-to-r from-purple-600 to-indigo-600 hover:from-purple-700 hover:to-indigo-700 text-white font-semibold py-3 rounded-lg shadow-lg hover:shadow-xl transform hover:scale-[1.02] transition-all duration-200 disabled:opacity-50 disabled:cursor-not-allowed"
-      >
-      Continuar
+  <div class="relative">
+    <label class="block text-sm font-semibold mb-2 text-gray-700">
+      Teléfono Móvil
+    </label>
+    <div class="relative">
+      <input 
+        type="tel" 
+        pInputText 
+        formControlName="telefono"
+        placeholder="999 999 999"
+        pSize="small"
+        class="w-full pl-12 py-2.5 border-2 border-gray-200 rounded-lg focus:border-purple-500 focus:ring-2 focus:ring-purple-200 transition-all"
+      />
+      <span class="pi pi-phone absolute left-4 top-1/2 -translate-y-1/2 text-gray-400 text-xl"></span>
+    </div>
+  </div>
+
+  <div class="relative">
+    <label class="block text-sm font-semibold mb-2 text-gray-700">
+      Fecha de Nacimiento
+    </label>
+    <div class="relative">
+      <p-datepicker formControlName="fechaNacimiento" placeholder="dd/mm/aaaa" inputStyleClass="w-full py-2.5   border-2 border-gray-200 rounded-lg focus:border-purple-500 focus:ring-2 focus:ring-purple-200 transition-all" class="w-full" size="small" [iconDisplay]="'input'" [showIcon]="true" inputId="icondisplay" />
+    </div>
+  </div>
+
+  <button
+    type="submit"
+    pButton
+    class="w-full mt-2 bg-gradient-to-r from-purple-600 to-indigo-600 hover:from-purple-700 hover:to-indigo-700 text-white font-semibold py-3 rounded-lg shadow-lg hover:shadow-xl transform hover:scale-[1.01] transition-all duration-200 disabled:opacity-50 disabled:cursor-not-allowed"
+  >
+    <span class="flex items-center justify-center gap-2">
+      Finalizar registro
       <i class="pi pi-arrow-right"></i> 
-    </button>
-    </form>
+    </span>
+  </button>
+</form>
