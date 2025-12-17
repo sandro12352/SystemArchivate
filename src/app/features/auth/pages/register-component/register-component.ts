@@ -22,7 +22,7 @@ export class RegisterComponent implements OnInit{
   private userService = inject(UserService);
 
   public registerForm!:FormGroup;
-  emailSent = signal(false);
+  emailSend = signal(false);
   errorMessage = signal('');
   loadingCreate = signal(false);
   
@@ -96,7 +96,7 @@ export class RegisterComponent implements OnInit{
             return;
           }
           // ✅ TODO OK
-          this.emailSent.set(true);
+          this.emailSend.set(true);
 
         } catch (err) {
           console.error('Error inesperado:', err);

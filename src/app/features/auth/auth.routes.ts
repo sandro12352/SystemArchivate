@@ -17,6 +17,10 @@ export const AUTH_ROUTES: Routes = [
     loadComponent:()=>import('../../core/components/auth-callback/auth-callback').then(m=>m.AuthCallback)
   },
   {
+    path:'update-password',
+    loadComponent:()=>import('./pages/update-password-compenent/update-password-compenent').then(m=>m.UpdatePasswordCompenent),
+  },
+  {
     path: '',
     redirectTo: 'login',
     pathMatch: 'full'

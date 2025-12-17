@@ -1,4 +1,4 @@
- @if (emailSent()) {
+ @if (emailSend()) {
     <div 
      class="text-center bg-purple-50 border border-purple-200 rounded-2xl p-8 shadow-sm">
 
@@ -25,7 +25,7 @@
 
  
 
-@if (!emailSent()) {
+@if (!emailSend()) {
     
     <div class="flex justify-center mb-6">
                 <div class="w-20 h-20 bg-linear-to-br from-purple-500 to-indigo-600 rounded-full flex items-center justify-center shadow-lg">

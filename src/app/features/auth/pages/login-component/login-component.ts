@@ -16,7 +16,7 @@ import { User } from '../../../users/interfaces/user.interface';
 
 @Component({
   selector: 'app-login-component',
-  imports: [PasswordModule, ButtonModule, InputTextModule, ToastModule, RouterLink,ReactiveFormsModule],
+  imports: [PasswordModule, ButtonModule, InputTextModule, RouterLink,ReactiveFormsModule],
   templateUrl: './login-component.html',
   styleUrl: './login-component.css',
 })
