@@ -6,12 +6,12 @@ import { ButtonDirective } from "primeng/button";
 import { InputText } from "primeng/inputtext";
 import { AuthService } from '../../../features/auth/services/auth-service';
 import { CommonModule } from '@angular/common';
-import { User } from '../../../features/users/interfaces/user.interface';
 import { DatePickerModule } from 'primeng/datepicker';
 import { FormBuilder, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
 import { InputTextModule } from 'primeng/inputtext';
 import { FloatLabel } from 'primeng/floatlabel';
 import { MessageModule } from 'primeng/message';
+import { ClientService } from '../../../features/clients/services/client-service';
 @Component({
   selector: 'app-auth-callback',
   standalone:true,
@@ -21,10 +21,11 @@ import { MessageModule } from 'primeng/message';
 })
 export class AuthCallback implements OnInit{
   
-  private authService = inject(AuthService);
   private router = inject(Router);
-  public userLogin?:User;
   public formBuilder = inject(FormBuilder);
+  private clientService = inject(ClientService);
+  private authService = inject(AuthService);
+
   public submitted = signal(false);
   
   public clientForm!:FormGroup;
@@ -55,8 +56,13 @@ export class AuthCallback implements OnInit{
     return this.clientForm.get('telefono');
   }
 
-  get fechaNacimiento(){
-    return this.clientForm.get('fechaNacimiento');
+  get fecha_nacimiento(){
+    return this.clientForm.get('fecha_nacimiento');
+  }
+
+
+  get userId(){
+    return this.authService.getUserSession()?.id_usuario;
   }
 
 
@@ -67,29 +73,10 @@ export class AuthCallback implements OnInit{
       apellidos:['',[Validators.required]],
       documento:['',[Validators.required]],
       telefono:['',[Validators.required,Validators.pattern(/^\d{9}$/)]],
-      fechaNacimiento:[null,[Validators.required]]
+      fecha_nacimiento:[null,[Validators.required]]
     });
 
     this.validTypePerson();
-
-    const token = await this.authService.getSessionToken();
-    if (!token) {
-        this.router.navigate(['/login']);
-        return;
-    }
-
-    this.authService.sendTokenToBackend(token).subscribe({
-      next:(resp)=>{
-        this.userLogin = resp.user;
-        console.log(this.userLogin)
-        
-      },
-      error:(err)=>{
-        console.log(err);
-      }
-    })
-
-
   }
 
   validTypePerson(){ 
@@ -123,7 +110,25 @@ export class AuthCallback implements OnInit{
     if (this.clientForm.invalid) {
       return;
     }
+    console.log(this.clientForm.value);
 
+    const client = {
+      ...this.clientForm.value,
+      dni:this.clientForm.value.tipoPersona === 'natural' ? this.clientForm.value.documento : null,
+      ruc:this.clientForm.value.tipoPersona === 'empresa' ? this.clientForm.value.documento : null,
+    }
+
+
+    this.clientService.createClient(this.userId!,client).subscribe({
+      next:(resp)=>{
+        console.log(resp);
+
+        this.router.navigate(['/dashboard']);
+      },
+      error:(err)=>{
+        console.log(err);
+      }
+    })
     
 
 
@@ -131,8 +136,6 @@ export class AuthCallback implements OnInit{
 
 
   }
-
-
 
 
 

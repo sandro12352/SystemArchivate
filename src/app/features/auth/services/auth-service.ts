@@ -1,5 +1,5 @@
 import { HttpClient } from '@angular/common/http';
-import { inject, Injectable } from '@angular/core';
+import { inject, Injectable, signal } from '@angular/core';
 import { Observable } from 'rxjs';
 import { ResponseLogin } from '../interfaces/auth.interface';
 import { SupabaseService } from '../../../core/services/supabase-service';
@@ -11,6 +11,8 @@ import { environment } from '../../../../environments/environment';
 export class AuthService {
   private http = inject(HttpClient);
   private _supabaseClient = inject(SupabaseService).supabaseClient;
+  
+  public userSession = signal<ResponseLogin['user'] | null>(null);
 
 
   async getSessionToken(): Promise<string | null> {
@@ -35,5 +37,15 @@ export class AuthService {
       }
       );
     }
+
+
+    setUserSession(user:ResponseLogin['user']| null){
+      this.userSession.set(user);
+    }
+
+    getUserSession() {
+      console.log(this.userSession());
+    return this.userSession();
+  }
 
 }

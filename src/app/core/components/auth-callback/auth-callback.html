@@ -1,3 +1,7 @@
+
+
+
+
 <form [formGroup]="clientForm" (ngSubmit)="onSubmit()" class="flex flex-col gap-5">
 
   <div class="text-center mb-2">
@@ -129,10 +133,10 @@
 
     <div class="relative">
       <p-float-label variant="on">
-      <p-datepicker formControlName="fechaNacimiento"  inputStyleClass="w-full py-2.5   border-2 border-gray-200 rounded-lg focus:border-purple-500 focus:ring-2 focus:ring-purple-200 transition-all" class="w-full" size="small" [iconDisplay]="'input'" [showIcon]="true" inputId="icondisplay" dateFormat="dd/mm/yy"/>
+      <p-datepicker formControlName="fecha_nacimiento"  inputStyleClass="w-full py-2.5   border-2 border-gray-200 rounded-lg focus:border-purple-500 focus:ring-2 focus:ring-purple-200 transition-all" class="w-full" size="small" [iconDisplay]="'input'" [showIcon]="true" inputId="icondisplay" dateFormat="dd/mm/yy"/>
         <label class="block text-sm font-semibold  text-gray-700">Fecha de Nacimiento</label>
       </p-float-label>
-        @if (submitted() && fechaNacimiento?.hasError('required')) {
+        @if (submitted() && fecha_nacimiento?.hasError('required')) {
           <p-message severity="error" size="small" variant="simple">
             <p>Fecha requerida</p>
           </p-message>

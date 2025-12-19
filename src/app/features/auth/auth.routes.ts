@@ -1,4 +1,5 @@
 import { Routes } from '@angular/router';
+import { clientProfilentGuard } from '../../core/guards/client-profilent-guard';
 
 export const AUTH_ROUTES: Routes = [ 
   {
@@ -14,7 +15,8 @@ export const AUTH_ROUTES: Routes = [
     loadComponent:()=>import('./pages/recover-component/recover-component').then(m=>m.RecoverComponent),
   },{
     path:'callback',
-    loadComponent:()=>import('../../core/components/auth-callback/auth-callback').then(m=>m.AuthCallback)
+    loadComponent:()=>import('../../core/components/auth-callback/auth-callback').then(m=>m.AuthCallback),
+    canActivate:[clientProfilentGuard]
   },
   {
     path:'update-password',
