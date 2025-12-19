@@ -8,10 +8,10 @@ import { AbstractControl, FormBuilder, FormGroup, ReactiveFormsModule, Validatio
 import { CommonModule } from '@angular/common';
 import { UserService } from '../../../users/services/user-service';
 import { User } from '../../../users/interfaces/user.interface';
-
+import { MessageModule } from 'primeng/message';
 @Component({
   selector: 'app-register-component',
-  imports: [RouterLink, Password,InputTextModule,ButtonModule,CommonModule,ReactiveFormsModule],
+  imports: [RouterLink, Password,InputTextModule,ButtonModule,CommonModule,ReactiveFormsModule,MessageModule],
   templateUrl: './register-component.html',
   styleUrl: './register-component.css',
 })

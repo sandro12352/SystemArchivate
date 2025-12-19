@@ -12,17 +12,17 @@ import { Validators } from '@angular/forms';
 import { AuthService } from '../../services/auth-service';
 import { ResponseLogin } from '../../interfaces/auth.interface';
 import { User } from '../../../users/interfaces/user.interface';
+import { MessageModule } from 'primeng/message';
 
 
 @Component({
   selector: 'app-login-component',
-  imports: [PasswordModule, ButtonModule, InputTextModule, RouterLink,ReactiveFormsModule],
+  imports: [PasswordModule, ButtonModule, InputTextModule, RouterLink,ReactiveFormsModule,MessageModule],
   templateUrl: './login-component.html',
   styleUrl: './login-component.css',
 })
 export class LoginComponent implements OnInit{
   private _supabaseClient = inject(SupabaseService).supabaseClient;
-  public messageService = inject(MessageService);
   public authService = inject(AuthService)
   private formBuilder = inject(FormBuilder);
   private router = inject(Router);

@@ -1,7 +1,4 @@
-
-
-
-<form class="flex flex-col gap-5">
+<form [formGroup]="clientForm" (ngSubmit)="onSubmit()" class="flex flex-col gap-5">
 
   <div class="text-center mb-2">
     <div class="flex justify-center mb-6">
@@ -28,89 +25,119 @@
       optionLabel="label" 
       optionValue="value"
       placeholder="Selecciona una opción"
-      class="w-full "
+      class="w-full"
     />
+    @if (submitted() && tipoPersona?.hasError('required')) {
+      <p-message severity="error" size="small" variant="simple">
+        <p>Seleccione una opción</p>
+      </p-message>
+    } 
   </div>
 
-  <div class="relative">
 
     <div class="relative">
-      <p-floatlabel>
+      <p-floatlabel variant="on">
         <input 
           type="text" 
           pInputText 
           id="over_label"
+          formControlName="nombres"
           pSize="small"
-          formControlName="nombre"
-          class="w-full pl-12  py-2.5 border-2 border-gray-200 rounded-lg focus:border-purple-500 focus:ring-2 focus:ring-purple-200 transition-all"
+          class="w-full py-2.5 border-2 border-gray-200 rounded-lg focus:border-purple-500 focus:ring-2 focus:ring-purple-200 transition-all"
         />
-        <label for="over_label"><i class="pi pi-user "></i>Over Label</label>
-
+        <label class="block text-sm font-semibold  text-gray-700"><i class="pi pi-user "></i> Nombres</label>
+        
       </p-floatlabel>
+      @if (submitted() && nombres?.hasError('required')) {
+        <p-message severity="error" size="small" variant="simple">
+          <p>Nombres requerido</p>
+        </p-message>
+      } 
     </div>
-  </div>
 
-  <div class="relative">
-    <label class="block text-sm font-semibold mb-2 text-gray-700">
-      Apellidos Completos
-    </label>
     <div class="relative">
+       <p-floatlabel variant="on">
       <input 
         type="text" 
         pInputText 
         pSize="small"
         formControlName="apellidos"
-        placeholder="Ej. García López"
-        class="w-full pl-12 py-2.5 border-2 border-gray-200 rounded-lg focus:border-purple-500 focus:ring-2 focus:ring-purple-200 transition-all"
+        class="w-full  py-2.5 border-2 border-gray-200 rounded-lg focus:border-purple-500 focus:ring-2 focus:ring-purple-200 transition-all"
       />
-      <span class="pi pi-id-card absolute left-4 top-1/2 -translate-y-1/2 text-gray-400 text-xl"></span>
+      <label class="block text-sm font-semibold  text-gray-700"><i class="pi pi-id-card "></i> Apellidos</label>
+      </p-floatlabel>
+       @if (submitted() && apellidos?.hasError('required')) {
+        <p-message severity="error" size="small" variant="simple">
+          <p>Apellidos requerido</p>
+        </p-message>
+      } 
     </div>
-  </div>
 
-  <div class="relative">
-    <label class="block text-sm font-semibold mb-2 text-gray-700">
-      Documento de Identidad (DNI o RUC)
-    </label>
     <div class="relative">
+      <p-floatlabel variant="on">
       <input 
         type="text" 
         pInputText 
         pSize="small"
         formControlName="documento"
-        placeholder="Número de documento"
-        class="w-full pl-12  py-2.5 border-2 border-gray-200 rounded-lg focus:border-purple-500 focus:ring-2 focus:ring-purple-200 transition-all"
+        maxlength="11"
+        class="w-full  py-2.5 border-2 border-gray-200 rounded-lg focus:border-purple-500 focus:ring-2 focus:ring-purple-200 transition-all"
       />
-      <span class="pi pi-info-circle absolute left-4 top-1/2 -translate-y-1/2 text-gray-400 text-xl"></span>
+      <label class="block text-sm font-semibold  text-gray-700"><i class="pi pi-info-circle "></i> Documento de Identidad (DNI o RUC)</label>
+      </p-floatlabel>
+      @if (submitted() && documento?.errors) {
+          <p-message severity="error" size="small" variant="simple">
+            @if (documento?.hasError('required')) {
+              <p>El documento es obligatorio</p>
+            }
+
+            @if (documento?.hasError('pattern')) {
+              <p>
+                @if (tipoPersona?.value === 'natural') {
+                  El DNI debe tener 8 dígitos
+                } @else {
+                  El RUC debe tener 11 dígitos
+                }
+              </p>
+            }
+
+          </p-message>
+        }
     </div>
-  </div>
 
   
 
-  <div class="relative">
-    <label class="block text-sm font-semibold mb-2 text-gray-700">
-      Teléfono Móvil
-    </label>
+
     <div class="relative">
-      <input 
+      <p-float-label variant="on"> 
+        <input 
         type="tel" 
         pInputText 
         formControlName="telefono"
-        placeholder="999 999 999"
         pSize="small"
-        class="w-full pl-12 py-2.5 border-2 border-gray-200 rounded-lg focus:border-purple-500 focus:ring-2 focus:ring-purple-200 transition-all"
-      />
-      <span class="pi pi-phone absolute left-4 top-1/2 -translate-y-1/2 text-gray-400 text-xl"></span>
+        maxlength="9"
+        class="w-full  py-2.5 border-2 border-gray-200 rounded-lg focus:border-purple-500 focus:ring-2 focus:ring-purple-200 transition-all"
+        />
+        <label class="block text-sm font-semibold  text-gray-700"><i class="pi pi-phone "></i> Teléfono Móvil</label>
+      </p-float-label>
+       @if (submitted() && telefono?.hasError('required')) {
+          <p-message severity="error" size="small" variant="simple">
+            <p>Teléfono requerido</p>
+          </p-message>
+        } 
     </div>
-  </div>
 
-  <div class="relative">
-    <label class="block text-sm font-semibold mb-2 text-gray-700">
-      Fecha de Nacimiento
-    </label>
     <div class="relative">
-      <p-datepicker formControlName="fechaNacimiento" placeholder="dd/mm/aaaa" inputStyleClass="w-full py-2.5   border-2 border-gray-200 rounded-lg focus:border-purple-500 focus:ring-2 focus:ring-purple-200 transition-all" class="w-full" size="small" [iconDisplay]="'input'" [showIcon]="true" inputId="icondisplay" />
+      <p-float-label variant="on">
+      <p-datepicker formControlName="fechaNacimiento"  inputStyleClass="w-full py-2.5   border-2 border-gray-200 rounded-lg focus:border-purple-500 focus:ring-2 focus:ring-purple-200 transition-all" class="w-full" size="small" [iconDisplay]="'input'" [showIcon]="true" inputId="icondisplay" dateFormat="dd/mm/yy"/>
+        <label class="block text-sm font-semibold  text-gray-700">Fecha de Nacimiento</label>
+      </p-float-label>
+        @if (submitted() && fechaNacimiento?.hasError('required')) {
+          <p-message severity="error" size="small" variant="simple">
+            <p>Fecha requerida</p>
+          </p-message>
+        } 
     </div>
-  </div>
 
   <button
     type="submit"

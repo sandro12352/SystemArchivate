@@ -59,14 +59,15 @@
                          <i class="pi pi-at absolute left-4 top-1/2 -translate-y-1/2 text-gray-400"></i>
                      </div>
                       @if (email?.invalid && (email?.dirty || email?.touched)) {
-                             <div class="text-red-500 text-[15px] pt-1">
-                                 @if (email?.hasError('required')) {
-                                 <p class="text-sm text-red-600 mt-1">Email es requerido</p>
-                                 }
-                                 @if (email?.hasError('email')) {
-                                     <p class="text-sm text-red-600 mt-1">Email inválido.</p>
-                                 }
-                             </div>
+                        <p-message severity="error" size="small" variant="simple">
+
+                                @if (email?.hasError('required')) {
+                                    <p >Email es requerido</p>
+                                }
+                                @if (email?.hasError('email')) {
+                                    <p >Email inválido.</p>
+                                }
+                        </p-message>
                          }
                  </div>
     

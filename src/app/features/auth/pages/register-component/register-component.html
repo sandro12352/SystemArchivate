@@ -65,16 +65,19 @@
 
                 </div>
                    @if (email?.invalid && (email?.dirty || email?.touched)) {
-                        <p class="text-sm text-red-600 mt-1">
+                    <p-message severity="error" size="small" variant="simple">
+
+                        <p >
                             @if (email?.hasError('required')) {
-                            El correo es obligatorio
+                                El correo es obligatorio
                             }
                             @if (email?.hasError('email')) {
-                            El correo no tiene un formato válido
+                                El correo no tiene un formato válido
                             }
                         </p>
+                    </p-message>
                     }
-            </div>
+                </div>
     
             <!-- Password Field -->
             <div class="relative">
@@ -94,14 +97,17 @@
                 >
                 </p-password>
                    @if (password?.invalid && (password?.dirty || password?.touched)) {
-                        <p class="text-sm text-red-600 mt-1">
+                    <p-message severity="error" size="small" variant="simple">
+
+                        <p >
                             @if (password?.hasError('required')) {
-                            Contraseña es obligatoria
+                                Contraseña es obligatoria
                             }
                             @if (password?.hasError('pattern')) {
-                            Contraseña invalida
-                        }
+                                Contraseña invalida
+                            }
                         </p>
+                    </p-message>
                 }
                 <ng-template pTemplate="hideicon">
                         <i class="pi pi-eye-slash"></i>
@@ -132,7 +138,9 @@
                     
                 </p-password>
                 @if (confirmPassword?.invalid && (confirmPassword?.dirty || confirmPassword?.touched)) {
-                        <p class="text-sm text-red-600 mt-1">
+                    <p-message severity="error" size="small" variant="simple">
+
+                        <p >
                             @if (confirmPassword?.hasError('required')) {
                                 Contraseña es obligatoria
                             }
@@ -140,18 +148,25 @@
                                 Confirme su contraseña
                             }
                         </p>
+                    </p-message>    
                 }
                 @if ( registerForm.hasError('passwordMismatch') ) {
+                    <p-message severity="error" size="small" variant="simple">
+
                         <p class="text-sm  text-red-600 mt-1">
                             Contraseñas no coinciden
                         </p>
+                    </p-message>
                 }
 
                 @if (errorMessage()) {
-                    <p class="text-sm text-red-600 mt-1">
-                        {{errorMessage()}}
-                    </p>
-                }
+                    <p-message severity="error" size="small" variant="simple">
+
+                        <p >
+                            {{errorMessage()}}
+                        </p>
+                    </p-message>
+                    }
 
                 <ng-template pTemplate="hideicon">
                         <i class="pi pi-eye-slash"></i>

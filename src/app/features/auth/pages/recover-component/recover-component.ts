@@ -4,11 +4,12 @@ import { RouterLink } from "@angular/router";
 import { SupabaseService } from '../../../../core/services/supabase-service';
 import { FormBuilder, FormGroup, Validators, ɵInternalFormsSharedModule, ReactiveFormsModule } from '@angular/forms';
 import { environment } from '../../../../../environments/environment';
+import { MessageModule } from 'primeng/message';
 
 @Component({
   selector: 'app-recover-component',
   standalone:true,
-  imports: [ButtonDirective, RouterLink, ɵInternalFormsSharedModule, ReactiveFormsModule],
+  imports: [ButtonDirective, RouterLink, ɵInternalFormsSharedModule, ReactiveFormsModule ,MessageModule],
   templateUrl: './recover-component.html',
   styleUrl: './recover-component.css',
 })

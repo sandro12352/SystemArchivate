@@ -14,8 +14,13 @@ export class UpdatePasswordCompenent implements OnInit{
   
   private formBuilder = inject(FormBuilder);
   private _supabaseClient = inject(SupabaseService).supabaseClient;
+  
+  public isPasswordLoading = signal(false);
+  
+  public messageError = signal('');
+  public resetPasswordConfirm = signal(false);
+
   public recoverForm!:FormGroup;
-  public isPasswordLoading = signal(false)
   
   ngOnInit(): void {
     this.recoverForm = this.formBuilder.group({
@@ -47,13 +52,21 @@ export class UpdatePasswordCompenent implements OnInit{
     const {password,confirmPassword }= this.recoverForm.value;
 
     if(password != confirmPassword){
+      this.isPasswordLoading.set(false);
       return;
     }
 
-    const response = await this._supabaseClient.auth.updateUser({
+    const {data,error} = await this._supabaseClient.auth.updateUser({
       password,
     });
-    console.log(response);
+    
+    this.isPasswordLoading.set(false);
+
+    if(error){
+      this.messageError.set(error.message);
+    }
+
+    this.resetPasswordConfirm.set(true);
     
 
 

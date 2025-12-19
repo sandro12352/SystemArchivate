@@ -39,14 +39,14 @@
                     </div>
 
                      @if (email?.invalid && (email?.dirty || email?.touched)) {
-                            <div class="text-red-500 text-[15px] pt-1">
+                            <p-message severity="error" size="small" variant="simple">
                                 @if (email?.hasError('required')) {
-                                <p class="text-sm text-red-600 mt-1">Email es requerido</p>
+                                <p >Email es requerido</p>
                                 }
                                 @if (email?.hasError('email')) {
-                                    <p class="text-sm text-red-600 mt-1">Email inválido.</p>
+                                    <p >Email inválido.</p>
                                 }
-                            </div>
+                            </p-message>
                         }
                 </div>
 
@@ -69,11 +69,11 @@
                     </p-password>
 
                     @if (password?.invalid && (password?.dirty || password?.touched)) {
-                        <div class="text-red-500 text-[15px] pt-1">
+                        <p-message severity="error" size="small" variant="simple">
                                 @if (password?.hasError('required')) {
-                                    <p class="text-sm text-red-600 mt-1">Contraseña requerida</p>
+                                    <p >Contraseña requerida</p>
                                 }
-                        </div>
+                        </p-message>
                     }
 
 
