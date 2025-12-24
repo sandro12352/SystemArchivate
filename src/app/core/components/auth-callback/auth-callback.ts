@@ -122,7 +122,6 @@ export class AuthCallback implements OnInit{
     this.clientService.createClient(this.userId!,client).subscribe({
       next:(resp)=>{
         console.log(resp);
-
         this.router.navigate(['/dashboard']);
       },
       error:(err)=>{

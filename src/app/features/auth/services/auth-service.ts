@@ -44,7 +44,6 @@ export class AuthService {
     }
 
     getUserSession() {
-      console.log(this.userSession());
     return this.userSession();
   }
 

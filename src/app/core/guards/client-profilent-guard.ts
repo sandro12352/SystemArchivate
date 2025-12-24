@@ -25,12 +25,12 @@ export const clientProfilentGuard: CanActivateFn = async(route, state) => {
 
         const {client,exists} = await firstValueFrom(clientService.getClientByUserId(userLogin.id_usuario));
         console.log(client,exists);
-        if(exists){
-          router.navigate(['/dashboard']);
-          return false;
+        if(!exists){
+          return true;
         }
         
-        return true;
+        router.navigate(['/dashboard']);
+        return false;
 
       } catch (error) {
         console.log(error);

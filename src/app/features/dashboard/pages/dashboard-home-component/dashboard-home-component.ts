@@ -1,4 +1,4 @@
-import { Component, inject } from '@angular/core';
+import { Component, inject, OnInit } from '@angular/core';
 import { CardModule } from 'primeng/card';
 import { User } from '../../../users/interfaces/user.interface';
 import { AuthService } from '../../../auth/services/auth-service';
@@ -9,41 +9,14 @@ import { CarouselModule } from 'primeng/carousel';
 import { TagModule } from 'primeng/tag';
 import { CommonModule } from '@angular/common';
 
-interface Campaign {
-  id: number;
-  name: string;
-  platform: string;
-  progress: number;
-  status: string;
-  statusColor: string;
-}
-
-interface Meeting {
-  id: number;
-  title: string;
-  date: string;
-  time: string;
-  attendees: number;
-  platform: string;
-}
-
-interface Video {
-  id: number;
-  title: string;
-  duration: string;
-  platform: string;
-}
-
-interface Document {
-  id: number;
-  title: string;
-  size: string;
-}
-
+import { CheckboxModule } from 'primeng/checkbox';
+import { FormsModule } from '@angular/forms';
+import { StepperModule } from 'primeng/stepper';
 
 @Component({
   selector: 'app-dashboard-home-component',
-  imports: [CardModule,ButtonModule,CommonModule,
+  imports: [CardModule,ButtonModule,CommonModule,CheckboxModule,StepperModule,
+    FormsModule,
     ProgressBarModule,
     TimelineModule,
     CarouselModule,
@@ -57,110 +30,89 @@ interface Document {
 
 
 
-export class DashboardHomeComponent {
+export class DashboardHomeComponent implements OnInit{
+  fechaActual: string = 'Jueves, 24 de Octubre';
+  porcentajeProgreso: number = 0;
+  events: any[] = [];
 
+  tareasObligatorias = [
+    { titulo: 'Verificar Correo Electrónico', descripcion: 'Confirma tu identidad desde tu bandeja de entrada.', completada: true },
+    { titulo: 'Completar Perfil Profesional', descripcion: 'Sube tu foto y datos de contacto actualizados.', completada: false },
+    { titulo: 'Configurar Método de Pago', descripcion: 'Necesario para la facturación de servicios.', completada: false },
+    { titulo: 'Aceptar Términos de Uso', descripcion: 'Revisión legal obligatoria del sistema.', completada: false }
+  ];
+
+  videos = [
+    { 
+      titulo: 'Introducción al Dashboard', 
+      categoria: 'Primeros Pasos', 
+      duracion: '05:20', 
+      thumbnail: 'https://images.unsplash.com/photo-1460925895917-afdab827c52f?q=80&w=400' 
+    },
+    { 
+      titulo: 'Gestión de Tareas Avanzada', 
+      categoria: 'Productividad', 
+      duracion: '08:45', 
+      thumbnail: 'https://images.unsplash.com/photo-1587620962725-abab7fe55159?q=80&w=400' 
+    },
+    { 
+      titulo: 'Configuración de Seguridad', 
+      categoria: 'Seguridad', 
+      duracion: '03:15', 
+      thumbnail: 'https://images.unsplash.com/photo-1550751827-4bd374c3f58b?q=80&w=400' 
+    }
+  ];
+  
   private authService = inject(AuthService);
   public user:User | null = this.authService.getUserSession();
-
-
-  carouselIndex: number = 0;
-
-  campaigns: Campaign[] = [
-    {
-      id: 1,
-      name: "Campaña Facebook Ads - Verano",
-      platform: "Facebook",
-      progress: 65,
-      status: "Activa",
-      statusColor: "success"
-    },
-    {
-      id: 2,
-      name: "SEO Optimización Web",
-      platform: "Google",
-      progress: 40,
-      status: "En revisión",
-      statusColor: "warning"
-    },
-    {
-      id: 3,
-      name: "Email Marketing Q4",
-      platform: "Email",
-      progress: 100,
-      status: "Completada",
-      statusColor: "info"
-    },
-    {
-      id: 4,
-      name: "Estrategia Instagram Stories",
-      platform: "Instagram",
-      progress: 55,
-      status: "En curso",
-      statusColor: "secondary"
-    }
-  ];
-
-  meetings: Meeting[] = [
-    {
-      id: 1,
-      title: "Reunión de Estrategia Digital",
-      date: "24 Oct",
-      time: "14:00",
-      attendees: 5,
-      platform: "Google Meet"
-    },
-    {
-      id: 2,
-      title: "Review de Campañas Q4",
-      date: "25 Oct",
-      time: "10:00",
-      attendees: 8,
-      platform: "Zoom"
-    },
-    {
-      id: 3,
-      title: "Brainstorm Contenidos",
-      date: "26 Oct",
-      time: "16:30",
-      attendees: 3,
-      platform: "Teams"
-    }
-  ];
-
-  videos: Video[] = [
-    {
-      id: 1,
-      title: "Guía de Google Analytics 4",
-      duration: "12:45",
-      platform: "YouTube"
-    },
-    {
-      id: 2,
-      title: "Tendencias Marketing Digital",
-      duration: "18:20",
-      platform: "Vimeo"
-    }
-  ];
-
-  documents: Document[] = [
-    {
-      id: 1,
-      title: "Plan de Marketing 2024",
-      size: "2.4 MB"
-    },
-    {
-      id: 2,
-      title: "Análisis Competencia",
-      size: "1.8 MB"
-    }
-  ];
-
-  nextSlide(): void {
-    this.carouselIndex = (this.carouselIndex + 1) % this.campaigns.length;
+  
+  ngOnInit(): void {
+    console.log(this.user);
+    this.events = [
+      {
+        status: 'Cuenta Creada',
+        date: '2024-12-20',
+        icon: 'pi pi-check-circle',
+        color: 'green',
+        description: 'Tu cuenta fue creada exitosamente'
+      },
+      {
+        status: 'Email Verificado',
+        date: '2024-12-21',
+        icon: 'pi pi-envelope',
+        color: 'blue',
+        description: 'Tu correo electrónico fue verificado'
+      },
+      {
+        status: 'Perfil Completado',
+        date: '2024-12-22',
+        icon: 'pi pi-user',
+        color: 'purple',
+        description: 'Completaste tu información de perfil'
+      },
+      {
+        status: 'Primer Acceso',
+        date: '2024-12-23',
+        icon: 'pi pi-sign-in',
+        color: 'orange',
+        description: 'Realizaste tu primer acceso al sistema'
+      },
+      {
+        status: 'Configuración Pendiente',
+        date: null,
+        icon: 'pi pi-cog',
+        color: 'gray',
+        description: 'Completa la configuración de tu cuenta'
+      }
+    ];
+  
+      this.actualizarProgreso();
   }
 
-  prevSlide(): void {
-    this.carouselIndex = (this.carouselIndex - 1 + this.campaigns.length) % this.campaigns.length;
+    actualizarProgreso() {
+    const total = this.tareasObligatorias.length;
+    const completadas = this.tareasObligatorias.filter(t => t.completada).length;
+    this.porcentajeProgreso = Math.round((completadas / total) * 100);
   }
 
 }
