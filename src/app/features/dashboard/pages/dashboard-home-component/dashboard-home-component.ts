@@ -25,11 +25,6 @@ import { StepperModule } from 'primeng/stepper';
   styleUrl: './dashboard-home-component.css',
 })
 
-
-
-
-
-
 export class DashboardHomeComponent implements OnInit{
   fechaActual: string = 'Jueves, 24 de Octubre';
   porcentajeProgreso: number = 0;
@@ -39,7 +34,6 @@ export class DashboardHomeComponent implements OnInit{
     { titulo: 'Verificar Correo Electrónico', descripcion: 'Confirma tu identidad desde tu bandeja de entrada.', completada: true },
     { titulo: 'Completar Perfil Profesional', descripcion: 'Sube tu foto y datos de contacto actualizados.', completada: false },
     { titulo: 'Configurar Método de Pago', descripcion: 'Necesario para la facturación de servicios.', completada: false },
-    { titulo: 'Aceptar Términos de Uso', descripcion: 'Revisión legal obligatoria del sistema.', completada: false }
   ];
 
   videos = [
@@ -68,43 +62,6 @@ export class DashboardHomeComponent implements OnInit{
   
   ngOnInit(): void {
     console.log(this.user);
-    this.events = [
-      {
-        status: 'Cuenta Creada',
-        date: '2024-12-20',
-        icon: 'pi pi-check-circle',
-        color: 'green',
-        description: 'Tu cuenta fue creada exitosamente'
-      },
-      {
-        status: 'Email Verificado',
-        date: '2024-12-21',
-        icon: 'pi pi-envelope',
-        color: 'blue',
-        description: 'Tu correo electrónico fue verificado'
-      },
-      {
-        status: 'Perfil Completado',
-        date: '2024-12-22',
-        icon: 'pi pi-user',
-        color: 'purple',
-        description: 'Completaste tu información de perfil'
-      },
-      {
-        status: 'Primer Acceso',
-        date: '2024-12-23',
-        icon: 'pi pi-sign-in',
-        color: 'orange',
-        description: 'Realizaste tu primer acceso al sistema'
-      },
-      {
-        status: 'Configuración Pendiente',
-        date: null,
-        icon: 'pi pi-cog',
-        color: 'gray',
-        description: 'Completa la configuración de tu cuenta'
-      }
-    ];
   
       this.actualizarProgreso();
   }
