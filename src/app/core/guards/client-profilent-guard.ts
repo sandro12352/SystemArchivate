@@ -11,9 +11,10 @@ export const clientProfilentGuard: CanActivateFn = async(route, state) => {
   const clientService = inject(ClientService);
 
   const token = await authService.getSessionToken();
+  console.log(token)
   
   if (!token) {
-        router.navigate(['/login']);
+        router.parseUrl('/login');
         return false;
       };
 

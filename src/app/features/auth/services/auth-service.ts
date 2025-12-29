@@ -12,19 +12,22 @@ export class AuthService {
   private http = inject(HttpClient);
   private _supabaseClient = inject(SupabaseService).supabaseClient;
   
-  public userSession = signal<ResponseLogin['user'] | null>(null);
+  public userSession = signal<ResponseLogin['user'] | null>(this.loadUser());
 
+
+  private loadUser(): ResponseLogin['user'] | null {
+    const raw = localStorage.getItem('user');
+    return raw ? JSON.parse(raw) : null;
+  }
 
   async getSessionToken(): Promise<string | null> {
     const { data, error } = await this._supabaseClient.auth.getSession();
-    console.log(environment);
 
     if (error || !data.session) {
       return null;
     }
 
     const token = data.session.access_token;
-    console.log(token)
     localStorage.setItem('token', token);
 
     return token;
@@ -41,10 +44,23 @@ export class AuthService {
 
     setUserSession(user:ResponseLogin['user']| null){
       this.userSession.set(user);
+
+       if (user) {
+        localStorage.setItem('user', JSON.stringify(user));
+        } else {
+          localStorage.removeItem('user');
+        }
+
     }
 
     getUserSession() {
     return this.userSession();
   }
+
+  async logout() {
+      await this._supabaseClient.auth.signOut();
+      this.setUserSession(null);
+      return true;
+    }
 
 }

@@ -2,15 +2,11 @@ import { Component, inject, OnInit, signal } from '@angular/core';
 import { PasswordModule } from 'primeng/password';
 import { ButtonModule } from 'primeng/button';
 import { InputTextModule } from 'primeng/inputtext';
-import { ToastModule } from 'primeng/toast';
-import { MessageService } from 'primeng/api';
 import {Router, RouterLink } from "@angular/router";
 import { SupabaseService } from '../../../../core/services/supabase-service';
 import { environment } from '../../../../../environments/environment';
 import { FormBuilder, FormGroup, ReactiveFormsModule } from '@angular/forms';
 import { Validators } from '@angular/forms';
-import { AuthService } from '../../services/auth-service';
-import { ResponseLogin } from '../../interfaces/auth.interface';
 import { User } from '../../../users/interfaces/user.interface';
 import { MessageModule } from 'primeng/message';
 
@@ -23,7 +19,6 @@ import { MessageModule } from 'primeng/message';
 })
 export class LoginComponent implements OnInit{
   private _supabaseClient = inject(SupabaseService).supabaseClient;
-  public authService = inject(AuthService)
   private formBuilder = inject(FormBuilder);
   private router = inject(Router);
 

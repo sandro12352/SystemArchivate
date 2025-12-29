@@ -12,7 +12,7 @@ export class UserService {
 
 
   createUser(user:User):Observable<any>{
-   return this.http.post<any>(`${environment.API_URL}/api/usuarios`,user);
+   return this.http.post<any>(`${environment.API_URL}/api/users`,user);
   }
 
 

@@ -1,28 +1,91 @@
-<header class="bg-linear-to-r from-purple-600 to-purple-800 shadow-lg">
-            <div class=" mx-auto px-4 sm:px-6 lg:px-8 py-4">
-                <div class="flex items-center justify-between">
-                    <div class="flex items-center gap-4">
-                        <div class="w-10 h-10 bg-white rounded-lg flex items-center justify-center">
-                            <span class="text-purple-600 font-bold text-xl">M</span>
-                        </div>
-                        <div>
-                            <h1 class="text-white text-xl font-bold">Portal de Clientes</h1>
-                            <p class="text-purple-200 text-sm">Marketing Agency</p>
-                        </div>
-                    </div>
-                    <div class="flex items-center gap-4">
-                        <button class="text-white hover:bg-purple-700 px-4 py-2 rounded-lg transition">
-                            <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 17h5l-1.405-1.405A2.032 2.032 0 0118 14.158V11a6.002 6.002 0 00-4-5.659V5a2 2 0 10-4 0v.341C7.67 6.165 6 8.388 6 11v3.159c0 .538-.214 1.055-.595 1.436L4 17h5m6 0v1a3 3 0 11-6 0v-1m6 0H9"></path>
-                            </svg>
-                        </button>
-                        <div class="flex items-center gap-3 bg-purple-700 px-4 py-2 rounded-lg">
-                            <div class="w-8 h-8 bg-purple-300 rounded-full flex items-center justify-center">
-                                <span class="text-purple-900 font-semibold text-sm">JD</span>
-                            </div>
-                            <span class="text-white font-medium">John Doe</span>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </header>
+<header
+  class="bg-linear-to-r from-purple-500 via-purple-600 to-purple-700
+         shadow-lg border-b border-purple-500/30 backdrop-blur-md">
+
+  <div class="px-6 lg:px-8 py-3">
+    <div class="flex items-center justify-between">
+
+      <!-- Logo & Brand -->
+      <div class="flex items-center gap-4">
+        <div class="relative inline-flex group">
+          <p-avatar
+            image="images/logo.webp"
+            shape="circle"
+            class="w-12  h-12 bg-white shadow-md
+                   ring-2 ring-white/40
+                   transition-all duration-300
+                   group-hover:scale-105">
+          </p-avatar>
+
+          <!-- Status -->
+          <span
+            class="absolute bottom-0 right-0 translate-x-1 translate-y-1
+                   w-3.5 h-3.5 bg-emerald-400 rounded-full
+                   border-2 border-purple-700 animate-pulse">
+          </span>
+        </div>
+
+        <div>
+          <h1 class="text-white text-lg font-semibold tracking-tight">
+            Portal Labmmark
+          </h1>
+          <p class="text-purple-200 text-xs">
+            Marketing Agency
+          </p>
+        </div>
+      </div>
+
+      <!-- Actions -->
+      <div class="flex items-center gap-2">
+
+        <!-- Notifications -->
+        <p-overlay-badge value="2" badgeSize="small" severity="danger"> 
+                <p-button
+                    icon="pi pi-bell text-lg"
+                    [rounded]="true"
+                    [text]="true"
+                    severity="secondary"
+                    styleClass="text-white hover:bg-white/10 w-10 h-10 p-0">
+                </p-button>
+        </p-overlay-badge>
+
+
+        <div class="h-8 w-px bg-purple-300/30 mx-2 hidden sm:block"></div>
+
+        <!-- User Menu -->
+        <div
+          class="flex items-center gap-3 bg-white/10 hover:bg-white/15
+                 px-3 py-2 rounded-xl transition-all cursor-pointer"
+          (click)="userMenu.toggle($event)">
+
+          <p-avatar
+            [image]="user?.foto_perfil"
+            shape="circle"
+            class="w-9 h-9
+                   bg-linear-to-br from-purple-300 to-purple-500
+                   ring-2 ring-purple-300/40">
+          </p-avatar>
+
+          <div class="hidden sm:block leading-tight">
+            <p class="text-white text-sm font-semibold">
+              {{user?.nombre_completo |titlecase}}
+            </p>
+            <p class="text-purple-200 text-xs">
+              {{user?.rol?.nombre | titlecase}}
+            </p>
+          </div>
+
+          <i class="pi pi-chevron-down text-purple-200 text-xs hidden sm:block"></i>
+        </div>
+
+        <p-menu
+          #userMenu
+          [model]="userMenuItems"
+          [popup]="true"
+          appendTo="body">
+        </p-menu>
+
+      </div>
+    </div>
+  </div>
+</header>

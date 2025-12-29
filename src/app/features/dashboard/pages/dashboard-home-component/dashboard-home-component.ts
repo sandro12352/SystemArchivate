@@ -1,4 +1,4 @@
-import { Component, inject, OnInit } from '@angular/core';
+import { Component, computed, inject, OnInit, Signal } from '@angular/core';
 import { CardModule } from 'primeng/card';
 import { User } from '../../../users/interfaces/user.interface';
 import { AuthService } from '../../../auth/services/auth-service';
@@ -26,12 +26,12 @@ import { StepperModule } from 'primeng/stepper';
 })
 
 export class DashboardHomeComponent implements OnInit{
-  fechaActual: string = 'Jueves, 24 de Octubre';
+  fechaActual: string = new Date().toLocaleDateString('es-Es',{});
   porcentajeProgreso: number = 0;
   events: any[] = [];
 
   tareasObligatorias = [
-    { titulo: 'Verificar Correo Electrónico', descripcion: 'Confirma tu identidad desde tu bandeja de entrada.', completada: true },
+    { titulo: 'Verificar Correo Electrónico', descripcion: 'Confirma tu identidad desde tu bandeja de entrada.', completada: false },
     { titulo: 'Completar Perfil Profesional', descripcion: 'Sube tu foto y datos de contacto actualizados.', completada: false },
     { titulo: 'Configurar Método de Pago', descripcion: 'Necesario para la facturación de servicios.', completada: false },
   ];
@@ -58,7 +58,7 @@ export class DashboardHomeComponent implements OnInit{
   ];
   
   private authService = inject(AuthService);
-  public user:User | null = this.authService.getUserSession();
+  public user: Signal<User | null> = this.authService.userSession;
   
   ngOnInit(): void {
     console.log(this.user);

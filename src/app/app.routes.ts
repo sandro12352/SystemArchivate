@@ -3,6 +3,7 @@ import { AuthLayoutComponent } from './layout/auth-layout/auth-layout-component/
 import { AUTH_ROUTES } from './features/auth/auth.routes';
 import { MainLayoutComponent } from './layout/main-layout/main-layout-component/main-layout-component';
 import { DASHBOARD_ROUTES } from './features/dashboard/dashboard.routes';
+import { authUserGuard } from './core/guards/auth-user-guard';
 
 export const routes: Routes = [
    {
@@ -13,7 +14,8 @@ export const routes: Routes = [
    {
       path: 'dashboard',
       component: MainLayoutComponent,
-      children:DASHBOARD_ROUTES
+      children:DASHBOARD_ROUTES,
+      canActivate:[authUserGuard]
    },
    {
       path: '',

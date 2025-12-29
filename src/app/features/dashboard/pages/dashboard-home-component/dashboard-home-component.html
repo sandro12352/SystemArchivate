@@ -8,7 +8,7 @@
         <span class="text-sm font-semibold text-purple-600 uppercase tracking-wider mb-1 block">
           {{ fechaActual }}
         </span>
-        <h2 class="text-4xl font-bold text-gray-800 mb-3">¡Bienvenido  {{ user?.nombre_completo  }}! 👋</h2>
+        <h2 class="text-4xl font-bold text-gray-800 mb-3">¡Bienvenido  {{ user()?.nombre_completo  }}! 👋</h2>
         <p class="text-gray-600 text-lg mb-6">
           Para comenzar a utilizar todas las funciones, completa tus 
           <span class="font-bold text-gray-900">tareas obligatorias de configuración</span>.
@@ -20,7 +20,7 @@
             <span class="text-purple-600 font-bold">{{ porcentajeProgreso }}%</span>
           </div>
           <div class="w-full bg-gray-100 rounded-full h-3">
-            <div class="bg-gradient-to-r from-purple-500 to-indigo-500 h-3 rounded-full transition-all duration-700" 
+            <div class="bg-linear-to-r from-purple-500 to-indigo-500 h-3 rounded-full transition-all duration-700" 
                  [style.width.%]="porcentajeProgreso">
             </div>
           </div>
@@ -40,7 +40,7 @@
       <div class="bg-white rounded-xl shadow-sm border border-gray-100 overflow-hidden">
         <div class="p-6 border-b border-gray-100 bg-gray-50/50">
           <h3 class="text-lg font-bold text-gray-800">Pasos Requeridos</h3>
-          <p class="text-sm text-gray-500">Completa estas acciones para habilitar tu cuenta al 100%</p>
+          <p class="text-sm text-gray-500">Completa estas acciones para activar las demas funciones</p>
         </div>
 
         <div class="divide-y divide-gray-50">
