@@ -1,0 +1,6 @@
+/* Esto permite que el contenido del componente hijo (el menú) 
+   salga de los límites del selector app-header-component */
+:host {
+    position: relative;
+    z-index: 1000; /* Asegura que el header esté por encima del main */
+}

@@ -62,7 +62,7 @@ export class AuthCallback implements OnInit{
 
 
   get userId(){
-    return this.authService.getUserSession()?.id_usuario;
+    return this.authService.getUserSession()?.user.id_usuario;
   }
 
 

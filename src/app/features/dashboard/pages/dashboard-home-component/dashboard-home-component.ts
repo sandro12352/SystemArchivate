@@ -12,6 +12,7 @@ import { CommonModule } from '@angular/common';
 import { CheckboxModule } from 'primeng/checkbox';
 import { FormsModule } from '@angular/forms';
 import { StepperModule } from 'primeng/stepper';
+import { UserSession } from '../../../auth/interfaces/user-session.interface';
 
 @Component({
   selector: 'app-dashboard-home-component',
@@ -58,7 +59,7 @@ export class DashboardHomeComponent implements OnInit{
   ];
   
   private authService = inject(AuthService);
-  public user: Signal<User | null> = this.authService.userSession;
+  public user: Signal<UserSession | null> = this.authService.userSession;
   
   ngOnInit(): void {
     console.log(this.user);

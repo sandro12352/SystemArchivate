@@ -4,6 +4,7 @@ import { Observable } from 'rxjs';
 import { ResponseLogin } from '../interfaces/auth.interface';
 import { SupabaseService } from '../../../core/services/supabase-service';
 import { environment } from '../../../../environments/environment';
+import { UserSession } from '../interfaces/user-session.interface';
 
 @Injectable({
   providedIn: 'root',
@@ -12,10 +13,10 @@ export class AuthService {
   private http = inject(HttpClient);
   private _supabaseClient = inject(SupabaseService).supabaseClient;
   
-  public userSession = signal<ResponseLogin['user'] | null>(this.loadUser());
+  public userSession = signal<UserSession | null>(this.loadUser());
 
 
-  private loadUser(): ResponseLogin['user'] | null {
+  private loadUser(): UserSession | null {
     const raw = localStorage.getItem('user');
     return raw ? JSON.parse(raw) : null;
   }
@@ -28,7 +29,6 @@ export class AuthService {
     }
 
     const token = data.session.access_token;
-    localStorage.setItem('token', token);
 
     return token;
   }
@@ -42,7 +42,7 @@ export class AuthService {
     }
 
 
-    setUserSession(user:ResponseLogin['user']| null){
+    setUserSession(user:UserSession | null){
       this.userSession.set(user);
 
        if (user) {
@@ -54,10 +54,10 @@ export class AuthService {
     }
 
     getUserSession() {
-    return this.userSession();
-  }
+      return this.userSession();
+    }
 
-  async logout() {
+    async logout() {
       await this._supabaseClient.auth.signOut();
       this.setUserSession(null);
       return true;

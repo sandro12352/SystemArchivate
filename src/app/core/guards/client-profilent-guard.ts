@@ -21,7 +21,10 @@ export const clientProfilentGuard: CanActivateFn = async(route, state) => {
       try {  
         const authResp = await firstValueFrom(authService.sendTokenToBackend(token));
         const userLogin = authResp.user;
-        authService.setUserSession(userLogin);
+        authService.setUserSession({
+          user:userLogin,
+          nombre_completo:authResp.nombre_completo
+        });
 
 
         const {client,exists} = await firstValueFrom(clientService.getClientByUserId(userLogin.id_usuario));

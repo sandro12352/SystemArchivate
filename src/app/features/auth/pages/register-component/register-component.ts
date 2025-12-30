@@ -62,8 +62,11 @@ export class RegisterComponent implements OnInit{
     this.errorMessage.set('');
 
       const user:User = {
-            id_rol:2,
             ...this.registerForm.value,
+            rol: {
+              id_rol:2,
+              nombre:'Cliente'
+            },
         }
 
     this.userService.createUser(user).subscribe({

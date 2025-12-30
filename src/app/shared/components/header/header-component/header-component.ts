@@ -1,7 +1,6 @@
 import { Component, inject, OnInit } from '@angular/core';
 import { AuthService } from '../../../../features/auth/services/auth-service';
 import { User } from '../../../../features/users/interfaces/user.interface';
-import { MenuModule } from 'primeng/menu';
 import { Button } from "primeng/button";
 import { AvatarModule } from 'primeng/avatar';
 import { DividerModule } from 'primeng/divider';
@@ -10,40 +9,25 @@ import { BadgeModule } from 'primeng/badge';
 
 import { TitleCasePipe } from '@angular/common';
 import { Router } from '@angular/router';
+import { MenuItem } from 'primeng/api';
+import { Menu } from 'primeng/menu';
+import { UserSession } from '../../../../features/auth/interfaces/user-session.interface';
+
 
 @Component({
   selector: 'app-header-component',
   standalone:true,
-  imports: [MenuModule, Button,AvatarModule,DividerModule,TitleCasePipe,OverlayBadgeModule,BadgeModule],
+  imports: [Menu, Button,AvatarModule,DividerModule,TitleCasePipe,OverlayBadgeModule,BadgeModule],
   templateUrl: './header-component.html',
   styleUrl: './header-component.css',
 })
 export class HeaderComponent  implements OnInit{
   private authService = inject(AuthService);
   private router = inject(Router);
-  public user:User | null = this.authService.getUserSession();
+  public user = this.authService.getUserSession();
    
 
-  userMenuItems: MenuModule[] = [
-    {
-      label: 'Mi Perfil',
-      icon: 'pi pi-user',
-      command: () => this.viewProfile()
-    },
-    {
-      label: 'Configuración',
-      icon: 'pi pi-cog',
-      command: () => this.openSettings()
-    },
-    {
-      separator: true
-    },
-    {
-      label: 'Cerrar Sesión',
-      icon: 'pi pi-sign-out',
-      command: () => this.logout()
-    }
-  ];
+  userMenuItems: MenuItem[]|undefined;
 
 
   viewProfile() {
@@ -64,7 +48,18 @@ export class HeaderComponent  implements OnInit{
   }
 
 
-  ngOnInit(): void {
-    console.log(this.user)
-  }
+ ngOnInit(): void {
+  console.log(this.user);
+      this.userMenuItems = [
+        { label: 'Mi Perfil', icon: 'pi pi-user' ,linkClass: 'text-gray-900 '},
+        { label: 'Configuración', icon: 'pi pi-cog' ,linkClass:'text-gray-900',},
+        { separator: true },
+        {
+          label: 'Cerrar Sesión',
+          icon: 'pi pi-sign-out',
+          linkClass: '!text-red-500 dark:!text-red-400 ',
+          command: () => this.logout()
+        }
+      ];
+    }
 }

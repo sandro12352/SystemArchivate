@@ -22,7 +22,6 @@ export class LoginComponent implements OnInit{
   private formBuilder = inject(FormBuilder);
   private router = inject(Router);
 
-  public user?:User;
  
   //Email Auth
   public errorMessage = signal('');

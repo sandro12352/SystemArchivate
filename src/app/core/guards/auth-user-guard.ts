@@ -15,18 +15,23 @@ export const authUserGuard: CanActivateFn =async (route, state) => {
     return false;
   }
 
-  // si no hay usuario backend cargado, recupéralo
-  if (!authService.getUserSession()) {
-    try {
-      const authResp = await firstValueFrom(
-        authService.sendTokenToBackend(token)
-      );
-      authService.setUserSession(authResp.user);
-    } catch {
-      router.navigate(['/login']);
-      return false;
-    }
-  }
+  try {
+    // 2. Validación con backend
+    const authResp = await firstValueFrom(
+      authService.sendTokenToBackend(token)
+    );
 
-  return true;
+    // 3. Backend no devuelve token válido
+    if (!authResp.token) {
+      throw new Error('Token backend inválido');
+    }
+
+    return true;
+
+  } catch (error) {
+    // 4. Cualquier error => logout forzado
+    await authService.logout();
+    router.navigate(['/login']);
+    return false;
+  }
 };
