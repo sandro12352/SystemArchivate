@@ -15,7 +15,7 @@ export class ClientService {
     return this.http.post<Client>(`${environment.API_URL}/api/clients/${id_usuario}`,client);
   }
 
-  getClientByUserId(id_usuario:number):Observable<{client:Client,exists:boolean}>{
+  getClientByUserId(id_usuario:number | undefined):Observable<{client:Client,exists:boolean}>{
     return this.http.get<{client:Client,exists:boolean}>(`${environment.API_URL}/api/clients/${id_usuario}`);
   }
 

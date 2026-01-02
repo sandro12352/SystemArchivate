@@ -17,28 +17,41 @@ export const clientProfilentGuard: CanActivateFn = async(route, state) => {
         router.parseUrl('/login');
         return false;
       };
+try {
+    // 1. Validar token con backend
+    const authResp = await firstValueFrom(
+      authService.sendTokenToBackend(token)
+    );
 
-      try {  
-        const authResp = await firstValueFrom(authService.sendTokenToBackend(token));
-        const userLogin = authResp.user;
-        authService.setUserSession({
-          user:userLogin,
-          nombre_completo:authResp.nombre_completo
-        });
+    // 2. Guardar sesión
+    authService.setUserSession({
+      user: authResp.user,
+      nombre_completo: authResp.nombre_completo
+    });
 
+    // 3. Verificar si el cliente ya existe
+    const { exists,client } = await firstValueFrom(
+      clientService.getClientByUserId(authResp.user.id_usuario)
+    );
 
-        const {client,exists} = await firstValueFrom(clientService.getClientByUserId(userLogin.id_usuario));
-        console.log(client,exists);
-        if(!exists){
-          return true;
-        }
-        
-        router.navigate(['/dashboard']);
-        return false;
+    
 
-      } catch (error) {
-        console.log(error);
-        router.navigate(['/login']);
-        return false;
-      }
+    // 4. Decidir acceso
+    if (exists) {
+      authService.setUserSession({
+       user:authResp.user,
+       nombre_completo: authResp.nombre_completo,
+       id_cliente:client.id_cliente
+    })
+      router.navigate(['/dashboard']);
+      return false;
+    }
+
+    // Cliente no existe → permitir mostrar formulario
+    return true;
+
+  } catch (error) {
+    router.navigate(['/login']);
+    return false;
+  }
 };

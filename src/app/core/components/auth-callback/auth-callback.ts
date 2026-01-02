@@ -110,7 +110,7 @@ export class AuthCallback implements OnInit{
     if (this.clientForm.invalid) {
       return;
     }
-    console.log(this.clientForm.value);
+
 
     const client = {
       ...this.clientForm.value,
@@ -121,6 +121,14 @@ export class AuthCallback implements OnInit{
 
     this.clientService.createClient(this.userId!,client).subscribe({
       next:(resp)=>{
+
+        const session = this.authService.getUserSession();
+
+        this.authService.setUserSession({
+          ...session!,
+          id_cliente:resp.id_cliente
+        })
+
         console.log(resp);
         this.router.navigate(['/dashboard']);
       },

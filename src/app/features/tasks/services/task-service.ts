@@ -9,9 +9,6 @@ export class TaskService {
 
   private http = inject(HttpClient);
 
-  // getTasks():Observable<tasks[]>{
-    
-  // }
 
 
 }

@@ -1,6 +1,5 @@
-import { Component, computed, inject, OnInit, Signal } from '@angular/core';
+import { Component, inject, OnInit, Signal } from '@angular/core';
 import { CardModule } from 'primeng/card';
-import { User } from '../../../users/interfaces/user.interface';
 import { AuthService } from '../../../auth/services/auth-service';
 import { ButtonModule } from 'primeng/button';
 import { ProgressBarModule } from 'primeng/progressbar';
@@ -12,7 +11,10 @@ import { CommonModule } from '@angular/common';
 import { CheckboxModule } from 'primeng/checkbox';
 import { FormsModule } from '@angular/forms';
 import { StepperModule } from 'primeng/stepper';
-import { UserSession } from '../../../auth/interfaces/user-session.interface';
+import { TaskClientService } from '../../services/task-client-service';
+import { TaskClientVM } from '../../interfaces/taskClient.interface';
+import { Observable } from 'rxjs';
+import { FileUploadModule } from 'primeng/fileupload';
 
 @Component({
   selector: 'app-dashboard-home-component',
@@ -21,21 +23,22 @@ import { UserSession } from '../../../auth/interfaces/user-session.interface';
     ProgressBarModule,
     TimelineModule,
     CarouselModule,
-    TagModule],
+    TagModule,FileUploadModule],
   templateUrl: './dashboard-home-component.html',
   styleUrl: './dashboard-home-component.css',
 })
 
 export class DashboardHomeComponent implements OnInit{
+  private taskClientService = inject(TaskClientService);
+  private authService = inject(AuthService);
   fechaActual: string = new Date().toLocaleDateString('es-Es',{});
+  
   porcentajeProgreso: number = 0;
-  events: any[] = [];
+  
+  public user = this.authService.getUserSession();
 
-  tareasObligatorias = [
-    { titulo: 'Verificar Correo Electrónico', descripcion: 'Confirma tu identidad desde tu bandeja de entrada.', completada: false },
-    { titulo: 'Completar Perfil Profesional', descripcion: 'Sube tu foto y datos de contacto actualizados.', completada: false },
-    { titulo: 'Configurar Método de Pago', descripcion: 'Necesario para la facturación de servicios.', completada: false },
-  ];
+
+  tareasObligatorias$!:Observable<TaskClientVM[]>;
 
   videos = [
     { 
@@ -58,19 +61,33 @@ export class DashboardHomeComponent implements OnInit{
     }
   ];
   
-  private authService = inject(AuthService);
-  public user: Signal<UserSession | null> = this.authService.userSession;
+   
   
   ngOnInit(): void {
-    console.log(this.user);
-  
-      this.actualizarProgreso();
+    this.tareasObligatorias$ = this.taskClientService.getTaskClientsByClientId(this.user?.id_cliente!);  
   }
 
-    actualizarProgreso() {
-    const total = this.tareasObligatorias.length;
-    const completadas = this.tareasObligatorias.filter(t => t.completada).length;
-    this.porcentajeProgreso = Math.round((completadas / total) * 100);
+  actualizarProgreso(tareas: TaskClientVM[]): void {
+    const total = tareas.length;
+    const completadas = tareas.filter(t => t.estado).length;
+    this.porcentajeProgreso =
+      total === 0 ? 0 : Math.round((completadas / total) * 100);
   }
+
+  onFileSelected(event: Event, tarea: any): void {
+    const input = event.target as HTMLInputElement;
+
+    if (!input.files || input.files.length === 0) {
+      return;
+    }
+
+    const file = input.files[0];
+
+    tarea.archivo = file;
+
+    console.log('Archivo seleccionado:', file);
+    console.log('Tarea:', tarea.id_cliente_tarea);
+  }
+
 
 }

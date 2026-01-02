@@ -1,6 +1,5 @@
 import { Component, inject, OnInit } from '@angular/core';
 import { AuthService } from '../../../../features/auth/services/auth-service';
-import { User } from '../../../../features/users/interfaces/user.interface';
 import { Button } from "primeng/button";
 import { AvatarModule } from 'primeng/avatar';
 import { DividerModule } from 'primeng/divider';
@@ -11,7 +10,6 @@ import { TitleCasePipe } from '@angular/common';
 import { Router } from '@angular/router';
 import { MenuItem } from 'primeng/api';
 import { Menu } from 'primeng/menu';
-import { UserSession } from '../../../../features/auth/interfaces/user-session.interface';
 
 
 @Component({
