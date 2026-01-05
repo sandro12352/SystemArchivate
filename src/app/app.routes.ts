@@ -15,7 +15,6 @@ export const routes: Routes = [
       path: 'dashboard',
       component: MainLayoutComponent,
       children:DASHBOARD_ROUTES,
-      canActivate:[authUserGuard]
    },
    {
       path: '',

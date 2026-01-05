@@ -69,7 +69,7 @@
             (click)="userMenu.toggle($event)">
 
             <p-avatar
-              [image]="user?.user?.foto_perfil"
+              [image]="user?.user?.foto_perfil || 'https://cdn.pixabay.com/photo/2015/10/05/22/37/blank-profile-picture-973460_1280.png'"
               shape="circle"
               class="w-9 h-9
                     bg-linear-to-br from-purple-300 to-purple-500

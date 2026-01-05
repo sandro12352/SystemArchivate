@@ -43,15 +43,14 @@ try {
        nombre_completo: authResp.nombre_completo,
        id_cliente:client.id_cliente
     })
-      router.navigate(['/dashboard']);
-      return false;
+     return router.parseUrl('/dashboard');
     }
 
     // Cliente no existe → permitir mostrar formulario
     return true;
 
   } catch (error) {
-    router.navigate(['/login']);
+    router.parseUrl('/login');
     return false;
   }
 };
