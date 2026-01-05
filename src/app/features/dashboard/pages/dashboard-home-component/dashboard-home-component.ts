@@ -12,9 +12,9 @@ import { CheckboxModule } from 'primeng/checkbox';
 import { FormsModule } from '@angular/forms';
 import { StepperModule } from 'primeng/stepper';
 import { TaskClientService } from '../../services/task-client-service';
-import { TaskClientVM } from '../../interfaces/taskClient.interface';
+import { EstadoTarea, TaskClientVM } from '../../interfaces/taskClient.interface';
 import { Observable } from 'rxjs';
-import { FileUploadModule } from 'primeng/fileupload';
+import { FileUploadModule, UploadEvent } from 'primeng/fileupload';
 
 @Component({
   selector: 'app-dashboard-home-component',
@@ -39,7 +39,7 @@ export class DashboardHomeComponent implements OnInit{
 
 
   tareasObligatorias$!:Observable<TaskClientVM[]>;
-
+  tareasDeCliente:TaskClientVM[] = [];
   videos = [
     { 
       titulo: 'Introducción al Dashboard', 
@@ -65,29 +65,55 @@ export class DashboardHomeComponent implements OnInit{
   
   ngOnInit(): void {
     this.tareasObligatorias$ = this.taskClientService.getTaskClientsByClientId(this.user?.id_cliente!);  
+    // Suscribirse para obtener las tareas y calcular el progreso inicial
+    this.tareasObligatorias$.subscribe({
+      next:(tareas)=>{
+        this.tareasDeCliente = tareas;
+        this.actualizarProgreso(tareas);
+      }
+    })
+
   }
 
   actualizarProgreso(tareas: TaskClientVM[]): void {
-    const total = tareas.length;
-    const completadas = tareas.filter(t => t.estado).length;
-    this.porcentajeProgreso =
-      total === 0 ? 0 : Math.round((completadas / total) * 100);
-  }
+      const total = tareas.length;
+      const completadas = tareas.filter(t => t.estado === EstadoTarea.SUBIDO).length; // Usa el enum aquí también
+      this.porcentajeProgreso =
+        total === 0 ? 0 : Math.round((completadas / total) * 100);
 
-  onFileSelected(event: Event, tarea: any): void {
-    const input = event.target as HTMLInputElement;
-
-    if (!input.files || input.files.length === 0) {
-      return;
+         // Agrega este console.log para debug
+          console.log('Total tareas:', total);
+          console.log('Completadas:', completadas);
+          console.log('Estados de tareas:', tareas);
     }
 
+  onFileSelected(event: Event, tarea: TaskClientVM): void {
+    const input = event.target as HTMLInputElement;
+
+    
+    if (!input.files || input.files.length === 0) return;
+    
     const file = input.files[0];
+    // Encuentra la tarea en el array this.tareas y actualízala
+  
+    this.taskClientService.uploadTaskFile(tarea.id_cliente_tarea,file).subscribe({
+      next:(resp)=>{
+        console.log(resp);
+        // Actualizar el progreso después de cambiar el estado
+        console.log('Archivo seleccionado:', file);
+        console.log('Tarea:', tarea.id_cliente_tarea);
+        console.log('Progreso actualizado:', this.porcentajeProgreso + '%');
 
-    tarea.archivo = file;
+      },
+      error:(err)=>{
+        console.log(err)
+      }
+    })
+    
+    
 
-    console.log('Archivo seleccionado:', file);
-    console.log('Tarea:', tarea.id_cliente_tarea);
   }
+
 
 
 }

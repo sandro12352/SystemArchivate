@@ -24,11 +24,23 @@ export interface Tarea {
     es_defecto:  boolean;
 }
 
+export enum EstadoTarea {
+  PENDIENTE = 'pendiente',
+  SUBIDO = 'subido',
+  EN_REVISION = 'en_revision',
+  APROBADO = 'aprobado',
+  RECHAZADO = 'rechazado'
+}
+
+export interface ArchivoCliente {
+  id_archivo_cliente: number;
+  ruta: string;
+}
 
 export interface TaskClientVM {
   id_cliente_tarea: number;
-  id_tarea: number;
-  nombre: string;
-  descripcion: string;
-  estado: boolean;
+  estado: EstadoTarea;
+  tarea: Tarea;
+  archivo_cliente: ArchivoCliente[];
+
 }
