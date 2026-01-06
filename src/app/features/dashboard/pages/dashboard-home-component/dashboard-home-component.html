@@ -67,18 +67,21 @@
                     <i class="pi pi-file text-2xs"></i>
                   </button>
 
-                   <!-- Nombre archivo -->
-                    @if (tareasDeCliente()) {
-                    <span
-                      class="text-xs text-gray-500 truncate max-w-[140px]"
-                      [title]="getNombreArchivo(tarea)">
-                      {{ getNombreArchivo(tarea) }}
-                    </span>
-                  }
+                  @if (isUploading(tarea)) {
+                      <i class="pi pi-spin pi-spinner text-blue-500 text-sm"></i>
+                    }
+
+                   @if (!isUploading(tarea) && getNombreArchivo(tarea)) {
+                      <span
+                        class="text-xs text-gray-500 truncate "
+                        [title]="getNombreArchivo(tarea)">
+                        {{ getNombreArchivo(tarea) }}
+                      </span>
+                    }
 
 
 
-                  <input #fileInput type="file" class="hidden" (change)="onFileSelected($event, tarea)">
+                  <input #fileInput type="file" class="hidden" (change)="onFileSelected($event, tarea)" [disabled]="isUploading(tarea)">
                 </div>
 
                 <span

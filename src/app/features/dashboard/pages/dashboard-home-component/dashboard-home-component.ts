@@ -36,7 +36,8 @@ export class DashboardHomeComponent implements OnInit{
   
   fechaActual: string = new Date().toLocaleDateString('es-Es',{});
   
-  
+  uploadingTasks = signal<Set<number>>(new Set());
+
   public user = this.authService.getUserSession();
 
   porcentajeProgreso = computed(() => {
@@ -85,46 +86,57 @@ export class DashboardHomeComponent implements OnInit{
     this.tareasObligatorias$ = this.taskClientService.getTaskClientsByClientId(this.user?.id_cliente!);  
     // Suscribirse para obtener las tareas y calcular el progreso inicial
     this.tareasObligatorias$.subscribe(tareas => {
-    this.tareasDeCliente.set(tareas);
-  });
+        this.tareasDeCliente.set(tareas);
+      });
 
   }
 
   
 
   onFileSelected(event: Event, tarea: TaskClientVM): void {
-    const input = event.target as HTMLInputElement;
+  const input = event.target as HTMLInputElement;
+  if (!input.files || input.files.length === 0) return;
 
-    
-    if (!input.files || input.files.length === 0) return;
-    
-    const file = input.files[0];
-    // Encuentra la tarea en el array this.tareas y actualízala
-  
-    this.taskClientService.uploadTaskFile(tarea.id_cliente_tarea,file).subscribe({
-      next:(resp)=>{
-        console.log(resp);
-        this.tareasDeCliente.update(tareas =>
+  const file = input.files[0];
+
+  // ⬇️ UI: marcar tarea como subiendo
+  this.uploadingTasks.update(set => {
+    const next = new Set(set);
+    next.add(tarea.id_cliente_tarea);
+    return next;
+  });
+
+  this.taskClientService.uploadTaskFile(tarea.id_cliente_tarea, file).subscribe({
+    next: (resp) => {
+      this.tareasDeCliente.update(tareas =>
         tareas.map(t =>
           t.id_cliente_tarea === tarea.id_cliente_tarea
-            ? { ...t, estado: resp.data.tarea.estado }
+            ? {
+                ...t,
+                estado: resp.data.tarea.estado,
+                archivo_cliente: [resp.data.archivo]
+              }
             : t
         )
       );
-        // Actualizar el progreso después de cambiar el estado
-        console.log('Archivo seleccionado:', file);
-        console.log('Tarea:', tarea.id_cliente_tarea);
-        console.log('Progreso actualizado:', this.porcentajeProgreso + '%');
+    },
+    error: () => {
+      console.error('Error al subir archivo');
+    },
+    complete: () => {
+      // ⬇️ UI: quitar estado subiendo
+      this.uploadingTasks.update(set => {
+        const next = new Set(set);
+        next.delete(tarea.id_cliente_tarea);
+        return next;
+      });
+    }
+  });
+}
 
-      },
-      error:(err)=>{
-        console.log(err)
-      }
-    })
-    
-    
-
-  }
+isUploading(tarea: TaskClientVM): boolean {
+  return this.uploadingTasks().has(tarea.id_cliente_tarea);
+}
 
 
 
