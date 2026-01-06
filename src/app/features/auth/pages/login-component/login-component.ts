@@ -89,6 +89,7 @@ export class LoginComponent implements OnInit{
 
 
   async loginWithGoogle() {
+    console.log(environment.PATH)
     if (this.isGoogleLoading) return;
     this.isGoogleLoading = true;
     const { data, error } = await this._supabaseClient.auth.signInWithOAuth({
