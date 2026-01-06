@@ -6,7 +6,7 @@
     <div class="relative z-10 grid md:grid-cols-3 gap-8 items-center">
       <div class="md:col-span-2">
         <span class="text-sm font-semibold text-purple-600 uppercase tracking-wider mb-1 block">
-         <i class="pi pi-calendar"></i> {{ fechaActual }}
+          <i class="pi pi-calendar"></i> {{ fechaActual }}
         </span>
         <h2 class="text-4xl font-bold text-gray-800 mb-3">¡Bienvenido {{ user?.nombre_completo }}! 👋</h2>
         <p class="text-gray-600 text-lg mb-6">
@@ -60,7 +60,7 @@
                   <label [class.text-gray-400]="tarea.estado" class="font-semibold text-gray-800 transition">
                     {{ tarea.tarea.nombre }}
                   </label>
-                  
+
                   <!-- ÍCONO SUBIR ARCHIVO -->
                   <button type="button" class="text-blue-600 hover:text-indigo-800 transition hover:cursor-pointer"
                     (click)="fileInput.click()">
@@ -68,47 +68,44 @@
                   </button>
 
                   @if (isUploading(tarea)) {
-                      <i class="pi pi-spin pi-spinner text-blue-500 text-sm"></i>
-                    }
+                  <i class="pi pi-spin pi-spinner text-blue-500 text-sm"></i>
+                  }
 
-                   @if (!isUploading(tarea) && getNombreArchivo(tarea)) {
-                      <span
-                        class="text-xs text-gray-500 truncate "
-                        [title]="getNombreArchivo(tarea)">
-                        {{ getNombreArchivo(tarea) }}
-                      </span>
-                    }
-                  <input #fileInput type="file" class="hidden" (change)="onFileSelected($event, tarea)" [disabled]="isUploading(tarea)">
+                  @if (!isUploading(tarea) && getNombreArchivo(tarea)) {
+                  <span class="text-xs text-gray-500 truncate " [title]="getNombreArchivo(tarea)">
+                    {{ getNombreArchivo(tarea) }}
+                  </span>
+                  }
+                  <input #fileInput type="file" class="hidden" (change)="onFileSelected($event, tarea)"
+                    [disabled]="isUploading(tarea)">
                 </div>
-                
-                <span
-                      class="px-2 py-1 rounded text-[10px] font-bold uppercase tracking-tight"
-                      [ngClass]="{
+
+                <span class="px-2 py-1 rounded text-[10px] font-bold uppercase tracking-tight" [ngClass]="{
                         'bg-gray-100 text-indigo-700': tarea.estado === 'pendiente',
                         'bg-blue-100 text-blue-600': tarea.estado === 'subido' ,
                         'bg-yellow-100 text-yellow-700': tarea.estado === 'en_revision',
                         'bg-green-100 text-green-600': tarea.estado === 'aprobado',
                         'bg-red-100 text-red-600': tarea.estado === 'rechazado'
-                      }"
-                    >
-                      {{ tarea.estado }}
-                    </span>
+                      }">
+                  {{ tarea.estado }}
+                </span>
 
 
               </div>
 
               <p class="text-sm text-gray-500 mt-1">
                 {{ tarea.tarea.descripcion }}
-              
+
                 @if(i==2){
-                  <a href="https://form.jotform.com/260046354543049" class="text-blue-600" target="_blank">https://form.jotform.com/260046354543049</a>
+                <a href="https://form.jotform.com/260046354543049" class="text-blue-600"
+                  target="_blank">https://form.jotform.com/260046354543049</a>
                 }
               </p>
             </div>
           </div>
           }
         </div>
-        
+
 
 
 
@@ -136,7 +133,12 @@
 
           <!-- PASO 1 -->
           <p-step-item [value]="1">
-            <p-step>Completar tareas</p-step>
+            <p-step>
+              <p class="text-base  text-gray-900 tracking-tight text-start">Completar tareas</p>
+              <div class="text-sm text-gray-500 mt-0.5">
+                Finaliza las acciones obligatorias para activar todas las funciones.
+              </div>
+            </p-step>
             <p-step-panel>
               <ng-template #content let-activateCallback="activateCallback">
                 <div class="flex flex-col gap-4 h-54 p-4">
@@ -242,42 +244,42 @@
 
     <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
       @for (video of videos; track $index) {
-        <div  class="group cursor-pointer">
-        <div class="relative rounded-2xl overflow-hidden mb-4 aspect-video shadow-sm">
-          <img [src]="video.thumbnail" [alt]="video.titulo"
-            class="w-full h-full object-cover group-hover:scale-105 transition duration-500">
-          <div
-            class="bsolute inset-0 bg-black/40 flex items-center justify-center 
-         opacity-0 group-hover:opacity-100 transition">
-            <div class="bg-white/90 p-4 rounded-full shadow-2xl">
-             <p-button
-                icon="pi pi-play"
-                styleClass="
-                  p-button-rounded 
-                  p-button-lg
-                  !bg-white/90 
-                  !text-purple-600 
-                  hover:!bg-white 
-                  shadow-xl
-                ">
-  </p-button>
-            </div>
-          </div>
-          <span
-            class="absolute bottom-3 right-3 bg-black/80 text-white text-[10px] px-2 py-1 rounded-md font-bold backdrop-blur-sm">
-            {{ video.duracion }}
-          </span>
-        </div>
-        <h4 class="font-bold text-gray-800 group-hover:text-purple-600 transition truncate">{{ video.titulo }}</h4>
-        <p class="text-xs text-gray-500 mt-2 flex items-center gap-2">
-          <i class="pi pi-tag text-[10px]"></i> {{ video.categoria }}
-        </p>
-      </div>
-      }
-      
+      <div class="group cursor-pointer">
+  <div class="relative rounded-xl overflow-hidden mb-3 aspect-video shadow-sm bg-gray-100">
+    <img [src]="video.thumbnail" [alt]="video.titulo"
+      class="w-full h-full object-cover opacity-90 group-hover:scale-105 transition duration-500">
+
+    <!-- Contenedor del overlay -->
+    <div class="absolute inset-0 bg-black/20 group-hover:bg-black/30 transition-colors flex justify-center items-center">
+      <!-- Botón centrado -->
+      <p-button icon="pi pi-play" styleClass="
+          p-button-rounded 
+          p-button-lg
+          !bg-white/90 
+          !text-purple-600 
+          hover:!bg-white 
+          shadow-xl
+        ">
+      </p-button>
     </div>
 
-    
+    <span
+      class="absolute bottom-3 right-3 bg-black/80 text-white text-[10px] px-2 py-1 rounded-md font-bold backdrop-blur-sm">
+      {{ video.duracion }}
+    </span>
+  </div>
+
+  <h4 class="font-bold text-gray-800 group-hover:text-purple-600 transition truncate">{{ video.titulo }}</h4>
+  <p class="text-xs text-gray-500 mt-2 flex items-center gap-2">
+    <i class="pi pi-tag text-[10px]"></i> {{ video.categoria }}
+  </p>
+</div>
+
+      }
+
+    </div>
+
+
   </div>
 
 </main>

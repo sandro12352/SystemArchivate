@@ -1,4 +1,4 @@
-import { Component, inject, OnInit } from '@angular/core';
+import { Component, computed, inject, OnInit } from '@angular/core';
 import { AuthService } from '../../../../features/auth/services/auth-service';
 import { Button } from "primeng/button";
 import { AvatarModule } from 'primeng/avatar';
@@ -28,13 +28,11 @@ export class HeaderComponent  implements OnInit{
   userMenuItems: MenuItem[]|undefined;
 
 
-  viewProfile() {
-    console.log('Ver perfil');
-  }
+  avatarUrl = computed(()=>{
+    const foto = this.user?.user.foto_perfil
+     return foto ;
+  })
 
-  openSettings() {
-    console.log('Abrir configuración');
-  }
 
   logout() {
     this.authService.logout();
@@ -47,7 +45,6 @@ export class HeaderComponent  implements OnInit{
 
 
  ngOnInit(): void {
-  console.log(this.user);
       this.userMenuItems = [
         { label: 'Mi Perfil', icon: 'pi pi-user' ,linkClass: 'text-gray-900 '},
         { label: 'Configuración', icon: 'pi pi-cog' ,linkClass:'text-gray-900',},
