@@ -21,7 +21,9 @@ export class TaskClientService {
     formData.append('ruta',file);
     formData.append('id_cliente_tarea',id_cliente_tarea.toString());
 
-    return this.http.post(`${environment.API_URL}/api/client-file`,formData);
+    return this.http.post(`${environment.API_URL}/api/client-file`,formData,{
+      withCredentials:true
+    });
 
   }
 
