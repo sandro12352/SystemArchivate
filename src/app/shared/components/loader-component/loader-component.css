@@ -1,0 +1,17 @@
+/* Animación personalizada para la barra de progreso indeterminada */
+        @keyframes shimmer-loader {
+            0% { transform: translateX(-100%); }
+            50% { transform: translateX(0%); }
+            100% { transform: translateX(100%); }
+        }
+        .animate-shimmer-loader {
+            animation: shimmer-loader 1.5s cubic-bezier(0.4, 0, 0.2, 1) infinite;
+        }
+        /* Animación suave para la aparición */
+        @keyframes fade-in-up {
+            from { opacity: 0; transform: translateY(10px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+        .animate-enter {
+            animation: fade-in-up 0.6s ease-out forwards;
+        }

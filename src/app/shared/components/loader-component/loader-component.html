@@ -1,0 +1,54 @@
+@if (loader.loading()) {
+  <div class="fixed inset-0 z-50 flex h-full w-full flex-col items-center justify-center bg-white/80 backdrop-blur-sm transition-all duration-500">
+        
+        <!-- Contenido del Loader -->
+        <div class="animate-enter relative flex max-w-sm flex-col items-center justify-center text-center p-8">
+            
+            <!-- Logo / Icono Central -->
+            <div class="relative mb-8 group">
+                <!-- Efecto de brillo detrás del logo -->
+                <div class="absolute -inset-1 rounded-full bg-linear-to-r from-zinc-200 to-zinc-100 opacity-50 blur-lg transition duration-1000 group-hover:opacity-75"></div>
+                
+                <!-- Contenedor del Icono -->
+                <div class="relative flex h-16 w-16 items-center justify-center rounded-2xl border border-zinc-200 bg-white shadow-sm ring-1 ring-zinc-100">
+                    <!-- Reemplazar con tu <img> si es necesario, aquí uso un icono representativo -->
+                    <img class="iconify text-zinc-800 transition-transform duration-700 ease-in-out group-hover:scale-110" 
+                          data-icon="lucide:command" 
+                          data-stroke-width="1.5"
+                          src="https://img.freepik.com/vector-gratis/vector-diseno-degradado-colorido-pajaro_343694-2506.jpg?semt=ais_hybrid&w=740&q=80"
+                          data-width="32" 
+                          data-height="32">
+                    
+                    
+                    <!-- Pequeño indicador de estado (punto verde) -->
+                    <span class="absolute -right-1 -top-1 flex h-3 w-3">
+                        <span class="absolute inline-flex h-full w-full animate-ping rounded-full bg-zinc-400 opacity-75"></span>
+                        <span class="relative inline-flex h-3 w-3 rounded-full border-2 border-white bg-zinc-500"></span>
+                    </span>
+                </div>
+            </div>
+
+            <!-- Textos -->
+            <div class="space-y-1 mb-8">
+                <h3 class="text-sm font-medium tracking-tight text-zinc-900">
+                    Verificando sesión
+                </h3>
+                <p class="text-xs font-normal text-zinc-500">
+                    Estableciendo conexión segura<span class="animate-pulse">...</span>
+                </p>
+            </div>
+
+            <!-- Barra de Progreso Minimalista -->
+            <div class="h-1 w-48 overflow-hidden rounded-full bg-zinc-100 ring-1 ring-inset ring-zinc-200/50">
+                <div class="h-full w-full bg-zinc-800 origin-left animate-shimmer-loader rounded-full"></div>
+            </div>
+
+            <!-- Información adicional (opcional, pie de página del loader) -->
+            <div class="absolute bottom-8 text-[10px] text-zinc-400 font-medium tracking-wide uppercase opacity-60">
+                Encriptado de extremo a extremo
+            </div>
+
+        </div>
+    </div>
+}
+
