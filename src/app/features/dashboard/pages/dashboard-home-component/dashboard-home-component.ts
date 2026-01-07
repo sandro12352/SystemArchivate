@@ -15,7 +15,7 @@ import { TaskClientService } from '../../services/task-client-service';
 import { EstadoTarea, TaskClientVM } from '../../interfaces/taskClient.interface';
 import { Observable } from 'rxjs';
 import { FileUploadModule } from 'primeng/fileupload';
-
+import { DialogModule } from 'primeng/dialog';
 @Component({
   selector: 'app-dashboard-home-component',
   imports: [CardModule, ButtonModule, CommonModule, CheckboxModule, StepperModule,
@@ -23,6 +23,7 @@ import { FileUploadModule } from 'primeng/fileupload';
     ProgressBarModule,
     TimelineModule,
     CarouselModule,
+    DialogModule,
     TagModule, FileUploadModule],
   templateUrl: './dashboard-home-component.html',
   styleUrl: './dashboard-home-component.css',
@@ -31,8 +32,6 @@ import { FileUploadModule } from 'primeng/fileupload';
 export class DashboardHomeComponent implements OnInit {
   private taskClientService = inject(TaskClientService);
   private authService = inject(AuthService);
-
-
 
   fechaActual: string = new Date().toLocaleDateString('es-Es', {});
 
@@ -83,10 +82,6 @@ export class DashboardHomeComponent implements OnInit {
 
 
   ngOnInit(): void {
-    this.messageInformation();
-
-
-
     this.tareasObligatorias$ = this.taskClientService.getTaskClientsByClientId(this.user?.id_cliente!);
     // Suscribirse para obtener las tareas y calcular el progreso inicial
     this.tareasObligatorias$.subscribe(tareas => {
@@ -96,8 +91,10 @@ export class DashboardHomeComponent implements OnInit {
   }
 
 
-  messageInformation() {
-  }
+  todasTareasCompletadas(): boolean {
+      const tareas = this.tareasDeCliente();
+      return tareas.length > 0 && tareas.every(tarea => tarea.estado === 'subido');
+    }
 
 
   onFileSelected(event: Event, tarea: TaskClientVM): void {
@@ -145,6 +142,10 @@ export class DashboardHomeComponent implements OnInit {
     return this.uploadingTasks().has(tarea.id_cliente_tarea);
   }
 
+
+  verifyTask(){
+    confirm('Hola')
+  }
 
 
 }
