@@ -16,6 +16,7 @@ import { EstadoTarea, TaskClientVM } from '../../interfaces/taskClient.interface
 import { Observable } from 'rxjs';
 import { FileUploadModule } from 'primeng/fileupload';
 import { DialogModule } from 'primeng/dialog';
+import { Router } from '@angular/router';
 @Component({
   selector: 'app-dashboard-home-component',
   imports: [CardModule, ButtonModule, CommonModule, CheckboxModule, StepperModule,
@@ -32,6 +33,7 @@ import { DialogModule } from 'primeng/dialog';
 export class DashboardHomeComponent implements OnInit {
   private taskClientService = inject(TaskClientService);
   private authService = inject(AuthService);
+  private router = inject(Router);
 
   fechaActual: string = new Date().toLocaleDateString('es-Es', {});
 
@@ -110,7 +112,7 @@ export class DashboardHomeComponent implements OnInit {
       return next;
     });
 
-    this.taskClientService.uploadTaskFile(tarea.id_cliente_tarea, file).subscribe({
+    this.taskClientService.uploadTaskFile(tarea.id_cliente_tarea, file , this.user?.nombre_completo!).subscribe({
       next: (resp) => {
         this.tareasDeCliente.update(tareas =>
           tareas.map(t =>
@@ -144,7 +146,7 @@ export class DashboardHomeComponent implements OnInit {
 
 
   verifyTask(){
-    confirm('Hola')
+    this.router.navigate(['dashboard/activate'])
   }
 
 

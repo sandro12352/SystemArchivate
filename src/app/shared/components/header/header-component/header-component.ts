@@ -45,6 +45,7 @@ export class HeaderComponent  implements OnInit{
 
 
  ngOnInit(): void {
+  console.log(this.user)
       this.userMenuItems = [
         { label: 'Mi Perfil', icon: 'pi pi-user' ,linkClass: 'text-gray-900 '},
         { label: 'Configuración', icon: 'pi pi-cog' ,linkClass:'text-gray-900',},

@@ -37,6 +37,7 @@ export class AuthService {
     return this.http.post<ResponseLogin>( `${environment.API_URL}/api/auth/`,{},
        {
         headers: {Authorization: `Bearer ${token}`},
+        withCredentials:true
       }
       );
     }

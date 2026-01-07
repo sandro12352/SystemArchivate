@@ -1,149 +1,56 @@
-import { Component, inject, OnInit, signal } from '@angular/core';
+import { Component, inject, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
-import { ProgressSpinnerModule } from 'primeng/progressspinner';
-import { SelectModule } from 'primeng/select';
-import { ButtonDirective } from "primeng/button";
-import { InputText } from "primeng/inputtext";
 import { AuthService } from '../../../features/auth/services/auth-service';
-import { CommonModule } from '@angular/common';
-import { DatePickerModule } from 'primeng/datepicker';
-import { FormBuilder, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
-import { InputTextModule } from 'primeng/inputtext';
-import { FloatLabel } from 'primeng/floatlabel';
-import { MessageModule } from 'primeng/message';
+import { firstValueFrom } from 'rxjs';
 import { ClientService } from '../../../features/clients/services/client-service';
+
+
 @Component({
   selector: 'app-auth-callback',
   standalone:true,
-  imports: [ProgressSpinnerModule, SelectModule, ButtonDirective, InputText, CommonModule, DatePickerModule, InputTextModule, FloatLabel,MessageModule,ReactiveFormsModule],
+  imports: [],
   templateUrl: './auth-callback.html',
   styleUrl: './auth-callback.css',
 })
 export class AuthCallback implements OnInit{
   
-  private router = inject(Router);
-  public formBuilder = inject(FormBuilder);
-  private clientService = inject(ClientService);
+  private router = inject(Router);  
   private authService = inject(AuthService);
+  private clientService = inject(ClientService)
 
-  public submitted = signal(false);
-  
-  public clientForm!:FormGroup;
-
-
-  tiposPersona = [
-    { label: 'Persona Natural', value: 'natural' },
-    { label: 'Empresa', value: 'empresa' }
-  ];
-
-  get tipoPersona(){
-    return this.clientForm.get('tipoPersona');
-  }
-
-  get nombres(){
-    return this.clientForm.get('nombres');
-  }
-
-  get apellidos(){
-    return this.clientForm.get('apellidos');
-  }
-
-  get documento(){
-    return this.clientForm.get('documento');
-  }
-
-  get telefono(){
-    return this.clientForm.get('telefono');
-  }
-
-  get fecha_nacimiento(){
-    return this.clientForm.get('fecha_nacimiento');
-  }
-
-
-  get userId(){
-    return this.authService.getUserSession()?.user.id_usuario;
-  }
-
-
-  async ngOnInit() {
-    this.clientForm = this.formBuilder.group({
-      tipoPersona:[null,[Validators.required]],
-      nombres:['',[Validators.required]],
-      apellidos:['',[Validators.required]],
-      documento:['',[Validators.required]],
-      telefono:['',[Validators.required,Validators.pattern(/^\d{9}$/)]],
-      fecha_nacimiento:[null,[Validators.required]]
-    });
-
-    this.validTypePerson();
-  }
-
-  validTypePerson(){ 
-    this.clientForm.get('tipoPersona')!.valueChanges
-      .subscribe(tipo => {
-
-        const documentoControl = this.clientForm.get('documento')!;
-
-        if (tipo === 'empresa') {
-          documentoControl.setValidators([
-            Validators.required,
-            Validators.pattern(/^\d{11}$/)
-          ]);
-        } else if (tipo === 'natural') {
-          documentoControl.setValidators([
-            Validators.required,
-            Validators.pattern(/^\d{8}$/)
-          ]);
-        } else {
-          documentoControl.clearValidators();
-        }
-
-        documentoControl.updateValueAndValidity();
-      });
-
-  }
-
-  onSubmit(){
-    this.submitted.set(true);
-
-    if (this.clientForm.invalid) {
+ async ngOnInit() {
+  try {
+    const token = await this.authService.getSessionToken();
+    console.log(token)
+    if (!token) {
+      this.router.navigate(['/login']);
       return;
     }
 
+    const authResp = await firstValueFrom(
+      this.authService.sendTokenToBackend(token)
+    );
 
-    const client = {
-      ...this.clientForm.value,
-      dni:this.clientForm.value.tipoPersona === 'natural' ? this.clientForm.value.documento : null,
-      ruc:this.clientForm.value.tipoPersona === 'empresa' ? this.clientForm.value.documento : null,
-    }
+    this.authService.setUserSession({
+      user: authResp.user,
+      nombre_completo: authResp.nombre_completo,
+    });
+    console.log(authResp)
 
+    const { exists } = await firstValueFrom(
+      this.clientService.getClientByUserId(authResp.user.id_usuario)
+    );
 
-    this.clientService.createClient(this.userId!,client).subscribe({
-      next:(resp)=>{
+    this.router.navigate(exists ? ['/dashboard'] : ['auth/profile-complete']);
 
-        const session = this.authService.getUserSession();
-
-        this.authService.setUserSession({
-          ...session!,
-          id_cliente:resp.id_cliente
-        })
-
-        console.log(resp);
-        this.router.navigate(['/dashboard']);
-      },
-      error:(err)=>{
-        console.log(err);
-      }
-    })
-    
-
-
-
-
-
+  } catch (error){
+    console.log(error)
+    this.router.navigate(['/login']);
   }
+}
 
+
+ 
 
 
 }

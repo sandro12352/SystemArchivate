@@ -16,6 +16,10 @@ export const AUTH_ROUTES: Routes = [
   },{
     path:'callback',
     loadComponent:()=>import('../../core/components/auth-callback/auth-callback').then(m=>m.AuthCallback),
+  },
+  {
+    path:'profile-complete',
+    loadComponent:()=>import('../../core/components/profile-complete/profile-complete').then(m=>m.ProfileComplete),
     canActivate:[clientProfilentGuard]
   },
   {
