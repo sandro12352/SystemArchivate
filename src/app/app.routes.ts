@@ -4,6 +4,7 @@ import { AUTH_ROUTES } from './features/auth/auth.routes';
 import { MainLayoutComponent } from './layout/main-layout/main-layout-component/main-layout-component';
 import { DASHBOARD_ROUTES } from './features/dashboard/dashboard.routes';
 import { authUserGuard } from './core/guards/auth-user-guard';
+import { AuthCallback } from './core/components/auth-callback/auth-callback';
 
 export const routes: Routes = [
    {
@@ -12,10 +13,14 @@ export const routes: Routes = [
     children: AUTH_ROUTES,
    },
    {
-      path: 'dashboard',
+      path: 'home',
       component: MainLayoutComponent,
       children:DASHBOARD_ROUTES,
       canActivate:[authUserGuard]
+   },
+   {
+      path:'callback',
+      component:AuthCallback
    },
    {
       path: '',

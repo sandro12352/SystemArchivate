@@ -1,314 +1,171 @@
-<main class="relative mx-auto px-4 sm:px-6 py-8 min-h-screen bg-gray-50 overflow-hidden">
+<main class="relative mx-auto px-4 sm:px-6 py-8 min-h-screen bg-gray-50">
+  
+  <div class="flex flex-col md:flex-row justify-between items-start md:items-center mb-8 gap-4">
+    <div>
+      <h2 class="text-3xl font-bold text-gray-800">Panel de Rendimiento</h2>
+      <p class="text-gray-500">Monitorea tus campañas y gestiona tus proyectos</p>
+    </div>
+    
+    <div class="flex items-center gap-3 bg-white p-2 rounded-xl shadow-sm border border-gray-100">
+      <span class="text-sm font-medium text-gray-600 ml-2">Proyecto:</span>
+      <p-select [options]="proyectos"  optionLabel="nombre"></p-select>
+    </div>
+  </div>
 
-  <div class="relative z-10 bg-white rounded-2xl p-8 mb-8 shadow-sm border border-gray-100 overflow-hidden">
-    <div class="absolute top-0 right-0 w-64 h-64 bg-purple-50 rounded-full -mr-16 -mt-16 opacity-50"></div>
-
-    <div class="relative z-10 grid md:grid-cols-3 gap-8 items-center">
-      <div class="md:col-span-2">
-        <span class="text-sm font-semibold text-purple-600 uppercase tracking-wider mb-1 block">
-          <i class="pi pi-calendar"></i> {{ fechaActual }}
-        </span>
-        <h2 class="text-4xl font-bold text-gray-800 mb-3">¡Bienvenido {{ user?.nombre_completo }}! 👋</h2>
-        <p class="text-gray-600 text-lg mb-6">
-          Para comenzar a utilizar todas las funciones, completa tus
-          <span class="font-bold text-gray-900">tareas obligatorias de configuración</span>.
-        </p>
-
-        <div class="max-w-md">
-          <div class="flex justify-between text-sm mb-2">
-            <span class="text-gray-500 font-medium">Progreso de activación</span>
-            <span class="text-purple-600 font-bold">{{ porcentajeProgreso() }}%</span>
-          </div>
-          <div class="w-full bg-gray-100 rounded-full h-3">
-            <div class="bg-linear-to-r from-purple-500 to-indigo-500 h-3 rounded-full transition-all duration-700"
-              [style.width.%]="porcentajeProgreso()">
-            </div>
-          </div>
+  <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 mb-8">
+    <div class="bg-white p-6 rounded-2xl border border-gray-100 shadow-sm">
+      <div class="flex justify-between items-start">
+        <div>
+          <p class="text-sm text-gray-500 font-medium">Alcance Total</p>
+          <h3 class="text-2xl font-bold text-gray-800 mt-1">45.2k</h3>
+        </div>
+        <div class="p-2 bg-purple-50 rounded-lg text-purple-600">
+          <i class="pi pi-users text-xl"></i>
         </div>
       </div>
+      <div class="mt-4 flex items-center text-sm">
+        <span class="text-green-500 font-bold flex items-center">
+          <i class="pi pi-arrow-up text-xs mr-1"></i> 12%
+        </span>
+        <span class="text-gray-400 ml-2">vs mes anterior</span>
+      </div>
+    </div>
 
-      <div class="hidden md:flex justify-end">
-        <img src="https://png.pngtree.com/png-clipart/20240503/original/pngtree-happy-person-using-laptop-for-working-through-internet-at-home-vector-png-image_14996858.png" alt="Avatar"
-          class="w-32 h-32 rounded-full border-4 border-white shadow-lg">
+    <div class="bg-white p-6 rounded-2xl border border-gray-100 shadow-sm">
+      <div class="flex justify-between items-start">
+        <div>
+          <p class="text-sm text-gray-500 font-medium">CTR Promedio</p>
+          <h3 class="text-2xl font-bold text-gray-800 mt-1">3.8%</h3>
+        </div>
+        <div class="p-2 bg-indigo-50 rounded-lg text-indigo-600">
+          <i class="pi pi-chart-line text-xl"></i>
+        </div>
+      </div>
+      <div class="mt-4 flex items-center text-sm">
+        <span class="text-green-500 font-bold flex items-center">
+          <i class="pi pi-arrow-up text-xs mr-1"></i> 0.5%
+        </span>
+        <span class="text-gray-400 ml-2">estable</span>
+      </div>
+    </div>
+
+    <div class="bg-white p-6 rounded-2xl border border-gray-100 shadow-sm">
+      <div class="flex justify-between items-start">
+        <div>
+          <p class="text-sm text-gray-500 font-medium">CTR Promedio</p>
+          <h3 class="text-2xl font-bold text-gray-800 mt-1">3.8%</h3>
+        </div>
+        <div class="p-2 bg-indigo-50 rounded-lg text-indigo-600">
+          <i class="pi pi-chart-line text-xl"></i>
+        </div>
+      </div>
+      <div class="mt-4 flex items-center text-sm">
+        <span class="text-green-500 font-bold flex items-center">
+          <i class="pi pi-arrow-up text-xs mr-1"></i> 0.5%
+        </span>
+        <span class="text-gray-400 ml-2">estable</span>
+      </div>
+    </div>
+
+
+    <div class="bg-white p-6 rounded-2xl border border-gray-100 shadow-sm">
+      <div class="flex justify-between items-start">
+        <div>
+          <p class="text-sm text-gray-500 font-medium">CTR Promedio</p>
+          <h3 class="text-2xl font-bold text-gray-800 mt-1">3.8%</h3>
+        </div>
+        <div class="p-2 bg-indigo-50 rounded-lg text-indigo-600">
+          <i class="pi pi-chart-line text-xl"></i>
+        </div>
+      </div>
+      <div class="mt-4 flex items-center text-sm">
+        <span class="text-green-500 font-bold flex items-center">
+          <i class="pi pi-arrow-up text-xs mr-1"></i> 0.5%
+        </span>
+        <span class="text-gray-400 ml-2">estable</span>
       </div>
     </div>
   </div>
 
   <div class="grid grid-cols-1 lg:grid-cols-3 gap-8">
-
-
+    
     <div class="lg:col-span-2 space-y-8">
+      
+      
 
-
-
-      <div class="bg-white rounded-xl shadow-sm border border-gray-100 overflow-hidden">
-
-        @if (todasTareasCompletadas()) {
-        <div class="p-10 text-center ">
-          <div class="relative inline-block">
-            <img src="https://img.freepik.com/vector-premium/ilustracion-plana-editable-tarea-completa_9206-3118.jpg" alt="Éxito"
-              class="w-48 mx-auto mb-6 animate-bounce">
-            <div class="absolute inset-0 bg-purple-100 rounded-full filter blur-3xl opacity-30 -z-10"></div>
-          </div>
-
-          <h2 class="text-3xl font-bold text-gray-800 mb-3">¡Tareas Completadas!</h2>
-          <p class="text-gray-500 max-w-md mx-auto text-lg leading-relaxed">
-            Has hecho un gran trabajo. Tu documentación ha sido enviada a
-            <span class="text-purple-600 font-semibold">revisión técnica</span>
-            y pronto activaremos todas las funciones.
-          </p>
-
-          <div class="mt-8">
-            <p-button label="Continuar..." icon="pi pi-arrow-right" iconPos="right"
-              styleClass="p-button-rounded bg-purple-600 border-none px-8 shadow-md hover:bg-purple-700 transition"
-              (onClick)="verifyTask()"
-              >
-            </p-button>
-          </div>
+      <div class="bg-white rounded-2xl shadow-sm border border-gray-100 overflow-hidden">
+        <div class="p-6 border-b border-gray-100 flex justify-between items-center">
+          <h3 class="font-bold text-gray-800">Campañas en curso</h3>
+          <p-button label="Nueva Campaña" icon="pi pi-plus" styleClass="p-button-text p-button-sm text-purple-600"></p-button>
         </div>
-        }
-        @else {
-        <div class="p-6 border-b border-gray-100 bg-gray-50/50">
-          <h3 class="text-lg font-bold text-gray-800">Pasos Requeridos</h3>
-          <p class="text-sm text-gray-500">Completa estas acciones para activar las demás funciones</p>
+        <div class="overflow-x-auto">
+          <table class="w-full text-left border-collapse">
+            <thead class="bg-gray-50">
+              <tr>
+                <th class="p-4 text-xs font-bold text-gray-500 uppercase">Campaña</th>
+                <th class="p-4 text-xs font-bold text-gray-500 uppercase">Estado</th>
+                <th class="p-4 text-xs font-bold text-gray-500 uppercase text-center">Inversión</th>
+                <th class="p-4 text-xs font-bold text-gray-500 uppercase text-right">Acción</th>
+              </tr>
+            </thead>
+            <tbody class="divide-y divide-gray-50">
+            @for (camp of campanas; track $index) {
+              <tr  class="hover:bg-gray-50/50 transition">
+                <td class="p-4">
+                  <span class="font-semibold text-gray-800">{{camp.nombre}}</span>
+                </td>
+                <td class="p-4">
+                  <span class="px-2 py-1 rounded-full text-[10px] font-bold bg-green-100 text-green-700">ACTIVA</span>
+                </td>
+                <td class="p-4 text-center font-medium text-gray-600">{{camp.inversion }}</td>
+                <td class="p-4 text-right">
+                  <button class="text-gray-400 hover:text-purple-600"><i class="pi pi-ellipsis-v"></i></button>
+                </td>
+              </tr>
+            }
+            </tbody>
+          </table>
         </div>
+      </div>
+    </div>
 
-        <div class="divide-y divide-gray-50">
-          @for (tarea of tareasDeCliente(); track tarea.id_cliente_tarea; let i = $index) {
-          <div class="p-5 hover:bg-gray-50 transition group flex items-start gap-4">
-
-            <div class="pt-1">
-              <p-checkbox [ngModel]="tarea.estado === 'subido'" [binary]="true" [disabled]="true">
-              </p-checkbox>
-            </div>
-
-            <div class="flex-1">
-              <div class="flex justify-between items-start gap-2">
-
-                <div class="flex items-center gap-2 flex-wrap">
-                  <label class="font-semibold transition duration-300" [class.text-gray-400]="tarea.estado === 'subido'"
-                    [class.line-through]="tarea.estado === 'subido'" [class.text-gray-800]="tarea.estado !== 'subido'">
-                    {{ tarea.tarea.nombre }}
-                  </label>
-
-                  @if (tarea.estado !== 'subido') {
-                  <button type="button"
-                    class="text-blue-600 hover:text-indigo-800 transition p-1 rounded-md hover:bg-blue-50"
-                    (click)="fileInput.click()" title="Subir archivo">
-                    <i class="pi pi-cloud-upload text-sm hover:cursor-pointer"></i>
-                  </button>
-                  }
-
-                  @if (isUploading(tarea)) {
-                  <i class="pi pi-spin pi-spinner text-blue-500 text-sm"></i>
-                  }
-
-                  @if (!isUploading(tarea) && getNombreArchivo(tarea)) {
-                  <span class="text-xs bg-gray-100 px-2 py-0.5 rounded text-gray-600 truncate max-w-[150px]"
-                    [title]="getNombreArchivo(tarea)">
-                    <i class="pi pi-file text-[10px] mr-1"></i>{{ getNombreArchivo(tarea) }}
-                  </span>
-                  }
-
-                  <input #fileInput type="file" class="hidden" (change)="onFileSelected($event, tarea)"
-                    [disabled]="isUploading(tarea)">
-                </div>
-
-                <span class="px-2 py-1 rounded text-[10px] font-bold uppercase tracking-tight whitespace-nowrap"
-                  [ngClass]="{
-                      'bg-gray-100 text-gray-500': tarea.estado === 'pendiente',
-                      'bg-blue-100 text-blue-600': tarea.estado === 'subido',
-                      'bg-yellow-100 text-yellow-700': tarea.estado === 'en_revision',
-                      'bg-green-100 text-green-600': tarea.estado === 'aprobado',
-                      'bg-red-100 text-red-600': tarea.estado === 'rechazado'
-                    }">
-                  {{ tarea.estado.replace('_', ' ') }}
-                </span>
+    <div class="space-y-8">
+      <div class="bg-white rounded-2xl shadow-sm border border-gray-100 p-6">
+        <h3 class="font-bold text-gray-800 mb-6 flex items-center gap-2">
+          <i class="pi pi-calendar-plus text-purple-600"></i> Próximas Actividades
+        </h3>
+        
+        <div class="space-y-6">
+          <div class="relative pl-6 border-l-2 border-purple-200">
+            <div class="absolute -left-[9px] top-0 w-4 h-4 rounded-full bg-purple-500 border-4 border-white"></div>
+            <div class="bg-gray-50 rounded-xl p-4 hover:bg-purple-50 transition border border-transparent hover:border-purple-100">
+              <div class="flex justify-between items-start mb-2">
+                <span class="text-[10px] font-bold bg-purple-100 text-purple-700 px-2 py-0.5 rounded uppercase">Videochat</span>
+                <span class="text-xs text-gray-400 italic">Hoy, 16:00</span>
               </div>
-
-              <p class="text-sm text-gray-500 mt-1 leading-snug">
-                {{ tarea.tarea.descripcion }}
-
-                @if (i === 2) {
-                <br>
-                <a href="https://form.jotform.com/260046354543049"
-                  class="text-blue-600 hover:underline inline-flex items-center gap-1 mt-1" target="_blank">
-                  Completar formulario <i class="pi pi-external-link text-[10px]"></i>
-                </a>
-                }
-              </p>
-            </div>
-          </div>
-          }
-        </div>
-        }
-      </div>
-    </div>
-
-    <p-card class="rounded-xl shadow-sm">
-
-      <!-- Header del Card -->
-      <ng-template pTemplate="header">
-        <div class="px-6 pt-2">
-          <h3 class="text-xl font-bold text-gray-800">
-            Guía de activación
-          </h3>
-          <p class="text-sm text-gray-500">
-            Sigue estos pasos para completar la configuración inicial
-          </p>
-        </div>
-      </ng-template>
-
-      <!-- Content -->
-      <div class="space-y-6">
-
-        <p-stepper [value]="1">
-
-          <!-- PASO 1 -->
-          <p-step-item [value]="1">
-            <p-step>
-              <p class="text-base  text-gray-900 tracking-tight text-start">Completar tareas</p>
-              <div class="text-sm text-gray-500 mt-0.5">
-                Finaliza las acciones obligatorias para activar todas las funciones.
-              </div>
-            </p-step>
-            <p-step-panel>
-              <ng-template #content let-activateCallback="activateCallback">
-                <div class="flex flex-col gap-4 h-54 p-4">
-
-                  <h4 class="text-lg font-bold text-gray-800">
-                    Completa las tareas asignadas
-                  </h4>
-
-                  <p class="text-sm text-gray-600">
-                    Finaliza las acciones obligatorias para activar todas las funciones del sistema.
-                  </p>
-
-                  <ul class="list-disc pl-5 text-sm text-gray-700 space-y-1">
-                    <li>Completar información de perfil</li>
-                    <li>Configurar preferencias básicas</li>
-                    <li>Validar datos principales</li>
-                  </ul>
-
-                  <div class="flex justify-center">
-                    <img src="https://illustrations.popsy.co/amber/work-from-home.svg" alt="Completar tareas"
-                      class="max-h-48" />
-                  </div>
-
-                </div>
-              </ng-template>
-            </p-step-panel>
-          </p-step-item>
-
-          <!-- PASO 2 -->
-          <p-step-item [value]="2">
-            <p-step>Primer uso</p-step>
-            <p-step-panel>
-              <ng-template #content let-activateCallback="activateCallback">
-                <div class="flex flex-col gap-2 h-50">
-
-                  <h4 class="text-lg font-bold text-gray-800">
-                    Realiza tu primera acción
-                  </h4>
-
-                  <p class="text-sm text-gray-600">
-                    Ejecuta una acción clave para comenzar a utilizar el sistema.
-                  </p>
-
-                  <ul class="list-disc pl-5 text-sm text-gray-700 space-y-1">
-                    <li>Crear tu primer registro</li>
-                    <li>Visualizar un reporte</li>
-                    <li>Explorar el panel principal</li>
-                  </ul>
-
-                  <div class="flex justify-center">
-                    <img src="https://illustrations.popsy.co/amber/product-launch.svg" alt="Primer uso"
-                      class="max-h-48" />
-                  </div>
-
-                </div>
-              </ng-template>
-            </p-step-panel>
-          </p-step-item>
-
-          <!-- PASO 3 -->
-          <p-step-item [value]="3">
-            <p-step>Cuenta activa</p-step>
-            <p-step-panel>
-              <ng-template #content let-activateCallback="activateCallback">
-                <div class="flex flex-col gap-4 h-55  ">
-
-                  <h4 class="text-lg font-bold text-gray-800">
-                    Cuenta lista para usar
-                  </h4>
-
-                  <p class="text-sm text-gray-600">
-                    Has completado la configuración inicial. Ya puedes usar todas las funciones.
-                  </p>
-
-                  <div class="flex justify-center">
-                    <img src="https://illustrations.popsy.co/amber/success.svg" alt="Cuenta activa" class="max-h-48" />
-                  </div>
-
-                </div>
-              </ng-template>
-            </p-step-panel>
-          </p-step-item>
-
-        </p-stepper>
-
-      </div>
-
-    </p-card>
-
-
-
-  </div>
-
-  <div class="mt-12 bg-white rounded-2xl p-8 shadow-sm border border-gray-100">
-    <div class="flex justify-between items-center mb-8">
-      <div>
-        <h3 class="text-xl font-bold text-gray-800">Centro de Aprendizaje</h3>
-        <p class="text-gray-500 text-sm">Videos cortos para dominar el sistema rápidamente</p>
-      </div>
-      <p-button label="Ver todos los cursos" icon="pi pi-external-link"
-        styleClass="p-button-text p-button-sm"></p-button>
-    </div>
-
-    <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-      @for (video of videos; track $index) {
-      <div class="group cursor-pointer">
-        <div class="relative rounded-xl overflow-hidden mb-3 aspect-video shadow-sm bg-gray-100">
-          <img [src]="video.thumbnail" [alt]="video.titulo"
-            class="w-full h-full object-cover opacity-90 group-hover:scale-105 transition duration-500">
-
-          <div class="absolute inset-0 bg-black/40 flex justify-center items-center 
-             opacity-0 group-hover:opacity-100 transition-opacity duration-300">
-
-            <div class="transform translate-y-4 group-hover:translate-y-0 transition-transform duration-300">
-              <p-button icon="pi pi-play" styleClass="p-button-rounded p-button-raised bg-purple-600 border-none">
-              </p-button>
+              <h4 class="font-bold text-gray-800 text-sm">Revisión Mensual de KPIs</h4>
+              <p class="text-xs text-gray-500 mt-1">Sincronización con el equipo de arte.</p>
+              <button class="mt-3 w-full bg-indigo-600 text-white py-2 rounded-lg text-sm font-bold flex items-center justify-center gap-2 hover:bg-indigo-700 transition">
+                <i class="pi pi-video"></i> Unirse a la reunión
+              </button>
             </div>
           </div>
 
-          <span
-            class="absolute bottom-3 right-3 bg-black/80 text-white text-[10px] px-2 py-1 rounded-md font-bold backdrop-blur-sm">
-            {{ video.duracion }}
-          </span>
+          <div class="relative pl-6 border-l-2 border-gray-100">
+            <div class="absolute -left-[9px] top-0 w-4 h-4 rounded-full bg-gray-300 border-4 border-white"></div>
+            <div class="p-2">
+              <h4 class="font-bold text-gray-700 text-sm">Entrega de Copywriting</h4>
+              <p class="text-xs text-gray-500">Mañana • Proyecto: {{proyectoSeleccionado.nombre}}</p>
+            </div>
+          </div>
         </div>
 
-        <h4 class="font-bold text-gray-800 group-hover:text-purple-600 transition truncate">
-          {{ video.titulo }}
-        </h4>
-        <p class="text-xs text-gray-500 mt-2 flex items-center gap-2">
-          <i class="pi pi-tag text-[10px]"></i> {{ video.categoria }}
-        </p>
+        <p-button label="Programar reunión" icon="pi pi-plus" 
+          styleClass="p-button-outlined p-button-secondary w-full mt-8 text-sm">
+        </p-button>
       </div>
-      }
-
     </div>
-
-
-  </div>
-
+    <p-speeddial [model]="items!" [radius]="120" type="quarter-circle" direction="up-right" [style]="{ position: 'absolute', left: 0, bottom: 0 }" />
+      </div>
 </main>
+

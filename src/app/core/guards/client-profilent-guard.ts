@@ -18,14 +18,14 @@ export const clientProfilentGuard: CanActivateFn = async(route, state) => {
   try {
     const session = authService.getUserSession();
     console.log(session)
-    if (!session?.user) {
+    if (!session?.user || !session.token) {
            return router.parseUrl('/login');
         };
 
 
     // 1. Validar token con backend
     const { exists, client } = await firstValueFrom(
-      clientService.getClientByUserId(session.user.id_usuario)
+      clientService.getClientByUserId(session.token)
     );
 
     

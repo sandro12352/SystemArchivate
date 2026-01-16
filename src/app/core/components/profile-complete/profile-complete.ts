@@ -61,6 +61,11 @@ export class ProfileComplete {
     get userId(){
       return this.authService.getUserSession()?.user.id_usuario;
     }
+
+
+    get token(){
+      return this.authService.getUserSession()?.token;
+    }
   
   
     async ngOnInit() {
@@ -116,7 +121,7 @@ export class ProfileComplete {
       }
   
   
-      this.clientService.createClient(this.userId!,client).subscribe({
+      this.clientService.createClient(this.userId!,client,this.token!).subscribe({
         next:(resp)=>{
   
           const session = this.authService.getUserSession();
@@ -127,7 +132,7 @@ export class ProfileComplete {
           })
   
           console.log(resp);
-          this.router.navigate(['/dashboard']);
+          this.router.navigate(['home/dashboard']);
         },
         error:(err)=>{
           console.log(err);

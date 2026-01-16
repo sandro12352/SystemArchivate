@@ -11,12 +11,16 @@ export class ClientService {
 
   private http = inject(HttpClient);
 
-  createClient(id_usuario:number,client:Client):Observable<Client>{
-    return this.http.post<Client>(`${environment.API_URL}/api/clients/${id_usuario}`,client);
+  createClient(id_usuario:number,client:Client,token:string):Observable<Client>{
+    return this.http.post<Client>(`${environment.API_URL}/api/clients/${id_usuario}`,client,{
+      headers:{Authorization:`Bearer ${token}`}
+    });
   }
 
-  getClientByUserId(id_usuario:number | undefined):Observable<{client:Client,exists:boolean}>{
-    return this.http.get<{client:Client,exists:boolean}>(`${environment.API_URL}/api/clients/${id_usuario}`);
+  getClientByUserId(token:string):Observable<{client:Client,exists:boolean}>{
+    return this.http.get<{client:Client,exists:boolean}>(`${environment.API_URL}/api/clients`,{
+      headers:{Authorization:`Bearer ${token}`}
+    });
   }
 
 

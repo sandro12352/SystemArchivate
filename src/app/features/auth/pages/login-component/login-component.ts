@@ -7,7 +7,6 @@ import { SupabaseService } from '../../../../core/services/supabase-service';
 import { environment } from '../../../../../environments/environment';
 import { FormBuilder, FormGroup, ReactiveFormsModule } from '@angular/forms';
 import { Validators } from '@angular/forms';
-import { User } from '../../../users/interfaces/user.interface';
 import { MessageModule } from 'primeng/message';
 
 
@@ -78,7 +77,7 @@ export class LoginComponent implements OnInit{
         return;
       }
 
-       this.router.navigate(['auth/callback']);
+       this.router.navigate(['/callback']);
     } catch (err) {
       this.errorMessage.set('Error inesperado. Intenta nuevamente.');
     }finally{
@@ -95,7 +94,7 @@ export class LoginComponent implements OnInit{
     const { data, error } = await this._supabaseClient.auth.signInWithOAuth({
       provider:'google',
       options:{
-        redirectTo:`${environment.PATH}/auth/callback`,
+        redirectTo:`${environment.PATH}/callback`,
       }
     });
 
