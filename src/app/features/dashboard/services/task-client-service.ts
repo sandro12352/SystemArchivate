@@ -9,29 +9,29 @@ import { EstadoTarea, TaskClient, TaskClientVM } from '../interfaces/taskClient.
 })
 export class TaskClientService {
   private http = inject(HttpClient);
-  
 
-  getTaskClientsByClientId(id_cliente: number):Observable<TaskClientVM[]> {
-    const token = localStorage.getItem('token'); 
-    console.log(token);
 
-    return this.http.get<TaskClientVM[]>(`${environment.API_URL}/api/task/${id_cliente}`,{
-      headers:{
-        Authorization:`Bearer ${token}`
+  getTaskClientsByClientId(token: string): Observable<TaskClientVM[]> {
+
+    return this.http.get<TaskClientVM[]>(`${environment.API_URL}/api/task/`, {
+      headers: {
+        Authorization: `Bearer ${token}`
       }
     });
   }
 
 
-  uploadTaskFile(id_cliente_tarea:number,file:File,nombre_completo:string):Observable<any>{
+  uploadTaskFile(id_cliente_tarea: number, file: File, nombre_completo: string, token: string): Observable<any> {
     const formData = new FormData();
 
-    formData.append('ruta',file);
-    formData.append('id_cliente_tarea',id_cliente_tarea.toString());
+    formData.append('ruta', file);
+    formData.append('id_cliente_tarea', id_cliente_tarea.toString());
 
-    return this.http.post(`${environment.API_URL}/api/client-file`,formData,{
-      withCredentials:true,
-      params:{nombre_completo}
+    return this.http.post(`${environment.API_URL}/api/client-file`, formData, {
+      headers: {
+        Authorization: `Bearer ${token}`
+      },
+      params: { nombre_completo }
     });
 
   }
