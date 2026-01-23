@@ -11,8 +11,8 @@ export class ClientService {
 
   private http = inject(HttpClient);
 
-  createClient(client: Client, token: string): Observable<Client> {
-    return this.http.post<Client>(`${environment.API_URL}/api/clients/`, client, {
+  createClient(client: Client, token: string): Observable<{client:Client ,token:string}> {
+    return this.http.post<{client:Client ,token:string}>(`${environment.API_URL}/api/clients/`, client, {
       headers: { Authorization: `Bearer ${token}` }
     });
   }

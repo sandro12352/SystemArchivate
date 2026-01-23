@@ -15,7 +15,6 @@ export class AuthService {
   
   public userSession = signal<UserSession | null>(this.loadUser());
 
-
   private loadUser(): UserSession | null {
     const raw = localStorage.getItem('user');
     return raw ? JSON.parse(raw) : null;
@@ -37,7 +36,6 @@ export class AuthService {
     return this.http.post<ResponseLogin>( `${environment.API_URL}/api/auth/`,{},
        {
         headers: {Authorization: `Bearer ${token}`},
-        withCredentials:true
       }
       );
     }

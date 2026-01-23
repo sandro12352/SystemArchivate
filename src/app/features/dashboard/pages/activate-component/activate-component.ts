@@ -83,6 +83,7 @@ export class ActivateComponent implements OnInit {
 
 
   ngOnInit(): void {
+    console.log(this.user)
     this.tareasObligatorias$ = this.taskClientService.getTaskClientsByClientId(this.user?.token!);
     // Suscribirse para obtener las tareas y calcular el progreso inicial
     this.tareasObligatorias$.subscribe(tareas => {
@@ -145,7 +146,7 @@ export class ActivateComponent implements OnInit {
 
 
   verifyTask() {
-    this.router.navigate(['inicio/activate'])
+    this.router.navigate(['home/dashboard'])
   }
 
 }

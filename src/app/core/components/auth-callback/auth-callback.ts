@@ -19,8 +19,12 @@ export class AuthCallback implements OnInit {
   private authService = inject(AuthService);
   private clientService = inject(ClientService);
   private loaderService = inject(LoaderService);
+  private authSerivce = inject(AuthService);
+
 
   async ngOnInit() {
+    const nombre_completo = this.authSerivce.getUserSession()?.nombre_completo;
+    console.log(nombre_completo)
     this.loaderService.show()
     try {
       const token = await this.authService.getSessionToken();
@@ -36,7 +40,7 @@ export class AuthCallback implements OnInit {
 
       this.authService.setUserSession({
         user: authResp.user,
-        nombre_completo: authResp.nombre_completo,
+        nombre_completo: authResp.nombre_completo || nombre_completo,
         token: authResp.token
       });
       console.log(authResp)

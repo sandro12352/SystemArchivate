@@ -106,7 +106,7 @@ export class ProfileComplete {
 
   }
 
-  onSubmit() {
+  async onSubmit() {
     this.submitted.set(true);
 
     if (this.clientForm.invalid) {
@@ -125,13 +125,16 @@ export class ProfileComplete {
       next: (resp) => {
 
         const session = this.authService.getUserSession();
+        console.log(session);
 
         this.authService.setUserSession({
           ...session!,
-          id_cliente: resp.id_cliente
+          nombre_completo: `${resp.client.nombres} ${resp.client.apellidos}`,
+          token:resp.token,
+          id_cliente: resp.client.id_cliente
         })
 
-        console.log(resp);
+        console.log(resp.client);
         this.router.navigate(['home/activate']);
       },
       error: (err) => {
