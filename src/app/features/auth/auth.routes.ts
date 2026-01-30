@@ -17,7 +17,6 @@ export const AUTH_ROUTES: Routes = [
   {
     path:'profile-complete',
     loadComponent:()=>import('../../core/components/profile-complete/profile-complete').then(m=>m.ProfileComplete),
-    canActivate:[clientProfilentGuard]
   },
   {
     path:'update-password',

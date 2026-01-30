@@ -24,6 +24,8 @@ export class AuthCallback implements OnInit {
 
   async ngOnInit() {
     const nombre_completo = this.authSerivce.getUserSession()?.nombre_completo;
+    const session = this.authSerivce.getUserSession();
+    console.log(session);
     console.log(nombre_completo)
     this.loaderService.show()
     try {
@@ -33,17 +35,18 @@ export class AuthCallback implements OnInit {
         this.router.navigate(['/login']);
         return;
       }
+      console.log('Sending token to backend...')
 
       const authResp = await firstValueFrom(
         this.authService.sendTokenToBackend(token)
       );
+      console.log(authResp)
 
       this.authService.setUserSession({
         user: authResp.user,
         nombre_completo: authResp.nombre_completo || nombre_completo,
         token: authResp.token
       });
-      console.log(authResp)
 
       const { exists } = await firstValueFrom(
         this.clientService.getClientByUserId(authResp.token)

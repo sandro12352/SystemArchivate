@@ -57,6 +57,10 @@ export class ProfileComplete {
     return this.clientForm.get('fecha_nacimiento');
   }
 
+  get fecha_aniversario() {
+    return this.clientForm.get('fecha_aniversario');
+  }
+
 
   get userId() {
     return this.authService.getUserSession()?.user.id_usuario;
@@ -75,7 +79,8 @@ export class ProfileComplete {
       apellidos: ['', [Validators.required]],
       documento: ['', [Validators.required]],
       telefono: ['', [Validators.required, Validators.pattern(/^\d{9}$/)]],
-      fecha_nacimiento: [null, [Validators.required]]
+      fecha_nacimiento: [null, [Validators.required]],
+      fecha_aniversario: [null, [Validators.required]]
     });
 
     this.validTypePerson();

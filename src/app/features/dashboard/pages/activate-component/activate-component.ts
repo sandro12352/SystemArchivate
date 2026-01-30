@@ -3,7 +3,7 @@ import { TaskClientService } from '../../services/task-client-service';
 import { AuthService } from '../../../auth/services/auth-service';
 import { Router } from '@angular/router';
 import { EstadoTarea, TaskClientVM } from '../../interfaces/taskClient.interface';
-import { Observable } from 'rxjs';
+import { Observable, finalize } from 'rxjs';
 import { CardModule } from 'primeng/card';
 import { ButtonModule } from 'primeng/button';
 import { CommonModule } from '@angular/common';
@@ -37,6 +37,7 @@ export class ActivateComponent implements OnInit {
   fechaActual: string = new Date().toLocaleDateString('es-Es', {});
 
   uploadingTasks = signal<Set<number>>(new Set());
+  uploadError = signal<{ message: string; taskId: number } | null>(null);
 
   public user = this.authService.getUserSession();
 
@@ -44,7 +45,7 @@ export class ActivateComponent implements OnInit {
     const tareas = this.tareasDeCliente();
     const total = tareas.length;
     const completadas = tareas.filter(
-      t => t.estado === EstadoTarea.SUBIDO
+      t => t.estado === EstadoTarea.SUBIDO || t.estado === EstadoTarea.APROBADO
     ).length;
 
     return total === 0 ? 0 : Math.round((completadas / total) * 100);
@@ -99,11 +100,12 @@ export class ActivateComponent implements OnInit {
   }
 
 
-  onFileSelected(event: Event, tarea: TaskClientVM): void {
+  onFileSelected(event: Event, tarea: TaskClientVM,fileInput:HTMLInputElement): void {
     const input = event.target as HTMLInputElement;
     if (!input.files || input.files.length === 0) return;
 
     const file = input.files[0];
+    console.log(file);
 
     // ⬇️ UI: marcar tarea como subiendo
     this.uploadingTasks.update(set => {
@@ -112,38 +114,52 @@ export class ActivateComponent implements OnInit {
       return next;
     });
 
-    this.taskClientService.uploadTaskFile(tarea.id_cliente_tarea, file, this.user?.nombre_completo!, this.user?.token!).subscribe({
-      next: (resp) => {
-        this.tareasDeCliente.update(tareas =>
-          tareas.map(t =>
-            t.id_cliente_tarea === tarea.id_cliente_tarea
-              ? {
-                ...t,
-                estado: resp.data.tarea.estado,
-                archivo_cliente: [resp.data.archivo]
-              }
-              : t
-          )
-        );
-      },
-      error: () => {
-        console.error('Error al subir archivo');
-      },
-      complete: () => {
-        // ⬇️ UI: quitar estado subiendo
-        this.uploadingTasks.update(set => {
-          const next = new Set(set);
-          next.delete(tarea.id_cliente_tarea);
-          return next;
-        });
-      }
-    });
+    this.taskClientService.uploadTaskFile(tarea.id_cliente_tarea, file, this.user?.nombre_completo!, this.user?.token!)
+      .pipe(
+        finalize(() => {
+          // ⬇️ UI: quitar estado subiendo siempre (éxito o error)
+          this.uploadingTasks.update(set => {
+            const next = new Set(set);
+            next.delete(tarea.id_cliente_tarea);
+            return next;
+          });
+
+          fileInput.value = '';
+        })
+      )
+      .subscribe({
+        next: (resp) => {
+          this.tareasDeCliente.update(tareas =>
+            tareas.map(t =>
+              t.id_cliente_tarea === tarea.id_cliente_tarea
+                ? {
+                  ...t,
+                  estado: resp.data.tarea.estado,
+                  archivo_cliente: [resp.data.archivo]
+                }
+                : t
+            )
+          );
+          // Limpiar error si se subió exitosamente
+          this.uploadError.set(null);
+        },
+        error: (error) => {
+          console.error('Error al subir archivo:', error);
+          this.uploadError.set({
+            message: error.error.message || 'Error al subir el archivo',
+            taskId: tarea.id_cliente_tarea
+          });
+        }
+      });
   }
 
   isUploading(tarea: TaskClientVM): boolean {
     return this.uploadingTasks().has(tarea.id_cliente_tarea);
   }
 
+  closeError(): void {
+    this.uploadError.set(null);
+  }
 
   verifyTask() {
     this.router.navigate(['home/dashboard'])
