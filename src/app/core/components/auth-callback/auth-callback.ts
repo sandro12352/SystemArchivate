@@ -35,12 +35,10 @@ export class AuthCallback implements OnInit {
         this.router.navigate(['/login']);
         return;
       }
-      console.log('Sending token to backend...')
 
       const authResp = await firstValueFrom(
         this.authService.sendTokenToBackend(token)
       );
-      console.log(authResp)
 
       this.authService.setUserSession({
         user: authResp.user,
