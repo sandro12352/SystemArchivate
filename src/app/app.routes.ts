@@ -8,19 +8,19 @@ import { AuthCallback } from './core/components/auth-callback/auth-callback';
 
 export const routes: Routes = [
    {
-    path: 'auth',
-    component: AuthLayoutComponent,
-    children: AUTH_ROUTES,
+      path: 'auth',
+      component: AuthLayoutComponent,
+      children: AUTH_ROUTES,
    },
    {
       path: 'home',
       component: MainLayoutComponent,
-      children:DASHBOARD_ROUTES,
-      canActivate:[authUserGuard]
+      children: DASHBOARD_ROUTES,
+      canActivate: [authUserGuard]
    },
    {
-      path:'callback',
-      component:AuthCallback
+      path: 'callback',
+      component: AuthCallback
    },
    {
       path: '',
@@ -28,8 +28,8 @@ export const routes: Routes = [
       pathMatch: 'full'
    },
    {
-    path: '**',
-    redirectTo: 'auth/login',
-    pathMatch: 'full'   
+      path: '**',
+      redirectTo: 'auth/login',
+      pathMatch: 'full'
    }
 ];

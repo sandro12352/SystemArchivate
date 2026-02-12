@@ -1,0 +1,39 @@
+/* Estilos para el modal premium */
+:host ::ng-deep .premium-modal .p-dialog-content {
+    padding: 0 !important;
+    border-radius: 24px !important;
+    overflow: hidden;
+    box-shadow: 0 25px 50px -12px rgba(124, 58, 237, 0.25) !important;
+}
+
+:host ::ng-deep .p-dialog.premium-modal {
+    border: none !important;
+    background: transparent !important;
+}
+
+/* Efecto hover suave en las cards */
+.metric-card {
+    transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.metric-card:hover {
+    transform: translateY(-5px);
+}
+
+/* Scrollbar personalizado para el textarea */
+textarea::-webkit-scrollbar {
+    width: 6px;
+}
+
+textarea::-webkit-scrollbar-track {
+    background: transparent;
+}
+
+textarea::-webkit-scrollbar-thumb {
+    background: #e2e8f0;
+    border-radius: 10px;
+}
+
+textarea::-webkit-scrollbar-thumb:hover {
+    background: #cbd5e1;
+}

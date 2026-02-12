@@ -1,6 +1,16 @@
 /* Esto permite que el contenido del componente hijo (el menú) 
    salga de los límites del selector app-header-component */
-:host {
-    position: relative;
-    z-index: 1000; /* Asegura que el header esté por encima del main */
+
+header {
+    background-color: rgba(255, 255, 255, 0.8) !important;
+    backdrop-filter: blur(12px);
+    -webkit-backdrop-filter: blur(12px);
+}
+
+::ng-deep .p-menu {
+    border-radius: 12px !important;
+    border: 1px solid #f1f5f9 !important;
+    box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.05) !important;
+    padding: 2px !important;
+    min-width: 160px !important;
 }

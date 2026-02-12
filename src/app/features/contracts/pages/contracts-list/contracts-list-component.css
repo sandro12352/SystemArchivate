@@ -1,0 +1,97 @@
+:host {
+    display: block;
+    animation: fadeIn 0.8s ease-out;
+}
+
+@keyframes fadeIn {
+    from {
+        opacity: 0;
+        transform: translateY(20px);
+    }
+
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+textarea:focus {
+    outline: none;
+    background-color: white;
+}
+
+.p-skeleton {
+    background: rgba(255, 255, 255, 0.6);
+}
+
+/* Scroll suave para el panel lateral pegajoso */
+.sticky {
+    transition: all 0.3s ease;
+}
+
+/* Efectos de hover suaves */
+button {
+    cursor: pointer;
+}
+
+button:active {
+    transform: scale(0.98);
+}
+
+/* Estilos para PrimeNG Dialog Premium */
+::ng-deep .premium-modal .p-dialog-header {
+    background: white;
+    padding: 2rem 2rem 1rem 2rem;
+    border-top-left-radius: 2.5rem;
+    border-top-right-radius: 2.5rem;
+    border-bottom: none;
+}
+
+::ng-deep .premium-modal .p-dialog-title {
+    font-weight: 800;
+    font-size: 1.25rem;
+    color: #111827;
+}
+
+::ng-deep .premium-modal .p-dialog-content {
+    padding: 0 2rem 2rem 2rem;
+    background: white;
+    border-bottom-left-radius: 2.5rem;
+    border-bottom-right-radius: 2.5rem;
+}
+
+::ng-deep .premium-modal .p-dialog-header-icons {
+    padding-right: 1rem;
+}
+
+::ng-deep .visor-modal .p-dialog-content {
+    background: transparent;
+    padding: 0.5rem 2rem 0.5rem 2rem;
+    overflow: hidden;
+}
+
+::ng-deep .visor-modal .p-dialog-header {
+    background: rgba(255, 255, 255, 0.8);
+    backdrop-filter: blur(8px);
+    border-bottom: 1px solid rgba(0, 0, 0, 0.05);
+}
+
+::ng-deep .visor-modal .p-dialog-footer {
+    background: rgba(255, 255, 255, 0.8);
+    backdrop-filter: blur(8px);
+    padding: 0;
+    border-bottom-left-radius: 2.5rem;
+    border-bottom-right-radius: 2.5rem;
+}
+
+.visor-modal iframe {
+    border-radius: 1.5rem;
+    box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.25);
+}
+
+/* Efecto de cristal para el contenedor del iframe */
+.visor-modal .w-full.h-\[75vh\] {
+    background: white;
+    box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06);
+    transition: transform 0.3s ease;
+}

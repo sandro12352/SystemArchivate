@@ -1,171 +1,335 @@
 <main class="relative mx-auto px-4 sm:px-6 py-8 min-h-screen bg-gray-50">
-  
+
+  <!-- ========== MODAL PLAN DE MARKETING (p-dialog) ========== -->
+  <p-dialog [visible]="mostrarModalPlan()" (visibleChange)="mostrarModalPlan.set($event)" [modal]="true"
+    [draggable]="false" [resizable]="false" [style]="{ width: '100%', maxWidth: '850px' }" styleClass="premium-modal"
+    [showHeader]="false">
+
+    <div class="bg-gradient-to-r from-purple-600 to-indigo-600 p-6 relative overflow-hidden rounded-t-2xl">
+      <!-- Botón cerrar -->
+      <button class="absolute top-4 right-4 text-white/70 hover:text-white transition z-20"
+        (click)="mostrarModalPlan.set(false)">
+        <i class="pi pi-times"></i>
+      </button>
+
+      <div class="relative z-10 flex flex-col md:flex-row items-center gap-6">
+        <!-- Preview PDF -->
+        <div class="shrink-0">
+          <div
+            class="w-24 h-28 bg-white rounded-xl shadow-2xl border border-white/20 overflow-hidden flex flex-col transform hover:scale-105 transition-transform duration-300">
+            <div class="bg-red-500 h-2"></div>
+            <div class="flex-1 flex flex-col items-center justify-center p-3">
+              <i class="pi pi-file-pdf text-red-500 text-3xl mb-2"></i>
+              <span class="text-[10px] text-gray-500 text-center font-bold leading-tight uppercase tracking-tighter">
+                Plan<br>Marketing<br>2024
+              </span>
+            </div>
+          </div>
+        </div>
+
+        <div class="flex-1 text-center md:text-left">
+          <h2 class="text-white text-2xl font-bold mb-2">Plan de Marketing pendiente de revisión</h2>
+          <p class="text-purple-100 text-sm opacity-90 leading-relaxed">
+            Tu plan estratégico para el próximo periodo ya está listo. Por favor, revísalo y déjanos tus comentarios
+            para comenzar con la ejecución.
+          </p>
+          <div class="mt-4 flex flex-col sm:flex-row gap-3 justify-center md:justify-start">
+            <p-button label="Ver Plan PDF" icon="pi pi-external-link"
+              styleClass="p-button-raised bg-white text-purple-600 border-none hover:bg-purple-50 px-6"
+              (onClick)="descargarPdf()">
+            </p-button>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="p-6 bg-white rounded-b-2xl">
+      <div class="bg-gray-50 rounded-2xl p-5 border border-gray-100">
+        <div class="flex items-center gap-2 mb-3">
+          <i class="pi pi-comment text-purple-600"></i>
+          <label class="font-bold text-gray-700">Tus Observaciones</label>
+        </div>
+        <textarea pTextarea [(ngModel)]="observacionesCliente" rows="4"
+          class="w-full rounded-xl border-gray-200 focus:border-purple-500 focus:ring-purple-500 resize-none p-4 text-gray-700"
+          placeholder="Escribe aquí tus comentarios, dudas o sugerencias sobre el plan...">
+        </textarea>
+        <div class="flex justify-end mt-4">
+          <p-button [loading]="guardandoObservaciones()" label="Enviar y Notificar" icon="pi pi-send"
+            styleClass="bg-purple-600 border-none hover:bg-purple-700 shadow-lg shadow-purple-200 px-8 py-3 rounded-xl font-bold"
+            (onClick)="guardarObservaciones()">
+          </p-button>
+        </div>
+      </div>
+    </div>
+  </p-dialog>
+
+  <!-- ========== HEADER DEL DASHBOARD ========== -->
   <div class="flex flex-col md:flex-row justify-between items-start md:items-center mb-8 gap-4">
     <div>
-      <h2 class="text-3xl font-bold text-gray-800">Panel de Rendimiento</h2>
-      <p class="text-gray-500">Monitorea tus campañas y gestiona tus proyectos</p>
+      <h2 class="text-2xl font-bold text-gray-800">Panel de Rendimiento</h2>
+      <p class="text-gray-500 text-sm">Monitorea tus campañas y gestiona tus proyectos de forma eficiente</p>
     </div>
-    
-    <div class="flex items-center gap-3 bg-white p-2 rounded-xl shadow-sm border border-gray-100">
-      <span class="text-sm font-medium text-gray-600 ml-2">Proyecto:</span>
-      <p-select [options]="proyectos"  optionLabel="nombre"></p-select>
-    </div>
+
+    <!-- Alerta si hay plan pendiente pero modal está cerrado -->
+    @if (planMarketingPendiente() && !mostrarModalPlan()) {
+    <p-button label="Ver Plan Pendiente" icon="pi pi-exclamation-circle"
+      styleClass="p-button-text p-button-warning font-bold" (onClick)="mostrarModalPlan.set(true)">
+    </p-button>
+    }
   </div>
 
+  <!-- ========== CARDS DE MÉTRICAS ========== -->
   <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 mb-8">
-    <div class="bg-white p-6 rounded-2xl border border-gray-100 shadow-sm">
-      <div class="flex justify-between items-start">
+
+    <!-- Card: Alcance Total -->
+    <div class="bg-white p-6 rounded-2xl border border-gray-100 shadow-sm hover:shadow-md transition-all duration-300">
+      <div class="flex items-center gap-5">
+        <div class="w-14 h-14 bg-purple-100 rounded-full flex items-center justify-center shrink-0">
+          <i class="pi pi-users text-purple-600 text-xl"></i>
+        </div>
         <div>
           <p class="text-sm text-gray-500 font-medium">Alcance Total</p>
-          <h3 class="text-2xl font-bold text-gray-800 mt-1">45.2k</h3>
-        </div>
-        <div class="p-2 bg-purple-50 rounded-lg text-purple-600">
-          <i class="pi pi-users text-xl"></i>
+          <h3 class="text-2xl font-bold text-gray-800">1.2M</h3>
         </div>
       </div>
-      <div class="mt-4 flex items-center text-sm">
-        <span class="text-green-500 font-bold flex items-center">
-          <i class="pi pi-arrow-up text-xs mr-1"></i> 12%
+      <div class="mt-4 flex items-center text-xs">
+        <span class="text-green-500 font-bold bg-green-50 px-2 py-1 rounded-lg flex items-center">
+          <i class="pi pi-arrow-up text-[10px] mr-1"></i> +15%
         </span>
-        <span class="text-gray-400 ml-2">vs mes anterior</span>
+        <span class="text-gray-400 ml-2">desde el mes pasado</span>
       </div>
     </div>
 
-    <div class="bg-white p-6 rounded-2xl border border-gray-100 shadow-sm">
-      <div class="flex justify-between items-start">
+    <!-- Card: CTR Promedio -->
+    <div class="bg-white p-6 rounded-2xl border border-gray-100 shadow-sm hover:shadow-md transition-all duration-300">
+      <div class="flex items-center gap-5">
+        <div class="w-14 h-14 bg-indigo-100 rounded-full flex items-center justify-center shrink-0">
+          <i class="pi pi-chart-line text-indigo-600 text-xl"></i>
+        </div>
         <div>
           <p class="text-sm text-gray-500 font-medium">CTR Promedio</p>
-          <h3 class="text-2xl font-bold text-gray-800 mt-1">3.8%</h3>
-        </div>
-        <div class="p-2 bg-indigo-50 rounded-lg text-indigo-600">
-          <i class="pi pi-chart-line text-xl"></i>
+          <h3 class="text-2xl font-bold text-gray-800">4.8%</h3>
         </div>
       </div>
-      <div class="mt-4 flex items-center text-sm">
-        <span class="text-green-500 font-bold flex items-center">
-          <i class="pi pi-arrow-up text-xs mr-1"></i> 0.5%
+      <div class="mt-4 flex items-center text-xs">
+        <span class="text-green-500 font-bold bg-green-50 px-2 py-1 rounded-lg flex items-center">
+          <i class="pi pi-arrow-up text-[10px] mr-1"></i> +0.5%
         </span>
-        <span class="text-gray-400 ml-2">estable</span>
+        <span class="text-gray-400 ml-2">desde el mes pasado</span>
       </div>
     </div>
 
-    <div class="bg-white p-6 rounded-2xl border border-gray-100 shadow-sm">
-      <div class="flex justify-between items-start">
-        <div>
-          <p class="text-sm text-gray-500 font-medium">CTR Promedio</p>
-          <h3 class="text-2xl font-bold text-gray-800 mt-1">3.8%</h3>
+    <!-- Card: Inversión Total -->
+    <div class="bg-white p-6 rounded-2xl border border-gray-100 shadow-sm hover:shadow-md transition-all duration-300">
+      <div class="flex items-center gap-5">
+        <div class="w-14 h-14 bg-green-100 rounded-full flex items-center justify-center shrink-0">
+          <i class="pi pi-wallet text-green-600 text-xl"></i>
         </div>
-        <div class="p-2 bg-indigo-50 rounded-lg text-indigo-600">
-          <i class="pi pi-chart-line text-xl"></i>
+        <div>
+          <p class="text-sm text-gray-500 font-medium">Inversión Total</p>
+          <h3 class="text-2xl font-bold text-gray-800">$25,000</h3>
         </div>
       </div>
-      <div class="mt-4 flex items-center text-sm">
-        <span class="text-green-500 font-bold flex items-center">
-          <i class="pi pi-arrow-up text-xs mr-1"></i> 0.5%
+      <div class="mt-4 flex items-center text-xs">
+        <span class="text-red-500 font-bold bg-red-50 px-2 py-1 rounded-lg flex items-center">
+          <i class="pi pi-arrow-down text-[10px] mr-1"></i> -2%
         </span>
-        <span class="text-gray-400 ml-2">estable</span>
+        <span class="text-gray-400 ml-2">desde el mes pasado</span>
       </div>
     </div>
 
-
-    <div class="bg-white p-6 rounded-2xl border border-gray-100 shadow-sm">
-      <div class="flex justify-between items-start">
-        <div>
-          <p class="text-sm text-gray-500 font-medium">CTR Promedio</p>
-          <h3 class="text-2xl font-bold text-gray-800 mt-1">3.8%</h3>
+    <!-- Card: Campañas Activas -->
+    <div class="bg-white p-6 rounded-2xl border border-gray-100 shadow-sm hover:shadow-md transition-all duration-300">
+      <div class="flex items-center gap-5">
+        <div class="w-14 h-14 bg-orange-100 rounded-full flex items-center justify-center shrink-0">
+          <i class="pi pi-megaphone text-orange-600 text-xl"></i>
         </div>
-        <div class="p-2 bg-indigo-50 rounded-lg text-indigo-600">
-          <i class="pi pi-chart-line text-xl"></i>
+        <div>
+          <p class="text-sm text-gray-500 font-medium">Campañas Activas</p>
+          <h3 class="text-2xl font-bold text-gray-800">12</h3>
         </div>
       </div>
-      <div class="mt-4 flex items-center text-sm">
-        <span class="text-green-500 font-bold flex items-center">
-          <i class="pi pi-arrow-up text-xs mr-1"></i> 0.5%
+      <div class="mt-4 flex items-center text-xs">
+        <span class="text-green-500 font-bold bg-green-50 px-2 py-1 rounded-lg flex items-center">
+          <i class="pi pi-arrow-up text-[10px] mr-1"></i> +3
         </span>
-        <span class="text-gray-400 ml-2">estable</span>
+        <span class="text-gray-400 ml-2">nuevas campañas</span>
       </div>
     </div>
   </div>
 
+  <!-- ========== CONTENIDO PRINCIPAL ========== -->
   <div class="grid grid-cols-1 lg:grid-cols-3 gap-8">
-    
-    <div class="lg:col-span-2 space-y-8">
-      
-      
 
-      <div class="bg-white rounded-2xl shadow-sm border border-gray-100 overflow-hidden">
-        <div class="p-6 border-b border-gray-100 flex justify-between items-center">
-          <h3 class="font-bold text-gray-800">Campañas en curso</h3>
-          <p-button label="Nueva Campaña" icon="pi pi-plus" styleClass="p-button-text p-button-sm text-purple-600"></p-button>
+    <!-- COLUMNA IZQUIERDA: TABLA DE PROYECTOS (2/3) -->
+    <div class="lg:col-span-2">
+      <div class="bg-white rounded-3xl shadow-sm border border-gray-100 overflow-hidden">
+        <div class="p-6 border-b border-gray-50 flex items-center justify-between bg-gray-50/30">
+          <h3 class="font-bold text-gray-800 text-lg">Mis Proyectos</h3>
+          <div class="flex items-center gap-2">
+            <span class="text-xs text-gray-400 font-medium">Total: {{ proyectos().length }} proyectos</span>
+          </div>
         </div>
+
         <div class="overflow-x-auto">
-          <table class="w-full text-left border-collapse">
-            <thead class="bg-gray-50">
-              <tr>
-                <th class="p-4 text-xs font-bold text-gray-500 uppercase">Campaña</th>
-                <th class="p-4 text-xs font-bold text-gray-500 uppercase">Estado</th>
-                <th class="p-4 text-xs font-bold text-gray-500 uppercase text-center">Inversión</th>
-                <th class="p-4 text-xs font-bold text-gray-500 uppercase text-right">Acción</th>
+          @if (cargandoProyectos()) {
+          <div class="p-12 text-center">
+            <i class="pi pi-spin pi-spinner text-purple-600 text-3xl"></i>
+            <p class="text-gray-500 mt-4 font-medium">Actualizando información...</p>
+          </div>
+          } @else if (proyectos().length === 0) {
+          <div class="p-16 text-center">
+            <div class="w-20 h-20 bg-gray-50 rounded-full flex items-center justify-center mx-auto mb-6">
+              <i class="pi pi-folder-open text-gray-300 text-3xl"></i>
+            </div>
+            <h4 class="text-gray-800 font-bold mb-1">No hay proyectos activos</h4>
+            <p class="text-gray-500 text-sm">Contacta con tu asesor para iniciar un nuevo proyecto.</p>
+          </div>
+          } @else {
+          <table class="w-full text-left">
+            <thead>
+              <tr class="bg-gray-50/50">
+                <th class="px-6 py-4 text-xs font-bold text-gray-400 uppercase tracking-widest">Proyecto</th>
+                <th class="px-6 py-4 text-xs font-bold text-gray-400 uppercase tracking-widest text-center">Estado</th>
+                <th class="px-6 py-4 text-xs font-bold text-gray-400 uppercase tracking-widest">Fecha Inicio</th>
+                <th class="px-6 py-4 text-xs font-bold text-gray-400 uppercase tracking-widest text-center">Acciones
+                </th>
               </tr>
             </thead>
             <tbody class="divide-y divide-gray-50">
-            @for (camp of campanas; track $index) {
-              <tr  class="hover:bg-gray-50/50 transition">
-                <td class="p-4">
-                  <span class="font-semibold text-gray-800">{{camp.nombre}}</span>
+              @for (proyecto of proyectosPaginados(); track proyecto.id_proyecto) {
+              <tr class="hover:bg-purple-50/30 transition-colors duration-200">
+                <td class="px-6 py-5">
+                  <div class="flex items-center gap-3">
+                    <div class="w-2 h-2 rounded-full"
+                      [ngClass]="proyecto.estado === 'activo' ? 'bg-green-500' : 'bg-gray-300'"></div>
+                    <span class="font-bold text-gray-800">{{ proyecto.nombre }}</span>
+                  </div>
                 </td>
-                <td class="p-4">
-                  <span class="px-2 py-1 rounded-full text-[10px] font-bold bg-green-100 text-green-700">ACTIVA</span>
+                <td class="px-6 py-5 text-center">
+                  <span
+                    class="inline-flex items-center px-4 py-1.5 rounded-xl text-[10px] font-black uppercase tracking-wider"
+                    [ngClass]="{
+                          'bg-green-100 text-green-700': proyecto.estado === 'activo',
+                          'bg-amber-100 text-amber-700': proyecto.estado === 'en_pausa',
+                          'bg-gray-100 text-gray-500': proyecto.estado === 'finalizado'
+                        }">
+                    {{ getEstadoLabel(proyecto.estado) }}
+                  </span>
                 </td>
-                <td class="p-4 text-center font-medium text-gray-600">{{camp.inversion }}</td>
-                <td class="p-4 text-right">
-                  <button class="text-gray-400 hover:text-purple-600"><i class="pi pi-ellipsis-v"></i></button>
+                <td class="px-6 py-5 text-gray-500 text-sm font-medium">
+                  {{ formatDate(proyecto.fecha_inicio) }}
+                </td>
+                <td class="px-6 py-5 text-center">
+                  <button
+                    class="px-4 py-2 bg-purple-50 text-purple-600 hover:bg-purple-100 rounded-xl text-xs font-bold transition-all duration-200">
+                    Ver Detalles
+                  </button>
                 </td>
               </tr>
-            }
+              }
             </tbody>
           </table>
-        </div>
-      </div>
-    </div>
 
-    <div class="space-y-8">
-      <div class="bg-white rounded-2xl shadow-sm border border-gray-100 p-6">
-        <h3 class="font-bold text-gray-800 mb-6 flex items-center gap-2">
-          <i class="pi pi-calendar-plus text-purple-600"></i> Próximas Actividades
-        </h3>
-        
-        <div class="space-y-6">
-          <div class="relative pl-6 border-l-2 border-purple-200">
-            <div class="absolute -left-[9px] top-0 w-4 h-4 rounded-full bg-purple-500 border-4 border-white"></div>
-            <div class="bg-gray-50 rounded-xl p-4 hover:bg-purple-50 transition border border-transparent hover:border-purple-100">
-              <div class="flex justify-between items-start mb-2">
-                <span class="text-[10px] font-bold bg-purple-100 text-purple-700 px-2 py-0.5 rounded uppercase">Videochat</span>
-                <span class="text-xs text-gray-400 italic">Hoy, 16:00</span>
+          <!-- Paginación Premium -->
+          <div class="px-6 py-4 border-t border-gray-50 flex justify-between items-center">
+            <p class="text-xs text-gray-400 font-medium tracking-tight">
+              Mostrando <span class="text-gray-700 font-bold">{{ proyectosPaginados().length }}</span> de <span
+                class="text-gray-700 font-bold">{{ proyectos().length }}</span> proyectos
+            </p>
+            <div class="flex items-center gap-1">
+              <button
+                class="w-10 h-10 flex items-center justify-center rounded-xl hover:bg-gray-100 disabled:opacity-30 disabled:hover:bg-transparent transition-all"
+                [disabled]="paginaActual() === 1" (click)="cambiarPagina(paginaActual() - 1)">
+                <i class="pi pi-angle-left"></i>
+              </button>
+              <div class="flex items-center gap-1">
+                @for (p of [].constructor(totalPaginas()); track $index) {
+                <button (click)="cambiarPagina($index + 1)"
+                  class="w-10 h-10 font-bold text-xs rounded-xl transition-all"
+                  [ngClass]="paginaActual() === ($index + 1) ? 'bg-purple-600 text-white shadow-lg shadow-purple-100' : 'text-gray-400 hover:bg-gray-100'">
+                  {{ $index + 1 }}
+                </button>
+                }
               </div>
-              <h4 class="font-bold text-gray-800 text-sm">Revisión Mensual de KPIs</h4>
-              <p class="text-xs text-gray-500 mt-1">Sincronización con el equipo de arte.</p>
-              <button class="mt-3 w-full bg-indigo-600 text-white py-2 rounded-lg text-sm font-bold flex items-center justify-center gap-2 hover:bg-indigo-700 transition">
-                <i class="pi pi-video"></i> Unirse a la reunión
+              <button
+                class="w-10 h-10 flex items-center justify-center rounded-xl hover:bg-gray-100 disabled:opacity-30 disabled:hover:bg-transparent transition-all"
+                [disabled]="paginaActual() === totalPaginas()" (click)="cambiarPagina(paginaActual() + 1)">
+                <i class="pi pi-angle-right"></i>
               </button>
             </div>
           </div>
-
-          <div class="relative pl-6 border-l-2 border-gray-100">
-            <div class="absolute -left-[9px] top-0 w-4 h-4 rounded-full bg-gray-300 border-4 border-white"></div>
-            <div class="p-2">
-              <h4 class="font-bold text-gray-700 text-sm">Entrega de Copywriting</h4>
-              <p class="text-xs text-gray-500">Mañana • Proyecto: {{proyectoSeleccionado.nombre}}</p>
-            </div>
-          </div>
+          }
         </div>
-
-        <p-button label="Programar reunión" icon="pi pi-plus" 
-          styleClass="p-button-outlined p-button-secondary w-full mt-8 text-sm">
-        </p-button>
       </div>
     </div>
-    <p-speeddial [model]="items!" [radius]="120" type="quarter-circle" direction="up-right" [style]="{ position: 'absolute', left: 0, bottom: 0 }" />
-      </div>
-</main>
 
+    <!-- COLUMNA DERECHA: PRÓXIMAS ACTIVIDADES (1/3) -->
+    <div>
+      <div class="bg-white rounded-3xl shadow-sm border border-gray-100 p-6">
+        <h3 class="font-bold text-gray-800 mb-8 flex items-center gap-2">
+          <span class="w-1.5 h-6 bg-purple-600 rounded-full"></span>
+          Próximas Actividades
+        </h3>
+
+        <div class="space-y-8 relative">
+          <!-- Línea de tiempo decorativa -->
+          <div class="absolute left-1.5 top-0 bottom-0 w-0.5 bg-gray-100"></div>
+
+          @for (actividad of proximasActividades; track $index) {
+          <div class="flex gap-6 relative z-10">
+            <!-- Indicador -->
+            <div class="shrink-0">
+              <div class="w-3 h-3 rounded-full border-2 border-white shadow-sm transition-transform hover:scale-125"
+                [ngClass]="{
+                    'bg-purple-600': actividad.esHoy,
+                    'bg-gray-300': !actividad.esHoy
+                  }">
+              </div>
+            </div>
+
+            <!-- Contenido -->
+            <div class="flex-1 pb-2">
+              <div class="flex items-center gap-2 mb-2">
+                <span class="text-[10px] font-black uppercase tracking-widest" [ngClass]="{
+                      'text-purple-600': actividad.esHoy,
+                      'text-gray-400': !actividad.esHoy
+                    }">
+                  {{ actividad.fecha }}
+                </span>
+                @if (actividad.esHoy) {
+                <span class="px-2 py-0.5 bg-purple-50 text-purple-600 text-[8px] font-bold rounded-full">HOY</span>
+                }
+              </div>
+              <p class="text-sm text-gray-700 font-medium leading-relaxed">{{ actividad.descripcion }}</p>
+            </div>
+          </div>
+          }
+        </div>
+
+        <button
+          class="w-full mt-8 py-3 bg-gray-50 hover:bg-gray-100 text-gray-500 rounded-2xl text-xs font-bold transition-all flex items-center justify-center gap-2">
+          Ver todas las actividades <i class="pi pi-arrow-right text-[10px]"></i>
+        </button>
+      </div>
+
+      <!-- Banner pequeño de ayuda -->
+      <div class="mt-8 bg-indigo-900 rounded-3xl p-6 text-white relative overflow-hidden group">
+        <div
+          class="absolute -right-4 -bottom-4 w-24 h-24 bg-white/10 rounded-full blur-2xl group-hover:scale-150 transition-transform duration-700">
+        </div>
+        <h4 class="font-bold mb-2">¿Necesitas ayuda?</h4>
+        <p class="text-xs text-indigo-200 leading-relaxed mb-4">Agenda una sesión de asesoría personalizada con nuestro
+          equipo.</p>
+        <button class="text-xs font-bold text-white flex items-center gap-2 hover:gap-3 transition-all">
+          Agendar ahora <i class="pi pi-arrow-right"></i>
+        </button>
+      </div>
+    </div>
+
+  </div>
+
+  <p-speeddial [model]="items!" [radius]="120" type="quarter-circle" direction="up-right"
+    [style]="{ position: 'fixed', left: '20px', bottom: '20px' }" />
+
+</main>
