@@ -1,67 +1,5 @@
 <main class="relative mx-auto px-4 sm:px-6 py-8 min-h-screen bg-gray-50">
 
-  <!-- ========== MODAL PLAN DE MARKETING (p-dialog) ========== -->
-  <p-dialog [visible]="mostrarModalPlan()" (visibleChange)="mostrarModalPlan.set($event)" [modal]="true"
-    [draggable]="false" [resizable]="false" [style]="{ width: '100%', maxWidth: '850px' }" styleClass="premium-modal"
-    [showHeader]="false">
-
-    <div class="bg-gradient-to-r from-purple-600 to-indigo-600 p-6 relative overflow-hidden rounded-t-2xl">
-      <!-- Botón cerrar -->
-      <button class="absolute top-4 right-4 text-white/70 hover:text-white transition z-20"
-        (click)="mostrarModalPlan.set(false)">
-        <i class="pi pi-times"></i>
-      </button>
-
-      <div class="relative z-10 flex flex-col md:flex-row items-center gap-6">
-        <!-- Preview PDF -->
-        <div class="shrink-0">
-          <div
-            class="w-24 h-28 bg-white rounded-xl shadow-2xl border border-white/20 overflow-hidden flex flex-col transform hover:scale-105 transition-transform duration-300">
-            <div class="bg-red-500 h-2"></div>
-            <div class="flex-1 flex flex-col items-center justify-center p-3">
-              <i class="pi pi-file-pdf text-red-500 text-3xl mb-2"></i>
-              <span class="text-[10px] text-gray-500 text-center font-bold leading-tight uppercase tracking-tighter">
-                Plan<br>Marketing<br>2024
-              </span>
-            </div>
-          </div>
-        </div>
-
-        <div class="flex-1 text-center md:text-left">
-          <h2 class="text-white text-2xl font-bold mb-2">Plan de Marketing pendiente de revisión</h2>
-          <p class="text-purple-100 text-sm opacity-90 leading-relaxed">
-            Tu plan estratégico para el próximo periodo ya está listo. Por favor, revísalo y déjanos tus comentarios
-            para comenzar con la ejecución.
-          </p>
-          <div class="mt-4 flex flex-col sm:flex-row gap-3 justify-center md:justify-start">
-            <p-button label="Ver Plan PDF" icon="pi pi-external-link"
-              styleClass="p-button-raised bg-white text-purple-600 border-none hover:bg-purple-50 px-6"
-              (onClick)="descargarPdf()">
-            </p-button>
-          </div>
-        </div>
-      </div>
-    </div>
-
-    <div class="p-6 bg-white rounded-b-2xl">
-      <div class="bg-gray-50 rounded-2xl p-5 border border-gray-100">
-        <div class="flex items-center gap-2 mb-3">
-          <i class="pi pi-comment text-purple-600"></i>
-          <label class="font-bold text-gray-700">Tus Observaciones</label>
-        </div>
-        <textarea pTextarea [(ngModel)]="observacionesCliente" rows="4"
-          class="w-full rounded-xl border-gray-200 focus:border-purple-500 focus:ring-purple-500 resize-none p-4 text-gray-700"
-          placeholder="Escribe aquí tus comentarios, dudas o sugerencias sobre el plan...">
-        </textarea>
-        <div class="flex justify-end mt-4">
-          <p-button [loading]="guardandoObservaciones()" label="Enviar y Notificar" icon="pi pi-send"
-            styleClass="bg-purple-600 border-none hover:bg-purple-700 shadow-lg shadow-purple-200 px-8 py-3 rounded-xl font-bold"
-            (onClick)="guardarObservaciones()">
-          </p-button>
-        </div>
-      </div>
-    </div>
-  </p-dialog>
 
   <!-- ========== HEADER DEL DASHBOARD ========== -->
   <div class="flex flex-col md:flex-row justify-between items-start md:items-center mb-8 gap-4">
@@ -69,13 +7,6 @@
       <h2 class="text-2xl font-bold text-gray-800">Panel de Rendimiento</h2>
       <p class="text-gray-500 text-sm">Monitorea tus campañas y gestiona tus proyectos de forma eficiente</p>
     </div>
-
-    <!-- Alerta si hay plan pendiente pero modal está cerrado -->
-    @if (planMarketingPendiente() && !mostrarModalPlan()) {
-    <p-button label="Ver Plan Pendiente" icon="pi pi-exclamation-circle"
-      styleClass="p-button-text p-button-warning font-bold" (onClick)="mostrarModalPlan.set(true)">
-    </p-button>
-    }
   </div>
 
   <!-- ========== CARDS DE MÉTRICAS ========== -->

@@ -38,7 +38,6 @@ export class ContractsListComponent implements OnInit {
     private authService = inject(AuthService);
     private messageService = inject(MessageService);
     private router = inject(Router);
-    private sanitizer = inject(DomSanitizer);
 
     user = this.authService.getUserSession();
     contratoActual = signal<Contrato | null>(null);
@@ -170,6 +169,7 @@ export class ContractsListComponent implements OnInit {
 
 
     verDocumento(url: string, title: string): void {
+        console.log(url)
         if (url) {
             this.router.navigate(['/home/contratos/visor'], {
                 queryParams: { url: url, title: title }
