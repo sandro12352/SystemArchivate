@@ -66,6 +66,7 @@ export class ContractsListComponent implements OnInit {
             .pipe(finalize(() => this.cargando.set(false)))
             .subscribe({
                 next: (contrato) => {
+                    console.log(contrato);
                     if (contrato) {
                         this.contratoActual.set(contrato);
                         this.observacionTemporal.set(contrato.observacion || '');

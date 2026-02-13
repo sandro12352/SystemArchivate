@@ -25,7 +25,7 @@ export class ContractService {
      * Obtiene el contrato más reciente del cliente
      */
     getContratoReciente(token: string): Observable<Contrato | null> {
-        return this.http.get<Contrato | null>(`${environment.API_URL}/api/contratos/reciente`, {
+        return this.http.get<Contrato | null>(`${environment.API_URL}/api/contracts/reciente`, {
             headers: {
                 Authorization: `Bearer ${token}`
             }
@@ -37,7 +37,7 @@ export class ContractService {
      */
     actualizarObservacion(idContrato: number, observacion: string, token: string): Observable<Contrato> {
         return this.http.patch<Contrato>(
-            `${environment.API_URL}/api/contratos/${idContrato}/observacion`,
+            `${environment.API_URL}/api/contracts/${idContrato}/observacion`,
             { observacion },
             {
                 headers: {
@@ -55,7 +55,7 @@ export class ContractService {
         formData.append('firma', firmaBlob, `firma_contrato_${idContrato}.png`);
 
         return this.http.post<Contrato>(
-            `${environment.API_URL}/api/contratos/${idContrato}/firmar`,
+            `${environment.API_URL}/api/contracts/${idContrato}/firmar`,
             formData,
             {
                 headers: {

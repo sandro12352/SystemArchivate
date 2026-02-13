@@ -19,16 +19,36 @@
       </button>
 
       <!-- Perfil -->
-      <div class="flex items-center gap-3 cursor-pointer p-1 rounded-xl hover:bg-gray-50 transition p-2"
+      <div
+        class="flex items-center gap-3 cursor-pointer p-1.5 rounded-2xl hover:bg-gray-100/50 transition-all duration-300 border border-transparent hover:border-gray-200 group"
         (click)="userMenu.toggle($event)">
         <div class="text-right hidden sm:block">
-          <p class="text-xs font-bold text-gray-800 leading-none">{{ user?.nombre_completo | titlecase }}</p>
-          <p class="text-[10px] text-gray-500 font-medium">Cliente</p>
+          <p class="text-xs font-black text-gray-900 leading-none group-hover:text-purple-600 transition-colors">{{
+            user?.nombre_completo | titlecase }}</p>
+          <p class="text-[9px] text-gray-500 font-bold uppercase tracking-wider mt-1">Cliente Premium</p>
         </div>
-        <p-avatar [image]="avatarUrl()" shape="circle" class="w-10 h-10 ring-2 ring-purple-50">
-        </p-avatar>
+        <div class="relative">
+          <p-avatar [image]="avatarUrl()" shape="circle"
+            styleClass="w-10 h-10 ring-2 ring-purple-100 shadow-sm transition-transform group-hover:scale-105">
+          </p-avatar>
+          <div class="absolute -bottom-0.5 -right-0.5 w-3 h-3 bg-green-500 border-2 border-white rounded-full"></div>
+        </div>
       </div>
     </div>
   </div>
 </header>
-<p-menu #userMenu [model]="userMenuItems" [popup]="true"></p-menu>
+
+<p-menu #userMenu [model]="userMenuItems" [popup]="true" styleClass="user-profile-menu">
+  <ng-template pTemplate="start">
+    <div class="p-4 mb-1 bg-gray-50/50 rounded-t-xl border-b border-gray-100">
+      <p class="text-[10px] font-black text-gray-400 uppercase tracking-widest mb-2">Mi Cuenta</p>
+      <div class="flex items-center gap-3">
+        <p-avatar [image]="avatarUrl()" shape="circle" styleClass="w-8 h-8 ring-2 ring-white shadow-sm"></p-avatar>
+        <div class="flex flex-col overflow-hidden">
+          <span class="text-sm font-bold text-gray-900 truncate">{{ user?.nombre_completo | titlecase }}</span>
+          <span class="text-[10px] text-gray-500 font-medium truncate">ID: #{{ user?.user?.id_usuario }}</span>
+        </div>
+      </div>
+    </div>
+  </ng-template>
+</p-menu>

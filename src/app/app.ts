@@ -2,16 +2,17 @@ import { Component, signal } from '@angular/core';
 import { RouterOutlet } from '@angular/router';
 import { MenuItem } from 'primeng/api';
 import { LoaderComponent } from "./shared/components/loader-component/loader-component";
+import { Toast } from 'primeng/toast';
 
 @Component({
   selector: 'app-root',
-  imports: [RouterOutlet, LoaderComponent],
+  imports: [RouterOutlet, LoaderComponent, Toast],
   templateUrl: './app.html',
   styleUrl: './app.css'
 })
 export class App {
   protected readonly title = signal('system_archivate');
-   menuItems: MenuItem[] = [
+  menuItems: MenuItem[] = [
     {
       label: 'Dashboard',
       icon: 'pi pi-home',
