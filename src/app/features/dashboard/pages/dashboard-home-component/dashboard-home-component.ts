@@ -1,7 +1,6 @@
 import { Component, computed, inject, OnInit, signal } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
-import { Button } from 'primeng/button';
 import { SelectModule } from 'primeng/select';
 import { MenuItem, MessageService } from 'primeng/api';
 import { SpeedDialModule } from 'primeng/speeddial';
@@ -24,7 +23,6 @@ interface Actividad {
   imports: [
     CommonModule,
     FormsModule,
-    Button,
     SelectModule,
     SpeedDialModule,
     DialogModule,
@@ -42,13 +40,6 @@ export class DashboardHomeComponent implements OnInit {
   private proyectoService = inject(ProyectoService);
 
   user = this.authService.getUserSession();
-
-  // Plan de Marketing
-  planMarketingPendiente = signal<PlanMarketing | null>(null);
-  mostrarModalPlan = signal<boolean>(false);
-  observacionesCliente = signal<string>('');
-  guardandoObservaciones = signal<boolean>(false);
-  descargandoPdf = signal<boolean>(false);
 
   // Proyectos
   proyectos = signal<Proyecto[]>([]);
@@ -88,36 +79,11 @@ export class DashboardHomeComponent implements OnInit {
   ];
 
   ngOnInit(): void {
-    this.cargarPlanMarketingPendiente();
     this.cargarProyectos();
     this.inicializarSpeedDial();
   }
 
-  private cargarPlanMarketingPendiente(): void {
-    if (!this.user?.token) return;
 
-    this.planMarketingService.getPlanMarketingPendiente(this.user.token).subscribe({
-      next: (plan) => {
-        if (plan) {
-          this.planMarketingPendiente.set(plan);
-          this.mostrarModalPlan.set(true);
-        }
-      },
-      error: (err) => {
-        console.error('Error al cargar plan de marketing:', err);
-        // Mostrar datos de ejemplo para visualización
-        this.planMarketingPendiente.set({
-          id_plan_marketing: 1,
-          id_cliente: 1,
-          ruta_pdf: '/path/to/plan.pdf',
-          nombre_archivo: 'Plan de Marketing 2024.pdf',
-          fecha_envio: new Date(),
-          estado: 'pendiente' as any
-        });
-        this.mostrarModalPlan.set(true);
-      }
-    });
-  }
 
   private cargarProyectos(): void {
     if (!this.user?.token) return;
@@ -143,77 +109,6 @@ export class DashboardHomeComponent implements OnInit {
       });
   }
 
-  cerrarBannerPlan(): void {
-    this.mostrarModalPlan.set(false);
-  }
-
-  descargarPdf(): void {
-    const plan = this.planMarketingPendiente();
-    if (!plan || !this.user?.token) return;
-
-    this.descargandoPdf.set(true);
-    this.planMarketingService.descargarPdf(plan.id_plan_marketing, this.user.token)
-      .pipe(finalize(() => this.descargandoPdf.set(false)))
-      .subscribe({
-        next: (blob) => {
-          const url = window.URL.createObjectURL(blob);
-          const a = document.createElement('a');
-          a.href = url;
-          a.download = plan.nombre_archivo || 'plan-marketing.pdf';
-          a.click();
-          window.URL.revokeObjectURL(url);
-        },
-        error: (err) => {
-          console.error('Error al descargar PDF:', err);
-          this.messageService.add({
-            severity: 'error',
-            summary: 'Error',
-            detail: 'No se pudo descargar el archivo PDF'
-          });
-        }
-      });
-  }
-
-  guardarObservaciones(): void {
-    const plan = this.planMarketingPendiente();
-    if (!plan || !this.user?.token) return;
-
-    if (!this.observacionesCliente().trim()) {
-      this.messageService.add({
-        severity: 'warn',
-        summary: 'Atención',
-        detail: 'Por favor escribe tus observaciones'
-      });
-      return;
-    }
-
-    this.guardandoObservaciones.set(true);
-    this.planMarketingService.marcarComoRevisado(
-      plan.id_plan_marketing,
-      this.observacionesCliente(),
-      this.user.token
-    )
-      .pipe(finalize(() => this.guardandoObservaciones.set(false)))
-      .subscribe({
-        next: () => {
-          this.planMarketingPendiente.set(null);
-          this.observacionesCliente.set('');
-          this.messageService.add({
-            severity: 'success',
-            summary: 'Éxito',
-            detail: 'Observaciones enviadas correctamente'
-          });
-        },
-        error: (err) => {
-          console.error('Error al guardar observaciones:', err);
-          this.messageService.add({
-            severity: 'error',
-            summary: 'Error',
-            detail: 'No se pudieron enviar las observaciones'
-          });
-        }
-      });
-  }
 
   cambiarPagina(pagina: number): void {
     if (pagina >= 1 && pagina <= this.totalPaginas()) {
