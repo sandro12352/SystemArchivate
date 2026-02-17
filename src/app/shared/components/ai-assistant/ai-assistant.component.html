@@ -1,0 +1,46 @@
+<div class="assistant-container">
+    <!-- Chat Window -->
+    <div class="chat-window" [class.open]="isOpen()" [class.closed]="!isOpen()">
+        <div class="chat-header">
+            <div class="flex items-center gap-2">
+                <div class="w-8 h-8 rounded-lg bg-white/20 flex items-center justify-center">
+                    <i class="pi pi-sparkles text-sm"></i>
+                </div>
+                <div>
+                    <h3 class="font-semibold text-sm">Asistente IA</h3>
+                    <p class="text-[10px] text-white/70">En línea ahora</p>
+                </div>
+            </div>
+            <button (click)="toggleChat()" class="hover:bg-white/20 p-2 rounded-lg transition-colors">
+                <i class="pi pi-times"></i>
+            </button>
+        </div>
+
+        <div class="chat-messages">
+            @for (msg of messages(); track $index) {
+            <div class="message" [class.message-ai]="msg.role === 'ai'" [class.message-user]="msg.role === 'user'">
+                {{ msg.content }}
+            </div>
+            }
+            @if (isTyping()) {
+            <div class="message message-ai italic text-gray-400">
+                Escribiendo...
+            </div>
+            }
+        </div>
+
+        <div class="chat-input-container">
+            <input #chatInput type="text" placeholder="Escribe un mensaje..." class="chat-input"
+                (keyup.enter)="sendMessage(chatInput.value); chatInput.value = ''">
+            <button (click)="sendMessage(chatInput.value); chatInput.value = ''" class="send-button">
+                <i class="pi pi-send"></i>
+            </button>
+        </div>
+    </div>
+
+    <!-- Floating Button -->
+    <button class="assistant-button" (click)="toggleChat()">
+        <div class="pulse-ring"></div>
+        <i class="pi pi-sparkles text-2xl" [class.pi-times]="isOpen()"></i>
+    </button>
+</div>

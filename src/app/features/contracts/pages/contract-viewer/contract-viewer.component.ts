@@ -9,33 +9,48 @@ import { Button } from 'primeng/button';
   standalone: true,
   imports: [CommonModule, RouterModule, Button],
   template: `
-    <div class="flex flex-col h-screen bg-gray-100">
+    <div class="visor-overlay">
       <!-- Header del Visor -->
-      <div class="bg-white border-b border-gray-200 px-6 py-4 flex justify-between items-center shadow-sm z-10">
+      <div class="visor-header">
         <div class="flex items-center gap-4">
           <p-button 
             icon="pi pi-arrow-left" 
-            styleClass="p-button-rounded p-button-text p-button-plain" 
+            label="Volver"
+            styleClass="p-button-text p-button-plain text-sm font-bold" 
             (onClick)="volver()">
           </p-button>
-          <div>
-            <h1 class="text-xl font-bold text-gray-900">{{ titulo() }}</h1>
-            <p class="text-xs text-gray-500 font-medium">Visualización segura de documento</p>
+          <div class="h-8 w-px bg-gray-100 hidden sm:block"></div>
+          <div class="flex flex-col">
+            <h1 class="text-base md:text-lg font-bold text-gray-900 truncate max-w-[150px] md:max-w-xs leading-none mb-1">
+              {{ titulo() }}
+            </h1>
+            <span class="text-[9px] font-black text-purple-600 uppercase tracking-widest">Documento Oficial</span>
           </div>
         </div>
         
         <div class="flex items-center gap-2">
-            <span class="px-3 py-1 bg-purple-100 text-purple-700 text-[10px] font-black uppercase rounded-full">Modo Lectura</span>
+            <p-button 
+              icon="pi pi-external-link" 
+              label="Nueva Pestaña"
+              styleClass="p-button-text p-button-secondary text-xs font-bold hidden md:flex" 
+              (onClick)="abrirEnNuevaPestana()">
+            </p-button>
         </div>
       </div>
 
       <!-- Área del PDF -->
-      <div class="flex-1 p-2 md:p-4 flex justify-center overflow-hidden">
-        <div class="w-full max-w-[98%] h-full bg-white rounded-2xl shadow-2xl overflow-hidden border border-gray-200 relative">
+      <div class="visor-content w-full h-full">
+        <div class="pdf-container">
           @if (urlSegura()) {
-            <iframe [src]="urlSegura()!" class="w-full h-full border-none" style="display: block;" type="application/pdf"></iframe>
+            <iframe 
+              [src]="urlSegura()!" 
+              class="w-full h-full border-none shadow-2xl" 
+              style="display: block;"
+              allow="fullscreen"
+              title="Visor de PDF">
+            </iframe>
           } @else {
-            <div class="flex flex-col items-center justify-center h-full gap-4">
+            <div class="flex flex-col items-center justify-center h-full gap-4 bg-white">
               <i class="pi pi-spin pi-spinner text-purple-600 text-4xl"></i>
               <p class="text-gray-500 font-medium">Cargando documento...</p>
             </div>
@@ -45,9 +60,62 @@ import { Button } from 'primeng/button';
     </div>
   `,
   styles: [`
-    :host {
-      display: block;
+    .visor-overlay {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100vw;
       height: 100vh;
+      background: #f8fafc;
+      z-index: 9999;
+      display: flex;
+      flex-direction: column;
+      animation: slideUp 0.3s ease-out;
+    }
+
+    .visor-header {
+      background: white;
+      border-bottom: 1px solid #e2e8f0;
+      padding: 1rem 1.5rem;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      flex-shrink: 0;
+      z-index: 100;
+      box-shadow: 0 1px 3px 0 rgb(0 0 0 / 0.1);
+    }
+
+    .visor-content {
+      flex: 1;
+      overflow: hidden;
+      display: flex;
+      justify-content: center;
+      background: #475569; /* Fondo oscuro tipo visor PDF */
+      padding: 0;
+    }
+
+    .pdf-container {
+      width: 100%;
+      height: 100%;
+      background: white;
+      max-width: 1200px;
+      margin: 0 auto;
+      box-shadow: 0 25px 50px -12px rgb(0 0 0 / 0.25);
+    }
+
+    @keyframes slideUp {
+      from { transform: translateY(10px); opacity: 0; }
+      to { transform: translateY(0); opacity: 1; }
+    }
+
+    @media (min-width: 768px) {
+      .visor-content {
+        padding: 1.5rem;
+      }
+      .pdf-container {
+        border-radius: 0.75rem;
+        overflow: hidden;
+      }
     }
   `]
 })
@@ -57,6 +125,7 @@ export class ContractViewerComponent implements OnInit {
   private sanitizer = inject(DomSanitizer);
 
   urlSegura = signal<SafeResourceUrl | null>(null);
+  urlOriginal = signal<string | null>(null);
   titulo = signal<string>('Visor de Documento');
 
   ngOnInit(): void {
@@ -65,7 +134,11 @@ export class ContractViewerComponent implements OnInit {
       const title = params['title'];
 
       if (url) {
-        this.urlSegura.set(this.sanitizer.bypassSecurityTrustResourceUrl(url));
+        this.urlOriginal.set(url);
+        // Agregamos parámetros de PDF para forzar la barra de herramientas y scroll
+        const separator = url.includes('?') ? '&' : '#';
+        const pdfUrl = `${url}${separator}toolbar=1&navpanes=0&scrollbar=1&view=FitH`;
+        this.urlSegura.set(this.sanitizer.bypassSecurityTrustResourceUrl(pdfUrl));
       }
       if (title) {
         this.titulo.set(title);
@@ -73,7 +146,22 @@ export class ContractViewerComponent implements OnInit {
     });
   }
 
+  descargar(): void {
+    const url = this.urlOriginal();
+    if (url) {
+      window.open(url, '_blank');
+    }
+  }
+
+  abrirEnNuevaPestana(): void {
+    const url = this.urlOriginal();
+    if (url) {
+      window.open(url, '_blank');
+    }
+  }
+
   volver(): void {
     this.router.navigate(['/home/contratos']);
   }
 }
+
