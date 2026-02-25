@@ -13,7 +13,7 @@ export class TaskClientService {
 
   getTaskClientsByClientId(token: string): Observable<TaskClientVM[]> {
 
-    return this.http.get<TaskClientVM[]>(`${environment.API_URL}/api/task/`, {
+    return this.http.get<TaskClientVM[]>(`${environment.API_URL}/api/client-task/`, {
       headers: {
         Authorization: `Bearer ${token}`
       }
