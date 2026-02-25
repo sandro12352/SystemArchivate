@@ -90,7 +90,7 @@ import { Button } from 'primeng/button';
       overflow: hidden;
       display: flex;
       justify-content: center;
-      background: #475569; /* Fondo oscuro tipo visor PDF */
+      background: #475569;
       padding: 0;
     }
 
@@ -98,24 +98,11 @@ import { Button } from 'primeng/button';
       width: 100%;
       height: 100%;
       background: white;
-      max-width: 1200px;
-      margin: 0 auto;
-      box-shadow: 0 25px 50px -12px rgb(0 0 0 / 0.25);
     }
 
     @keyframes slideUp {
       from { transform: translateY(10px); opacity: 0; }
       to { transform: translateY(0); opacity: 1; }
-    }
-
-    @media (min-width: 768px) {
-      .visor-content {
-        padding: 1.5rem;
-      }
-      .pdf-container {
-        border-radius: 0.75rem;
-        overflow: hidden;
-      }
     }
   `]
 })
@@ -137,7 +124,7 @@ export class ContractViewerComponent implements OnInit {
         this.urlOriginal.set(url);
         // Agregamos parámetros de PDF para forzar la barra de herramientas y scroll
         const separator = url.includes('?') ? '&' : '#';
-        const pdfUrl = `${url}${separator}toolbar=1&navpanes=0&scrollbar=1&view=FitH`;
+        const pdfUrl = `${url}${separator}toolbar=1&navpanes=0&scrollbar=1&zoom=100`;
         this.urlSegura.set(this.sanitizer.bypassSecurityTrustResourceUrl(pdfUrl));
       }
       if (title) {

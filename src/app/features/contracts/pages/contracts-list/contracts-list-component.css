@@ -1,12 +1,12 @@
 :host {
     display: block;
-    animation: fadeIn 0.8s ease-out;
+    animation: pageReveal 0.6s cubic-bezier(0.22, 1, 0.36, 1);
 }
 
-@keyframes fadeIn {
+@keyframes pageReveal {
     from {
         opacity: 0;
-        transform: translateY(20px);
+        transform: translateY(16px);
     }
 
     to {
@@ -15,21 +15,106 @@
     }
 }
 
-textarea:focus {
-    outline: none;
-    background-color: white;
+/* ========== DOCUMENT CARDS ========== */
+.doc-card {
+    transition: all 0.4s cubic-bezier(0.22, 1, 0.36, 1);
+    animation: cardSlideUp 0.5s cubic-bezier(0.22, 1, 0.36, 1) both;
 }
 
+.doc-card:nth-child(1) {
+    animation-delay: 0.05s;
+}
+
+.doc-card:nth-child(2) {
+    animation-delay: 0.1s;
+}
+
+.doc-card:nth-child(3) {
+    animation-delay: 0.15s;
+}
+
+@keyframes cardSlideUp {
+    from {
+        opacity: 0;
+        transform: translateY(12px);
+    }
+
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+.doc-card:hover {
+    transform: translateY(-3px);
+}
+
+/* ========== STATUS BADGE ========== */
+.status-badge {
+    animation: badgeSlideIn 0.5s cubic-bezier(0.22, 1, 0.36, 1) 0.2s both;
+}
+
+@keyframes badgeSlideIn {
+    from {
+        opacity: 0;
+        transform: translateX(16px);
+    }
+
+    to {
+        opacity: 1;
+        transform: translateX(0);
+    }
+}
+
+/* ========== PULSE GLOW (for pending signature) ========== */
+.pulse-glow {
+    animation: pulseGlow 2.5s ease-in-out infinite;
+}
+
+@keyframes pulseGlow {
+
+    0%,
+    100% {
+        box-shadow: 0 0 0 0 rgba(245, 158, 11, 0.4);
+    }
+
+    50% {
+        box-shadow: 0 0 0 10px rgba(245, 158, 11, 0);
+    }
+}
+
+/* ========== SLOW SPIN ========== */
+@keyframes spin-slow {
+    from {
+        transform: rotate(0deg);
+    }
+
+    to {
+        transform: rotate(360deg);
+    }
+}
+
+.animate-spin-slow {
+    animation: spin-slow 8s linear infinite;
+}
+
+/* ========== TEXTAREA FOCUS ========== */
+textarea:focus {
+    outline: none;
+    background-color: white !important;
+}
+
+/* ========== SKELETON OVERRIDES ========== */
 .p-skeleton {
     background: rgba(255, 255, 255, 0.6);
 }
 
-/* Scroll suave para el panel lateral pegajoso */
+/* ========== STICKY SIDEBAR ========== */
 .sticky {
     transition: all 0.3s ease;
 }
 
-/* Efectos de hover suaves */
+/* ========== BUTTON INTERACTIONS ========== */
 button {
     cursor: pointer;
 }
@@ -38,12 +123,12 @@ button:active {
     transform: scale(0.98);
 }
 
-/* Estilos para PrimeNG Dialog Premium */
+/* ========== PRIMENG DIALOG – PREMIUM MODAL ========== */
 ::ng-deep .premium-modal .p-dialog-header {
     background: white;
     padding: 2rem 2rem 1rem 2rem;
-    border-top-left-radius: 2.5rem;
-    border-top-right-radius: 2.5rem;
+    border-top-left-radius: 2rem;
+    border-top-right-radius: 2rem;
     border-bottom: none;
 }
 
@@ -56,14 +141,15 @@ button:active {
 ::ng-deep .premium-modal .p-dialog-content {
     padding: 0 2rem 2rem 2rem;
     background: white;
-    border-bottom-left-radius: 2.5rem;
-    border-bottom-right-radius: 2.5rem;
+    border-bottom-left-radius: 2rem;
+    border-bottom-right-radius: 2rem;
 }
 
 ::ng-deep .premium-modal .p-dialog-header-icons {
     padding-right: 1rem;
 }
 
+/* ========== VISOR DIALOG STYLES ========== */
 ::ng-deep .visor-modal .p-dialog-content {
     background: transparent;
     padding: 0.5rem 2rem 0.5rem 2rem;
@@ -80,31 +166,11 @@ button:active {
     background: rgba(255, 255, 255, 0.8);
     backdrop-filter: blur(8px);
     padding: 0;
-    border-bottom-left-radius: 2.5rem;
-    border-bottom-right-radius: 2.5rem;
+    border-bottom-left-radius: 2rem;
+    border-bottom-right-radius: 2rem;
 }
 
 .visor-modal iframe {
     border-radius: 1.5rem;
     box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.25);
-}
-
-/* Efecto de cristal para el contenedor del iframe */
-.visor-modal .w-full.h-\[75vh\] {
-    background: white;
-    box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06);
-    transition: transform 0.3s ease;
-}
-
-@keyframes spin-slow {
-    from {
-        transform: rotate(0deg);
-    }
-    to {
-        transform: rotate(360deg);
-    }
-}
-
-.animate-spin-slow {
-    animation: spin-slow 8s linear infinite;
 }

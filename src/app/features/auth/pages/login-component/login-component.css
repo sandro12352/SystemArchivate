@@ -1,0 +1,30 @@
+/* PrimeNG password panel override for dark theme */
+:host ::ng-deep .p-password-panel {
+    background: rgba(15, 10, 30, 0.95) !important;
+    backdrop-filter: blur(20px);
+    border: 1px solid rgba(255, 255, 255, 0.08);
+    border-radius: 12px;
+}
+
+/* Input autofill styling for dark backgrounds */
+:host ::ng-deep input:-webkit-autofill,
+:host ::ng-deep input:-webkit-autofill:hover,
+:host ::ng-deep input:-webkit-autofill:focus {
+    -webkit-text-fill-color: #ffffff !important;
+    -webkit-box-shadow: 0 0 0px 1000px rgba(255, 255, 255, 0.06) inset !important;
+    transition: background-color 5000s ease-in-out 0s;
+}
+
+/* Toggle mask icon styling */
+:host ::ng-deep .p-password .p-password-toggle-mask-btn {
+    color: rgba(255, 255, 255, 0.3);
+}
+
+:host ::ng-deep .p-password .p-password-toggle-mask-btn:hover {
+    color: rgba(168, 85, 247, 0.7);
+}
+
+/* Fix PrimeNG input wrapper */
+:host ::ng-deep .p-password .p-inputtext {
+    background: transparent !important;
+}

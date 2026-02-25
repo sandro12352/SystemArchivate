@@ -1,0 +1,83 @@
+/* Smooth task row entrance animation */
+:host ::ng-deep .divide-y>div {
+    animation: taskFadeIn 0.4s ease-out both;
+}
+
+:host ::ng-deep .divide-y>div:nth-child(1) {
+    animation-delay: 0.05s;
+}
+
+:host ::ng-deep .divide-y>div:nth-child(2) {
+    animation-delay: 0.1s;
+}
+
+:host ::ng-deep .divide-y>div:nth-child(3) {
+    animation-delay: 0.15s;
+}
+
+:host ::ng-deep .divide-y>div:nth-child(4) {
+    animation-delay: 0.2s;
+}
+
+:host ::ng-deep .divide-y>div:nth-child(5) {
+    animation-delay: 0.25s;
+}
+
+@keyframes taskFadeIn {
+    from {
+        opacity: 0;
+        transform: translateY(8px);
+    }
+
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+/* PrimeNG Stepper refinement */
+:host ::ng-deep .p-stepper .p-stepper-separator {
+    background: linear-gradient(to bottom, #e9d5ff, #c7d2fe) !important;
+}
+
+:host ::ng-deep .p-step-active .p-step-number {
+    background: linear-gradient(135deg, #9333ea, #6366f1) !important;
+    border: none !important;
+    color: white !important;
+    box-shadow: 0 4px 14px rgba(147, 51, 234, 0.3);
+}
+
+/* PrimeNG Checkbox override for checked state */
+:host ::ng-deep .p-checkbox.p-checkbox-checked .p-checkbox-box {
+    background: linear-gradient(135deg, #9333ea, #6366f1) !important;
+    border-color: #9333ea !important;
+}
+
+/* Video card grid entrance */
+.grid>div {
+    animation: cardReveal 0.5s ease-out both;
+}
+
+.grid>div:nth-child(1) {
+    animation-delay: 0.1s;
+}
+
+.grid>div:nth-child(2) {
+    animation-delay: 0.2s;
+}
+
+.grid>div:nth-child(3) {
+    animation-delay: 0.3s;
+}
+
+@keyframes cardReveal {
+    from {
+        opacity: 0;
+        transform: translateY(12px) scale(0.98);
+    }
+
+    to {
+        opacity: 1;
+        transform: translateY(0) scale(1);
+    }
+}

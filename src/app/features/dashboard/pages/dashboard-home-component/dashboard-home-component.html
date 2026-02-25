@@ -1,160 +1,212 @@
-<main class="relative mx-auto px-4 sm:px-6 py-8 min-h-screen bg-gray-50">
+<main class="relative mx-auto px-4 sm:px-6 lg:px-8 py-8 min-h-screen bg-gray-50/80 overflow-hidden">
 
+  <!-- Decorative ambient blurs -->
+  <div
+    class="fixed top-0 right-0 w-[500px] h-[500px] bg-purple-100/30 rounded-full blur-[140px] -mr-40 -mt-40 pointer-events-none">
+  </div>
+  <div
+    class="fixed bottom-0 left-0 w-[350px] h-[350px] bg-indigo-100/20 rounded-full blur-[100px] -ml-28 -mb-28 pointer-events-none">
+  </div>
 
-  <!-- ========== HEADER DEL DASHBOARD ========== -->
+  <!-- ========== HEADER ========== -->
   <div class="flex flex-col md:flex-row justify-between items-start md:items-center mb-8 gap-4">
     <div>
-      <h2 class="text-2xl font-bold text-gray-800">Panel de Rendimiento</h2>
-      <p class="text-gray-500 text-sm">Monitorea tus campañas y gestiona tus proyectos de forma eficiente</p>
+      <h1 class="text-2xl lg:text-3xl font-extrabold text-gray-900 tracking-tight">Panel de Rendimiento</h1>
+      <p class="text-gray-400 text-sm mt-1">Monitorea tus campañas y gestiona tus proyectos de forma eficiente</p>
     </div>
   </div>
 
-  <!-- ========== CARDS DE MÉTRICAS ========== -->
-  <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 mb-8">
+  <!-- ========== METRIC CARDS ========== -->
+  <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-5 mb-8">
 
     <!-- Card: Alcance Total -->
-    <div class="bg-white p-6 rounded-2xl border border-gray-100 shadow-sm hover:shadow-md transition-all duration-300">
-      <div class="flex items-center gap-5">
-        <div class="w-14 h-14 bg-purple-100 rounded-full flex items-center justify-center shrink-0">
-          <i class="pi pi-users text-purple-600 text-xl"></i>
-        </div>
-        <div>
-          <p class="text-sm text-gray-500 font-medium">Alcance Total</p>
-          <h3 class="text-2xl font-bold text-gray-800">1.2M</h3>
-        </div>
+    <div class="metric-card bg-white p-6 rounded-2xl border border-gray-100 shadow-sm relative overflow-hidden group">
+      <div
+        class="absolute top-0 right-0 w-24 h-24 bg-purple-50 rounded-full -mr-8 -mt-8 group-hover:scale-150 transition-transform duration-700 pointer-events-none">
       </div>
-      <div class="mt-4 flex items-center text-xs">
-        <span class="text-green-500 font-bold bg-green-50 px-2 py-1 rounded-lg flex items-center">
-          <i class="pi pi-arrow-up text-[10px] mr-1"></i> +15%
-        </span>
-        <span class="text-gray-400 ml-2">desde el mes pasado</span>
+      <div class="relative z-10">
+        <div class="flex items-center gap-4 mb-4">
+          <div
+            class="w-12 h-12 bg-purple-100 rounded-xl flex items-center justify-center shrink-0 group-hover:scale-110 transition-transform duration-300">
+            <i class="pi pi-users text-purple-600 text-lg"></i>
+          </div>
+          <div>
+            <p class="text-xs text-gray-400 font-semibold uppercase tracking-wider">Alcance Total</p>
+            <h3 class="text-2xl font-extrabold text-gray-900">1.2M</h3>
+          </div>
+        </div>
+        <div class="flex items-center text-xs">
+          <span class="text-green-600 font-bold bg-green-50 px-2.5 py-1 rounded-lg flex items-center gap-1">
+            <i class="pi pi-arrow-up text-[9px]"></i> +15%
+          </span>
+          <span class="text-gray-300 ml-2.5">desde el mes pasado</span>
+        </div>
       </div>
     </div>
 
     <!-- Card: CTR Promedio -->
-    <div class="bg-white p-6 rounded-2xl border border-gray-100 shadow-sm hover:shadow-md transition-all duration-300">
-      <div class="flex items-center gap-5">
-        <div class="w-14 h-14 bg-indigo-100 rounded-full flex items-center justify-center shrink-0">
-          <i class="pi pi-chart-line text-indigo-600 text-xl"></i>
-        </div>
-        <div>
-          <p class="text-sm text-gray-500 font-medium">CTR Promedio</p>
-          <h3 class="text-2xl font-bold text-gray-800">4.8%</h3>
-        </div>
+    <div class="metric-card bg-white p-6 rounded-2xl border border-gray-100 shadow-sm relative overflow-hidden group">
+      <div
+        class="absolute top-0 right-0 w-24 h-24 bg-indigo-50 rounded-full -mr-8 -mt-8 group-hover:scale-150 transition-transform duration-700 pointer-events-none">
       </div>
-      <div class="mt-4 flex items-center text-xs">
-        <span class="text-green-500 font-bold bg-green-50 px-2 py-1 rounded-lg flex items-center">
-          <i class="pi pi-arrow-up text-[10px] mr-1"></i> +0.5%
-        </span>
-        <span class="text-gray-400 ml-2">desde el mes pasado</span>
+      <div class="relative z-10">
+        <div class="flex items-center gap-4 mb-4">
+          <div
+            class="w-12 h-12 bg-indigo-100 rounded-xl flex items-center justify-center shrink-0 group-hover:scale-110 transition-transform duration-300">
+            <i class="pi pi-chart-line text-indigo-600 text-lg"></i>
+          </div>
+          <div>
+            <p class="text-xs text-gray-400 font-semibold uppercase tracking-wider">CTR Promedio</p>
+            <h3 class="text-2xl font-extrabold text-gray-900">4.8%</h3>
+          </div>
+        </div>
+        <div class="flex items-center text-xs">
+          <span class="text-green-600 font-bold bg-green-50 px-2.5 py-1 rounded-lg flex items-center gap-1">
+            <i class="pi pi-arrow-up text-[9px]"></i> +0.5%
+          </span>
+          <span class="text-gray-300 ml-2.5">desde el mes pasado</span>
+        </div>
       </div>
     </div>
 
     <!-- Card: Inversión Total -->
-    <div class="bg-white p-6 rounded-2xl border border-gray-100 shadow-sm hover:shadow-md transition-all duration-300">
-      <div class="flex items-center gap-5">
-        <div class="w-14 h-14 bg-green-100 rounded-full flex items-center justify-center shrink-0">
-          <i class="pi pi-wallet text-green-600 text-xl"></i>
-        </div>
-        <div>
-          <p class="text-sm text-gray-500 font-medium">Inversión Total</p>
-          <h3 class="text-2xl font-bold text-gray-800">$25,000</h3>
-        </div>
+    <div class="metric-card bg-white p-6 rounded-2xl border border-gray-100 shadow-sm relative overflow-hidden group">
+      <div
+        class="absolute top-0 right-0 w-24 h-24 bg-green-50 rounded-full -mr-8 -mt-8 group-hover:scale-150 transition-transform duration-700 pointer-events-none">
       </div>
-      <div class="mt-4 flex items-center text-xs">
-        <span class="text-red-500 font-bold bg-red-50 px-2 py-1 rounded-lg flex items-center">
-          <i class="pi pi-arrow-down text-[10px] mr-1"></i> -2%
-        </span>
-        <span class="text-gray-400 ml-2">desde el mes pasado</span>
+      <div class="relative z-10">
+        <div class="flex items-center gap-4 mb-4">
+          <div
+            class="w-12 h-12 bg-green-100 rounded-xl flex items-center justify-center shrink-0 group-hover:scale-110 transition-transform duration-300">
+            <i class="pi pi-wallet text-green-600 text-lg"></i>
+          </div>
+          <div>
+            <p class="text-xs text-gray-400 font-semibold uppercase tracking-wider">Inversión Total</p>
+            <h3 class="text-2xl font-extrabold text-gray-900">$25,000</h3>
+          </div>
+        </div>
+        <div class="flex items-center text-xs">
+          <span class="text-red-500 font-bold bg-red-50 px-2.5 py-1 rounded-lg flex items-center gap-1">
+            <i class="pi pi-arrow-down text-[9px]"></i> -2%
+          </span>
+          <span class="text-gray-300 ml-2.5">desde el mes pasado</span>
+        </div>
       </div>
     </div>
 
     <!-- Card: Campañas Activas -->
-    <div class="bg-white p-6 rounded-2xl border border-gray-100 shadow-sm hover:shadow-md transition-all duration-300">
-      <div class="flex items-center gap-5">
-        <div class="w-14 h-14 bg-orange-100 rounded-full flex items-center justify-center shrink-0">
-          <i class="pi pi-megaphone text-orange-600 text-xl"></i>
-        </div>
-        <div>
-          <p class="text-sm text-gray-500 font-medium">Campañas Activas</p>
-          <h3 class="text-2xl font-bold text-gray-800">12</h3>
-        </div>
+    <div class="metric-card bg-white p-6 rounded-2xl border border-gray-100 shadow-sm relative overflow-hidden group">
+      <div
+        class="absolute top-0 right-0 w-24 h-24 bg-orange-50 rounded-full -mr-8 -mt-8 group-hover:scale-150 transition-transform duration-700 pointer-events-none">
       </div>
-      <div class="mt-4 flex items-center text-xs">
-        <span class="text-green-500 font-bold bg-green-50 px-2 py-1 rounded-lg flex items-center">
-          <i class="pi pi-arrow-up text-[10px] mr-1"></i> +3
-        </span>
-        <span class="text-gray-400 ml-2">nuevas campañas</span>
+      <div class="relative z-10">
+        <div class="flex items-center gap-4 mb-4">
+          <div
+            class="w-12 h-12 bg-orange-100 rounded-xl flex items-center justify-center shrink-0 group-hover:scale-110 transition-transform duration-300">
+            <i class="pi pi-megaphone text-orange-600 text-lg"></i>
+          </div>
+          <div>
+            <p class="text-xs text-gray-400 font-semibold uppercase tracking-wider">Campañas Activas</p>
+            <h3 class="text-2xl font-extrabold text-gray-900">12</h3>
+          </div>
+        </div>
+        <div class="flex items-center text-xs">
+          <span class="text-green-600 font-bold bg-green-50 px-2.5 py-1 rounded-lg flex items-center gap-1">
+            <i class="pi pi-arrow-up text-[9px]"></i> +3
+          </span>
+          <span class="text-gray-300 ml-2.5">nuevas campañas</span>
+        </div>
       </div>
     </div>
+
   </div>
 
-  <!-- ========== CONTENIDO PRINCIPAL ========== -->
+  <!-- ========== MAIN CONTENT ========== -->
   <div class="grid grid-cols-1 lg:grid-cols-3 gap-8">
 
-    <!-- COLUMNA IZQUIERDA: TABLA DE PROYECTOS (2/3) -->
+    <!-- ===== LEFT: PROJECTS TABLE (2/3) ===== -->
     <div class="lg:col-span-2">
       <div class="bg-white rounded-3xl shadow-sm border border-gray-100 overflow-hidden">
-        <div class="p-6 border-b border-gray-50 flex items-center justify-between bg-gray-50/30">
-          <h3 class="font-bold text-gray-800 text-lg">Mis Proyectos</h3>
-          <div class="flex items-center gap-2">
-            <span class="text-xs text-gray-400 font-medium">Total: {{ proyectos().length }} proyectos</span>
+
+        <!-- Table header -->
+        <div class="px-6 lg:px-8 py-5 border-b border-gray-50 flex items-center justify-between bg-gray-50/30">
+          <div class="flex items-center gap-3">
+            <div class="w-9 h-9 bg-purple-100 rounded-xl flex items-center justify-center shrink-0">
+              <i class="pi pi-briefcase text-purple-600 text-sm"></i>
+            </div>
+            <h3 class="font-bold text-gray-900 text-base">Mis Proyectos</h3>
           </div>
+          <span class="text-xs text-gray-300 font-semibold bg-gray-50 px-3 py-1.5 rounded-lg">
+            Total: {{ proyectos().length }} proyectos
+          </span>
         </div>
 
         <div class="overflow-x-auto">
           @if (cargandoProyectos()) {
-          <div class="p-12 text-center">
-            <i class="pi pi-spin pi-spinner text-purple-600 text-3xl"></i>
-            <p class="text-gray-500 mt-4 font-medium">Actualizando información...</p>
+          <!-- Loading state -->
+          <div class="p-16 text-center">
+            <div class="w-14 h-14 bg-purple-50 rounded-2xl flex items-center justify-center mx-auto mb-4">
+              <i class="pi pi-spin pi-spinner text-purple-600 text-2xl"></i>
+            </div>
+            <p class="text-gray-400 font-medium text-sm">Actualizando información...</p>
           </div>
           } @else if (proyectos().length === 0) {
-          <div class="p-16 text-center">
-            <div class="w-20 h-20 bg-gray-50 rounded-full flex items-center justify-center mx-auto mb-6">
-              <i class="pi pi-folder-open text-gray-300 text-3xl"></i>
+          <!-- Empty state -->
+          <div class="p-20 text-center">
+            <div class="w-20 h-20 bg-gray-50 rounded-2xl flex items-center justify-center mx-auto mb-6">
+              <i class="pi pi-folder-open text-gray-200 text-3xl"></i>
             </div>
-            <h4 class="text-gray-800 font-bold mb-1">No hay proyectos activos</h4>
-            <p class="text-gray-500 text-sm">Contacta con tu asesor para iniciar un nuevo proyecto.</p>
+            <h4 class="text-gray-800 font-bold mb-2 text-lg">No hay proyectos activos</h4>
+            <p class="text-gray-400 text-sm max-w-xs mx-auto">Contacta con tu asesor para iniciar un nuevo proyecto.</p>
           </div>
           } @else {
+          <!-- Table -->
           <table class="w-full text-left">
             <thead>
-              <tr class="bg-gray-50/50">
-                <th class="px-6 py-4 text-xs font-bold text-gray-400 uppercase tracking-widest">Proyecto</th>
-                <th class="px-6 py-4 text-xs font-bold text-gray-400 uppercase tracking-widest text-center">Estado</th>
-                <th class="px-6 py-4 text-xs font-bold text-gray-400 uppercase tracking-widest">Fecha Inicio</th>
-                <th class="px-6 py-4 text-xs font-bold text-gray-400 uppercase tracking-widest text-center">Acciones
+              <tr class="bg-gray-50/40">
+                <th class="px-6 lg:px-8 py-4 text-[10px] font-black text-gray-300 uppercase tracking-[0.15em]">Proyecto
                 </th>
+                <th class="px-6 py-4 text-[10px] font-black text-gray-300 uppercase tracking-[0.15em] text-center">
+                  Estado</th>
+                <th class="px-6 py-4 text-[10px] font-black text-gray-300 uppercase tracking-[0.15em]">Fecha Inicio</th>
+                <th
+                  class="px-6 lg:px-8 py-4 text-[10px] font-black text-gray-300 uppercase tracking-[0.15em] text-center">
+                  Acciones</th>
               </tr>
             </thead>
             <tbody class="divide-y divide-gray-50">
               @for (proyecto of proyectosPaginados(); track proyecto.id_proyecto) {
-              <tr class="hover:bg-purple-50/30 transition-colors duration-200">
-                <td class="px-6 py-5">
+              <tr class="table-row-animate hover:bg-purple-50/20 transition-colors duration-200">
+                <td class="px-6 lg:px-8 py-5">
                   <div class="flex items-center gap-3">
-                    <div class="w-2 h-2 rounded-full"
-                      [ngClass]="proyecto.estado === 'activo' ? 'bg-green-500' : 'bg-gray-300'"></div>
-                    <span class="font-bold text-gray-800">{{ proyecto.nombre }}</span>
+                    <div class="w-2.5 h-2.5 rounded-full shrink-0 ring-2 ring-offset-2" [ngClass]="{
+                        'bg-green-500 ring-green-100': proyecto.estado === 'activo',
+                        'bg-amber-400 ring-amber-100': proyecto.estado === 'en_pausa',
+                        'bg-gray-300 ring-gray-100': proyecto.estado === 'finalizado'
+                      }"></div>
+                    <span class="font-bold text-gray-800 text-sm">{{ proyecto.nombre }}</span>
                   </div>
                 </td>
                 <td class="px-6 py-5 text-center">
                   <span
-                    class="inline-flex items-center px-4 py-1.5 rounded-xl text-[10px] font-black uppercase tracking-wider"
+                    class="inline-flex items-center px-3.5 py-1.5 rounded-lg text-[10px] font-black uppercase tracking-widest"
                     [ngClass]="{
-                          'bg-green-100 text-green-700': proyecto.estado === 'activo',
-                          'bg-amber-100 text-amber-700': proyecto.estado === 'en_pausa',
-                          'bg-gray-100 text-gray-500': proyecto.estado === 'finalizado'
+                          'bg-green-50 text-green-600': proyecto.estado === 'activo',
+                          'bg-amber-50 text-amber-600': proyecto.estado === 'en_pausa',
+                          'bg-gray-100 text-gray-400': proyecto.estado === 'finalizado'
                         }">
                     {{ getEstadoLabel(proyecto.estado) }}
                   </span>
                 </td>
-                <td class="px-6 py-5 text-gray-500 text-sm font-medium">
+                <td class="px-6 py-5 text-gray-400 text-sm font-medium">
                   {{ formatDate(proyecto.fecha_inicio) }}
                 </td>
-                <td class="px-6 py-5 text-center">
+                <td class="px-6 lg:px-8 py-5 text-center">
                   <button
-                    class="px-4 py-2 bg-purple-50 text-purple-600 hover:bg-purple-100 rounded-xl text-xs font-bold transition-all duration-200">
+                    class="inline-flex items-center gap-1.5 px-4 py-2 bg-purple-50 text-purple-600 hover:bg-purple-100 hover:text-purple-700 rounded-xl text-xs font-bold transition-all duration-200 cursor-pointer group">
                     Ver Detalles
+                    <i
+                      class="pi pi-arrow-right text-[9px] opacity-0 -translate-x-1 group-hover:opacity-100 group-hover:translate-x-0 transition-all duration-200"></i>
                   </button>
                 </td>
               </tr>
@@ -162,31 +214,32 @@
             </tbody>
           </table>
 
-          <!-- Paginación Premium -->
-          <div class="px-6 py-4 border-t border-gray-50 flex justify-between items-center">
-            <p class="text-xs text-gray-400 font-medium tracking-tight">
-              Mostrando <span class="text-gray-700 font-bold">{{ proyectosPaginados().length }}</span> de <span
-                class="text-gray-700 font-bold">{{ proyectos().length }}</span> proyectos
+          <!-- Pagination -->
+          <div
+            class="px-6 lg:px-8 py-4 border-t border-gray-50 flex flex-col sm:flex-row justify-between items-center gap-3">
+            <p class="text-xs text-gray-300 font-medium tracking-tight">
+              Mostrando <span class="text-gray-600 font-bold">{{ proyectosPaginados().length }}</span> de <span
+                class="text-gray-600 font-bold">{{ proyectos().length }}</span> proyectos
             </p>
             <div class="flex items-center gap-1">
               <button
-                class="w-10 h-10 flex items-center justify-center rounded-xl hover:bg-gray-100 disabled:opacity-30 disabled:hover:bg-transparent transition-all"
+                class="w-9 h-9 flex items-center justify-center rounded-xl hover:bg-gray-100 disabled:opacity-20 disabled:hover:bg-transparent transition-all cursor-pointer"
                 [disabled]="paginaActual() === 1" (click)="cambiarPagina(paginaActual() - 1)">
-                <i class="pi pi-angle-left"></i>
+                <i class="pi pi-angle-left text-sm text-gray-500"></i>
               </button>
               <div class="flex items-center gap-1">
                 @for (p of [].constructor(totalPaginas()); track $index) {
                 <button (click)="cambiarPagina($index + 1)"
-                  class="w-10 h-10 font-bold text-xs rounded-xl transition-all"
-                  [ngClass]="paginaActual() === ($index + 1) ? 'bg-purple-600 text-white shadow-lg shadow-purple-100' : 'text-gray-400 hover:bg-gray-100'">
+                  class="w-9 h-9 font-bold text-xs rounded-xl transition-all duration-200 cursor-pointer"
+                  [ngClass]="paginaActual() === ($index + 1) ? 'bg-linear-to-br from-purple-600 to-indigo-600 text-white shadow-lg shadow-purple-200' : 'text-gray-400 hover:bg-gray-100'">
                   {{ $index + 1 }}
                 </button>
                 }
               </div>
               <button
-                class="w-10 h-10 flex items-center justify-center rounded-xl hover:bg-gray-100 disabled:opacity-30 disabled:hover:bg-transparent transition-all"
+                class="w-9 h-9 flex items-center justify-center rounded-xl hover:bg-gray-100 disabled:opacity-20 disabled:hover:bg-transparent transition-all cursor-pointer"
                 [disabled]="paginaActual() === totalPaginas()" (click)="cambiarPagina(paginaActual() + 1)">
-                <i class="pi pi-angle-right"></i>
+                <i class="pi pi-angle-right text-sm text-gray-500"></i>
               </button>
             </div>
           </div>
@@ -195,67 +248,88 @@
       </div>
     </div>
 
-    <!-- COLUMNA DERECHA: PRÓXIMAS ACTIVIDADES (1/3) -->
-    <div>
-      <div class="bg-white rounded-3xl shadow-sm border border-gray-100 p-6">
-        <h3 class="font-bold text-gray-800 mb-8 flex items-center gap-2">
-          <span class="w-1.5 h-6 bg-purple-600 rounded-full"></span>
-          Próximas Actividades
+    <!-- ===== RIGHT: SIDEBAR (1/3) ===== -->
+    <div class="space-y-8">
+
+      <!-- Próximas Actividades -->
+      <div class="bg-white rounded-3xl shadow-sm border border-gray-100 p-6 lg:p-7">
+        <h3 class="font-bold text-gray-900 mb-7 flex items-center gap-3">
+          <div class="w-9 h-9 bg-purple-100 rounded-xl flex items-center justify-center shrink-0">
+            <i class="pi pi-clock text-purple-600 text-sm"></i>
+          </div>
+          <span>Próximas Actividades</span>
         </h3>
 
-        <div class="space-y-8 relative">
-          <!-- Línea de tiempo decorativa -->
-          <div class="absolute left-1.5 top-0 bottom-0 w-0.5 bg-gray-100"></div>
+        <div class="space-y-6 relative">
+          <!-- Timeline line -->
+          <div
+            class="absolute left-[5px] top-1 bottom-1 w-[2px] bg-linear-to-b from-purple-200 via-gray-100 to-transparent">
+          </div>
 
           @for (actividad of proximasActividades; track $index) {
-          <div class="flex gap-6 relative z-10">
-            <!-- Indicador -->
-            <div class="shrink-0">
-              <div class="w-3 h-3 rounded-full border-2 border-white shadow-sm transition-transform hover:scale-125"
+          <div class="flex gap-5 relative z-10 activity-item">
+            <!-- Dot -->
+            <div class="shrink-0 mt-0.5">
+              <div class="w-3 h-3 rounded-full border-[3px] transition-transform hover:scale-150 duration-200"
                 [ngClass]="{
-                    'bg-purple-600': actividad.esHoy,
-                    'bg-gray-300': !actividad.esHoy
+                    'bg-purple-600 border-purple-200 shadow-sm shadow-purple-200': actividad.esHoy,
+                    'bg-gray-200 border-gray-100': !actividad.esHoy
                   }">
               </div>
             </div>
 
-            <!-- Contenido -->
-            <div class="flex-1 pb-2">
-              <div class="flex items-center gap-2 mb-2">
+            <!-- Content -->
+            <div class="flex-1 pb-1">
+              <div class="flex items-center gap-2 mb-1.5">
                 <span class="text-[10px] font-black uppercase tracking-widest" [ngClass]="{
                       'text-purple-600': actividad.esHoy,
-                      'text-gray-400': !actividad.esHoy
+                      'text-gray-300': !actividad.esHoy
                     }">
                   {{ actividad.fecha }}
                 </span>
                 @if (actividad.esHoy) {
-                <span class="px-2 py-0.5 bg-purple-50 text-purple-600 text-[8px] font-bold rounded-full">HOY</span>
+                <span
+                  class="px-2 py-0.5 bg-purple-50 text-purple-600 text-[8px] font-extrabold rounded-full tracking-wider">HOY</span>
                 }
               </div>
-              <p class="text-sm text-gray-700 font-medium leading-relaxed">{{ actividad.descripcion }}</p>
+              <p class="text-sm text-gray-500 font-medium leading-relaxed">{{ actividad.descripcion }}</p>
             </div>
           </div>
           }
         </div>
 
         <button
-          class="w-full mt-8 py-3 bg-gray-50 hover:bg-gray-100 text-gray-500 rounded-2xl text-xs font-bold transition-all flex items-center justify-center gap-2">
-          Ver todas las actividades <i class="pi pi-arrow-right text-[10px]"></i>
+          class="w-full mt-7 py-3 bg-gray-50 hover:bg-gray-100 text-gray-400 hover:text-gray-600 rounded-2xl text-xs font-bold transition-all duration-200 flex items-center justify-center gap-2 cursor-pointer group">
+          Ver todas las actividades
+          <i class="pi pi-arrow-right text-[9px] group-hover:translate-x-1 transition-transform duration-200"></i>
         </button>
       </div>
 
-      <!-- Banner pequeño de ayuda -->
-      <div class="mt-8 bg-indigo-900 rounded-3xl p-6 text-white relative overflow-hidden group">
+      <!-- Help banner -->
+      <div
+        class="relative bg-linear-to-br from-indigo-900 via-purple-900 to-indigo-950 rounded-3xl p-7 text-white overflow-hidden group">
+        <!-- Decorative orbs -->
         <div
-          class="absolute -right-4 -bottom-4 w-24 h-24 bg-white/10 rounded-full blur-2xl group-hover:scale-150 transition-transform duration-700">
+          class="absolute -right-6 -bottom-6 w-28 h-28 bg-white/5 rounded-full blur-2xl group-hover:scale-[2] transition-transform duration-1000">
         </div>
-        <h4 class="font-bold mb-2">¿Necesitas ayuda?</h4>
-        <p class="text-xs text-indigo-200 leading-relaxed mb-4">Agenda una sesión de asesoría personalizada con nuestro
-          equipo.</p>
-        <button class="text-xs font-bold text-white flex items-center gap-2 hover:gap-3 transition-all">
-          Agendar ahora <i class="pi pi-arrow-right"></i>
-        </button>
+        <div class="absolute -left-4 -top-4 w-20 h-20 bg-purple-400/10 rounded-full blur-xl"></div>
+
+        <div class="relative z-10">
+          <div class="w-10 h-10 bg-white/10 rounded-xl flex items-center justify-center mb-4">
+            <i class="pi pi-headphones text-white/80 text-lg"></i>
+          </div>
+          <h4 class="font-bold text-lg mb-2">¿Necesitas ayuda?</h4>
+          <p class="text-xs text-indigo-200/80 leading-relaxed mb-5">
+            Agenda una sesión de asesoría personalizada con nuestro equipo de expertos.
+          </p>
+          <button
+            class="inline-flex items-center gap-2 text-xs font-bold text-white bg-white/10 hover:bg-white/20 px-4 py-2.5 rounded-xl transition-all duration-200 cursor-pointer group/btn">
+            Agendar ahora
+            <i class="pi pi-arrow-right text-[9px] group-hover/btn:translate-x-1 transition-transform duration-200"></i>
+          </button>
+        </div>
       </div>
+
     </div>
 
   </div>

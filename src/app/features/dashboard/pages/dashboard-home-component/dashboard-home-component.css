@@ -1,4 +1,80 @@
-/* Estilos para el modal premium */
+/* Metric cards - smooth hover lift */
+.metric-card {
+    transition: all 0.35s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.metric-card:hover {
+    transform: translateY(-4px);
+    box-shadow: 0 10px 40px -10px rgba(0, 0, 0, 0.08);
+}
+
+/* Table rows entrance animation */
+.table-row-animate {
+    animation: rowSlideIn 0.35s ease-out both;
+}
+
+.table-row-animate:nth-child(1) {
+    animation-delay: 0.04s;
+}
+
+.table-row-animate:nth-child(2) {
+    animation-delay: 0.08s;
+}
+
+.table-row-animate:nth-child(3) {
+    animation-delay: 0.12s;
+}
+
+.table-row-animate:nth-child(4) {
+    animation-delay: 0.16s;
+}
+
+.table-row-animate:nth-child(5) {
+    animation-delay: 0.20s;
+}
+
+@keyframes rowSlideIn {
+    from {
+        opacity: 0;
+        transform: translateX(-8px);
+    }
+
+    to {
+        opacity: 1;
+        transform: translateX(0);
+    }
+}
+
+/* Activity items staggered entrance */
+.activity-item {
+    animation: activityFade 0.4s ease-out both;
+}
+
+.activity-item:nth-child(1) {
+    animation-delay: 0.1s;
+}
+
+.activity-item:nth-child(2) {
+    animation-delay: 0.2s;
+}
+
+.activity-item:nth-child(3) {
+    animation-delay: 0.3s;
+}
+
+@keyframes activityFade {
+    from {
+        opacity: 0;
+        transform: translateY(6px);
+    }
+
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+/* Premium modal styles */
 :host ::ng-deep .premium-modal .p-dialog-content {
     padding: 0 !important;
     border-radius: 24px !important;
@@ -11,16 +87,7 @@
     background: transparent !important;
 }
 
-/* Efecto hover suave en las cards */
-.metric-card {
-    transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
-}
-
-.metric-card:hover {
-    transform: translateY(-5px);
-}
-
-/* Scrollbar personalizado para el textarea */
+/* Scrollbar */
 textarea::-webkit-scrollbar {
     width: 6px;
 }
