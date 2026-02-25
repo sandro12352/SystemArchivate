@@ -21,11 +21,13 @@ export interface Proyecto {
     descripcion?: string;
     estado: EstadoProyecto;
     fecha_inicio: Date;
-    fecha_fin?: Date;
+    fecha_termino?: Date;
+    fecha_registro: Date;
 }
 
 export enum EstadoProyecto {
+    PLANIFICACION = 'planificacion',
+    COMPLETADO = 'completado',
     ACTIVO = 'activo',
-    EN_PAUSA = 'en_pausa',
-    FINALIZADO = 'finalizado'
+    ENPROGRESO = 'en_progreso'
 }

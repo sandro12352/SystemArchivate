@@ -180,9 +180,10 @@
                 <td class="px-6 lg:px-8 py-5">
                   <div class="flex items-center gap-3">
                     <div class="w-2.5 h-2.5 rounded-full shrink-0 ring-2 ring-offset-2" [ngClass]="{
-                        'bg-green-500 ring-green-100': proyecto.estado === 'activo',
-                        'bg-amber-400 ring-amber-100': proyecto.estado === 'en_pausa',
-                        'bg-gray-300 ring-gray-100': proyecto.estado === 'finalizado'
+                        'bg-amber-400 ring-amber-100': proyecto.estado === 'planificacion',
+                         'bg-green-500 ring-green-100': proyecto.estado === 'completado',
+                        'bg-blue-400 ring-blue-100': proyecto.estado === 'activo',
+                        'bg-gray-300 ring-gray-100': proyecto.estado === 'en_progreso'
                       }"></div>
                     <span class="font-bold text-gray-800 text-sm">{{ proyecto.nombre }}</span>
                   </div>
@@ -191,18 +192,19 @@
                   <span
                     class="inline-flex items-center px-3.5 py-1.5 rounded-lg text-[10px] font-black uppercase tracking-widest"
                     [ngClass]="{
-                          'bg-green-50 text-green-600': proyecto.estado === 'activo',
-                          'bg-amber-50 text-amber-600': proyecto.estado === 'en_pausa',
-                          'bg-gray-100 text-gray-400': proyecto.estado === 'finalizado'
+                          'bg-amber-50 text-amber-600': proyecto.estado === 'planificacion',
+                          'bg-green-50 text-green-600': proyecto.estado === 'completado',
+                          'bg-blue-400 text-white': proyecto.estado === 'activo',
+                          'bg-gray-100 text-gray-400': proyecto.estado === 'en_progreso'
                         }">
                     {{ getEstadoLabel(proyecto.estado) }}
                   </span>
                 </td>
                 <td class="px-6 py-5 text-gray-400 text-sm font-medium">
-                  {{ formatDate(proyecto.fecha_inicio) }}
+                  {{ formatDate(proyecto.fecha_registro) }}
                 </td>
                 <td class="px-6 lg:px-8 py-5 text-center">
-                  <button
+                  <button [routerLink]="['/home/proyectos', proyecto.id_proyecto]"
                     class="inline-flex items-center gap-1.5 px-4 py-2 bg-purple-50 text-purple-600 hover:bg-purple-100 hover:text-purple-700 rounded-xl text-xs font-bold transition-all duration-200 cursor-pointer group">
                     Ver Detalles
                     <i

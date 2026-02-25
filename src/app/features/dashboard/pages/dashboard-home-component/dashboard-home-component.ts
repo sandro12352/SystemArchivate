@@ -11,6 +11,7 @@ import { PlanMarketingService } from '../../services/plan-marketing-service';
 import { ProyectoService } from '../../services/proyecto-service';
 import { PlanMarketing, Proyecto, EstadoProyecto } from '../../interfaces/plan-marketing.interface';
 import { finalize } from 'rxjs';
+import { RouterLink } from "@angular/router";
 
 interface Actividad {
   fecha: string;
@@ -26,7 +27,8 @@ interface Actividad {
     SelectModule,
     SpeedDialModule,
     DialogModule,
-    TextareaModule
+    TextareaModule,
+    RouterLink
   ],
   templateUrl: './dashboard-home-component.html',
   styleUrl: './dashboard-home-component.css',
@@ -92,19 +94,12 @@ export class DashboardHomeComponent implements OnInit {
     this.proyectoService.getProyectosByCliente(this.user.token)
       .pipe(finalize(() => this.cargandoProyectos.set(false)))
       .subscribe({
-        next: (proyectos) => {
-          this.proyectos.set(proyectos);
+        next: (data: any) => {
+          this.proyectos.set(data.projects);
         },
         error: (err) => {
           console.error('Error al cargar proyectos:', err);
-          // Datos de ejemplo para visualización
-          this.proyectos.set([
-            { id_proyecto: 1, id_cliente: 1, nombre: 'E-commerce Verano 2024', estado: EstadoProyecto.ACTIVO, fecha_inicio: new Date('2024-06-15') },
-            { id_proyecto: 2, id_cliente: 1, nombre: 'Lanzamiento Marca X', estado: EstadoProyecto.ACTIVO, fecha_inicio: new Date('2024-07-01') },
-            { id_proyecto: 3, id_cliente: 1, nombre: 'Campaña Retargeting Q3', estado: EstadoProyecto.EN_PAUSA, fecha_inicio: new Date('2024-08-20') },
-            { id_proyecto: 4, id_cliente: 1, nombre: 'Campaña Black Friday', estado: EstadoProyecto.ACTIVO, fecha_inicio: new Date('2024-11-01') },
-            { id_proyecto: 5, id_cliente: 1, nombre: 'Rebranding 2024', estado: EstadoProyecto.FINALIZADO, fecha_inicio: new Date('2024-03-10') }
-          ]);
+
         }
       });
   }
@@ -118,15 +113,15 @@ export class DashboardHomeComponent implements OnInit {
 
   getEstadoLabel(estado: EstadoProyecto | string): string {
     switch (estado) {
+      case EstadoProyecto.COMPLETADO:
+      case 'completado':
+        return 'Completado';
       case EstadoProyecto.ACTIVO:
       case 'activo':
         return 'Activo';
-      case EstadoProyecto.EN_PAUSA:
-      case 'en_pausa':
-        return 'En Pausa';
-      case EstadoProyecto.FINALIZADO:
-      case 'finalizado':
-        return 'Finalizado';
+      case EstadoProyecto.ENPROGRESO:
+      case 'en_progreso':
+        return 'En Progreso';
       default:
         return String(estado);
     }

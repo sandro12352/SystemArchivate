@@ -22,5 +22,15 @@ export const DASHBOARD_ROUTES: Routes = [
     path: 'contratos/visor',
     loadComponent: () => import('../contracts/pages/contract-viewer/contract-viewer.component').then(m => m.ContractViewerComponent),
     canActivate: [isApprovedGuard]
+  },
+  {
+    path: 'proyectos',
+    loadComponent: () => import('../projects/pages/projects-list/projects-list-component').then(m => m.ProjectsListComponent),
+    canActivate: [isApprovedGuard]
+  },
+  {
+    path: 'proyectos/:id',
+    loadComponent: () => import('../projects/pages/project-content/project-content-component').then(m => m.ProjectContentComponent),
+    canActivate: [isApprovedGuard]
   }
 ];

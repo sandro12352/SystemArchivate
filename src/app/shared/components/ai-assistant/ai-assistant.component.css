@@ -1,11 +1,11 @@
 @import "tailwindcss";
 
 .assistant-container {
-    @apply fixed bottom-5 right-5 z-[100] flex flex-col items-end gap-3;
+    @apply fixed bottom-5 right-5 z-[100] flex flex-col items-end gap-3 pointer-events-none;
 }
 
 .assistant-button {
-    @apply w-12 h-12 rounded-xl bg-gradient-to-br from-purple-500 via-purple-600 to-indigo-600 shadow-lg shadow-purple-500/20 flex items-center justify-center cursor-pointer text-white transition-all duration-300 hover:scale-110 active:scale-95 relative overflow-hidden border border-white/10;
+    @apply w-12 h-12 rounded-xl bg-gradient-to-br from-purple-500 via-purple-600 to-indigo-600 shadow-lg shadow-purple-500/20 flex items-center justify-center cursor-pointer text-white transition-all duration-300 hover:scale-110 active:scale-95 relative overflow-hidden border border-white/10 pointer-events-auto;
 }
 
 .assistant-button::before {
@@ -45,6 +45,7 @@
 .chat-window.open {
     @apply opacity-100 scale-100 pointer-events-auto;
 }
+
 
 .chat-header {
     @apply p-4 bg-gradient-to-r from-purple-600 to-indigo-600 text-white flex items-center justify-between;

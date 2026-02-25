@@ -1,0 +1,370 @@
+<main class="relative mx-auto px-4 sm:px-6 lg:px-8 py-8 min-h-screen bg-gray-50/80 overflow-hidden">
+
+    <!-- Ambient decorative orbs -->
+    <div class="ambient-orb"
+        style="top: -100px; right: -60px; width: 450px; height: 450px; background: rgba(139, 92, 246, 0.05);"></div>
+    <div class="ambient-orb"
+        style="bottom: -80px; left: -50px; width: 350px; height: 350px; background: rgba(99, 102, 241, 0.04);"></div>
+
+    <!-- ========== BREADCRUMB + BACK ========== -->
+    <div class="relative z-10 flex items-center gap-3 mb-6">
+        <button
+            class="back-btn inline-flex items-center gap-2 px-3.5 py-2 rounded-xl text-sm font-bold text-gray-400 cursor-pointer"
+            routerLink="/home/proyectos">
+            <i class="pi pi-arrow-left text-xs"></i>
+        </button>
+        <nav class="flex items-center gap-1.5 text-xs font-medium">
+            <a class="breadcrumb-link text-gray-300" routerLink="/home/proyectos">Proyectos</a>
+            <i class="pi pi-angle-right text-[10px] text-gray-200"></i>
+            <span class="text-gray-600 font-bold">{{ proyecto()?.nombre || 'Contenido del Proyecto' }}</span>
+        </nav>
+    </div>
+
+    @if (cargando()) {
+    <!-- ===== LOADING STATE ===== -->
+    <div class="relative z-10">
+        <div class="skeleton-shimmer h-48 w-full rounded-3xl mb-8"></div>
+        <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+            @for (i of [1, 2, 3, 4, 5, 6]; track i) {
+            <div class="bg-white rounded-3xl border border-gray-100 p-6 overflow-hidden">
+                <div class="flex items-center gap-4 mb-4">
+                    <div class="skeleton-shimmer w-12 h-12 rounded-xl"></div>
+                    <div class="flex-1">
+                        <div class="skeleton-shimmer h-4 w-2/3 mb-2"></div>
+                        <div class="skeleton-shimmer h-3 w-1/2"></div>
+                    </div>
+                </div>
+                <div class="skeleton-shimmer h-3 w-full mb-2"></div>
+                <div class="skeleton-shimmer h-3 w-2/3"></div>
+            </div>
+            }
+        </div>
+    </div>
+    } @else {
+
+    @if (proyecto()) {
+    <!-- ===== HERO BANNER ===== -->
+    <div class="hero-banner relative z-10 mb-10">
+        <div class="relative z-10">
+            <div class="flex items-center gap-3 mb-4">
+                <span
+                    class="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-lg text-[10px] font-black uppercase tracking-widest bg-white/10 text-white/90 border border-white/10">
+                    <span class="w-1.5 h-1.5 rounded-full" [ngClass]="{
+                  'bg-amber-400': proyecto()!.estado === 'planificacion',
+                  'bg-green-400': proyecto()!.estado === 'completado',
+                  'bg-blue-400': proyecto()!.estado === 'activo'
+                }">
+                    </span>
+                    {{ getEstadoLabel(proyecto()!.estado) }}
+                </span>
+                <span class="text-white/40 text-[10px] font-semibold">
+                    {{ proyecto()!.prioridad | uppercase }} PRIORIDAD
+                </span>
+            </div>
+
+            <h1 class="text-3xl lg:text-4xl font-extrabold text-white mb-3 tracking-tight">
+                {{ proyecto()!.nombre }}
+            </h1>
+            <p class="text-sm text-indigo-100/70 font-medium max-w-2xl leading-relaxed mb-8">
+                {{ proyecto()!.descripcion }}
+            </p>
+
+            <div class="flex items-center gap-4 flex-wrap">
+                <div class="stat-pill flex items-center gap-2 px-4 py-2 rounded-xl">
+                    <i class="pi pi-file text-indigo-300 text-sm"></i>
+                    <span class="text-white/90 text-xs font-bold">{{ materiales().length }} Recursos en total</span>
+                </div>
+                <div class="stat-pill flex items-center gap-2 px-4 py-2 rounded-xl">
+                    <i class="pi pi-calendar text-blue-300 text-sm"></i>
+                    <span class="text-white/90 text-xs font-bold">Registro: {{
+                        formatDateShort(proyecto()!.fecha_registro) }}</span>
+                </div>
+                <div class="stat-pill flex items-center gap-2 px-4 py-2 rounded-xl">
+                    <i class="pi pi-flag text-emerald-300 text-sm"></i>
+                    <span class="text-white/90 text-xs font-bold">Termina: {{ formatDateShort(proyecto()!.fecha_termino)
+                        }}</span>
+                </div>
+            </div>
+        </div>
+    </div>
+    }
+
+    <!-- ========== MATERIALS LIST ========== -->
+    <div class="relative z-10">
+        <div class="flex items-center justify-between mb-8">
+            <div class="flex items-center gap-3">
+                <div class="w-10 h-10 bg-purple-100 rounded-xl flex items-center justify-center">
+                    <i class="pi pi-images text-purple-600 text-lg"></i>
+                </div>
+                <h2 class="text-xl font-extrabold text-gray-900">Material Audiovisual</h2>
+            </div>
+        </div>
+
+        @if (materiales().length === 0) {
+        <div
+            class="flex flex-col items-center justify-center py-24 bg-white rounded-[2.5rem] border border-gray-100 shadow-sm">
+            <div class="w-24 h-24 bg-purple-50 rounded-3xl flex items-center justify-center mb-6 empty-float">
+                <i class="pi pi-folder-open text-purple-200 text-4xl"></i>
+            </div>
+            <h4 class="text-gray-800 font-extrabold text-lg mb-2">No hay materiales aún</h4>
+            <p class="text-gray-400 text-sm text-center max-w-xs">
+                El equipo está trabajando para subir el contenido de este proyecto.
+            </p>
+        </div>
+        } @else {
+        <div class="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-6">
+            @for (material of materiales(); track material.id_proyecto_material) {
+            <div
+                class="material-card bg-white rounded-4xl border border-gray-100 shadow-sm overflow-hidden flex flex-col group">
+
+                <!-- Preview area / Thumbnail -->
+                <div class="relative aspect-video overflow-hidden bg-gray-50">
+                    @if (isImageFile(material.ruta)) {
+                    <img [src]="getMaterialUrl(material.ruta)" [alt]="material.nombre"
+                        class="w-full h-full object-cover thumb-img">
+                    }@else if (isVideoFile(material.ruta)) {
+                    <video [src]="getMaterialUrl(material.ruta)" class="file-thumb w-full h-full object-contain"
+                        [autoplay]="true" [muted]="true" [defaultMuted]="true" [loop]="true"></video>
+
+                    }
+                    @else {
+                    <div class="w-full h-full flex items-center justify-center bg-gray-50 text-gray-200">
+                        <i class="pi text-5xl" [class.pi-file-pdf]="isPdfFile(material.ruta)"
+                            [class.pi-video]="isVideoFile(material.ruta)"
+                            [class.pi-file]="!isPdfFile(material.ruta) && !isVideoFile(material.ruta)"></i>
+                    </div>
+                    }
+
+                    <!-- Quick actions overlay -->
+                    <div
+                        class="absolute inset-0 bg-indigo-950/40 opacity-0 group-hover:opacity-100 transition-opacity duration-300 flex items-center justify-center gap-3 backdrop-blur-sm">
+                        @if (isImageFile(material.ruta) || isPdfFile(material.ruta) || isVideoFile(material.ruta)) {
+                        <button (click)="previsualizarMaterial(material)"
+                            class="w-12 h-12 bg-white rounded-2xl flex items-center justify-center text-indigo-600 hover:scale-110 transition-transform cursor-pointer">
+                            <i class="pi pi-search-plus text-lg"></i>
+                        </button>
+                        }
+                        <button (click)="downloadFile(material)"
+                            class="w-12 h-12 bg-white rounded-2xl flex items-center justify-center text-indigo-600 hover:scale-110 transition-transform cursor-pointer">
+                            <i class="pi pi-download text-lg"></i>
+                        </button>
+                    </div>
+
+                    <!-- Type badge -->
+                    <div class="absolute top-4 left-4">
+                        <span
+                            class="px-3 py-1.5 rounded-xl bg-white/90 backdrop-blur-md text-[10px] font-black uppercase tracking-widest text-gray-700 shadow-sm">
+                            {{ material.tipo }}
+                        </span>
+                    </div>
+                </div>
+
+                <div class="p-6">
+                    <div class="flex items-center justify-between mb-3">
+                        <span class="text-[9px] font-bold text-purple-400 uppercase tracking-widest">
+                            #{{ material.id_proyecto_material }} • Carpeta: {{ material.carpeta_material.nombre }}
+                        </span>
+                        <span
+                            class="inline-flex items-center gap-1.5 px-2 py-1 rounded-lg bg-gray-50 text-[9px] font-bold text-gray-400 uppercase tracking-widest">
+                            v{{ material.version }}
+                        </span>
+                    </div>
+
+                    <h3
+                        class="text-base font-extrabold text-gray-900 mb-2 truncate group-hover:text-purple-600 transition-colors">
+                        {{ material.nombre }}
+                    </h3>
+
+                    @if (material.descripcion) {
+                    <p class="text-xs text-gray-400 font-medium leading-relaxed line-clamp-2 mb-4">
+                        {{ material.descripcion }}
+                    </p>
+                    } @else {
+                    <p class="text-xs text-gray-300 italic mb-4">Sin descripción</p>
+                    }
+
+                    <div class="flex items-center justify-between pt-4 border-t border-gray-50 mb-4">
+                        <!-- Worker info -->
+                        <div class="flex items-center gap-2">
+                            <div
+                                class="w-8 h-8 rounded-full bg-linear-to-br from-indigo-100 to-purple-100 flex items-center justify-center border border-white shadow-sm">
+                                <span class="text-[10px] font-bold text-indigo-600">{{
+                                    material.trabajador.nombres.charAt(0) }}</span>
+                            </div>
+                            <div>
+                                <p class="text-[10px] font-bold text-gray-700">{{ material.trabajador.nombres }}</p>
+                                <p class="text-[8px] text-gray-400 uppercase font-black tracking-tighter">Trabajador</p>
+                            </div>
+                        </div>
+
+                        <!-- Date -->
+                        <div class="text-right">
+                            <p class="text-[10px] font-bold text-gray-400">{{ formatDateShort(material.fecha_subida) }}
+                            </p>
+                            <p class="text-[8px] text-gray-300 uppercase font-black tracking-tighter">Subido</p>
+                        </div>
+                    </div>
+
+                    <!-- Client Actions (Approve/Reject) -->
+                    <div class="flex gap-2 mt-auto">
+                        @if (material.estado !== 'aprobado') {
+                        <button (click)="aceptarMaterial(material)" [disabled]="procesandoEstado()"
+                            class="flex-1 inline-flex items-center justify-center gap-2 px-4 py-2.5 bg-emerald-50 text-emerald-600 hover:bg-emerald-600 hover:text-white rounded-xl text-[10px] font-black uppercase tracking-widest transition-all duration-300 disabled:opacity-50 cursor-pointer">
+                            <i class="pi pi-check text-[10px]"></i>
+                            Aceptar
+                        </button>
+                        } @else {
+                        <div
+                            class="flex-1 inline-flex items-center justify-center gap-2 px-4 py-2.5 bg-emerald-500 text-white rounded-xl text-[10px] font-black uppercase tracking-widest">
+                            <i class="pi pi-check-circle text-xs"></i>
+                            Aprobado
+                        </div>
+                        }
+
+                        @if (material.estado !== 'rechazado') {
+                        <button (click)="abrirModalRechazo(material)" [disabled]="procesandoEstado()"
+                            class="flex-1 inline-flex items-center justify-center gap-2 px-4 py-2.5 bg-rose-50 text-rose-600 hover:bg-rose-600 hover:text-white rounded-xl text-[10px] font-black uppercase tracking-widest transition-all duration-300 disabled:opacity-50 cursor-pointer">
+                            <i class="pi pi-times text-[10px]"></i>
+                            Rechazar
+                        </button>
+                        } @else {
+                        <div
+                            class="flex-1 inline-flex items-center justify-center gap-2 px-4 py-2.5 bg-rose-500 text-white rounded-xl text-[10px] font-black uppercase tracking-widest">
+                            <i class="pi pi-times-circle text-xs"></i>
+                            Rechazado
+                        </div>
+                        }
+                    </div>
+                </div>
+            </div>
+            }
+        </div>
+        }
+    </div>
+    }
+
+    <!-- ========== REJECTION MODAL ========== -->
+    @if (materialARechazar()) {
+    <div
+        class="modal-overlay fixed inset-0 z-300 bg-indigo-950/40 backdrop-blur-md flex items-center justify-center p-4">
+        <div
+            class="bg-white w-full max-w-md rounded-4xl shadow-2xl overflow-hidden border border-gray-100 animate-in fade-in zoom-in duration-300">
+            <div class="p-8">
+                <!-- Modal Header -->
+                <div class="flex items-center gap-4 mb-6">
+                    <div class="w-12 h-12 bg-rose-50 rounded-2xl flex items-center justify-center text-rose-500">
+                        <i class="pi pi-exclamation-circle text-xl"></i>
+                    </div>
+                    <div>
+                        <h3 class="text-xl font-extrabold text-gray-900">Rechazar Recurso</h3>
+                        <p class="text-xs font-bold text-gray-400 uppercase tracking-widest mt-0.5">Motivo del rechazo
+                        </p>
+                    </div>
+                </div>
+
+                <!-- Modal Body -->
+                <div class="space-y-4">
+                    <p class="text-sm text-gray-500 font-medium leading-relaxed">
+                        Por favor, indica por qué estás rechazando <b>{{ materialARechazar()?.nombre }}</b>. Esto
+                        ayudará al equipo a realizar los cambios necesarios.
+                    </p>
+                    <div class="relative">
+                        <textarea [(ngModel)]="observacionRechazo"
+                            placeholder="Ej: Mejorar la iluminación, recortar el final..."
+                            class="w-full h-32 p-4 bg-gray-50 border border-gray-100 rounded-2xl text-sm text-gray-700 outline-none focus:ring-2 focus:ring-purple-500/20 focus:border-purple-300 transition-all resize-none font-medium placeholder:text-gray-300">
+                            </textarea>
+                    </div>
+                </div>
+
+                <!-- Modal Footer -->
+                <div class="flex gap-3 mt-8">
+                    <button (click)="cerrarModalRechazo()"
+                        class="flex-1 px-6 py-3 bg-gray-50 hover:bg-gray-100 text-gray-600 rounded-2xl text-xs font-black uppercase tracking-widest transition-all cursor-pointer">
+                        Cancelar
+                    </button>
+                    <button (click)="confirmarRechazo()" [disabled]="!observacionRechazo() || procesandoEstado()"
+                        class="flex-1 px-6 py-3 bg-indigo-600 hover:bg-indigo-700 text-white rounded-2xl text-xs font-black uppercase tracking-widest transition-all shadow-lg shadow-indigo-200 disabled:opacity-50 cursor-pointer">
+                        @if (procesandoEstado()) {
+                        <i class="pi pi-spin pi-spinner text-xs"></i>
+                        } @else {
+                        Confirmar
+                        }
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+    }
+
+    <!-- ========== PREVIEW OVERLAY ========== -->
+    @if (previewMaterial()) {
+    <div class="preview-overlay" (click)="cerrarPreview()">
+        <div class="preview-content max-w-5xl w-full mx-4 my-auto" (click)="$event.stopPropagation()">
+
+            <div class="flex items-center justify-between mb-6">
+                <div class="flex items-center gap-4">
+                    <div
+                        class="w-12 h-12 bg-white/10 rounded-2xl flex items-center justify-center border border-white/10">
+                        <i class="pi pi-sparkles text-white text-xl"></i>
+                    </div>
+                    <div>
+                        <h3 class="text-white font-extrabold text-lg leading-tight">{{ previewMaterial()!.nombre }}</h3>
+                        <p class="text-white/40 text-[10px] font-bold uppercase tracking-widest">Vista previa del
+                            material</p>
+                    </div>
+                </div>
+                <div class="flex items-center gap-3">
+                    <a [href]="getMaterialUrl(previewMaterial()!.ruta)" target="_blank"
+                        class="inline-flex items-center gap-2 px-5 py-2.5 bg-white text-indigo-600 hover:bg-gray-100 rounded-2xl text-xs font-black transition-all cursor-pointer shadow-xl">
+                        <i class="pi pi-download text-xs"></i> DESCARGAR
+                    </a>
+                    <button
+                        class="w-11 h-11 rounded-2xl bg-white/10 hover:bg-white/20 text-white flex items-center justify-center transition-all cursor-pointer border border-white/10"
+                        (click)="cerrarPreview()">
+                        <i class="pi pi-times"></i>
+                    </button>
+                </div>
+            </div>
+
+            <div class="preview-media-container">
+                @if (isImageFile(previewMaterial()!.ruta)) {
+                <img [src]="getMaterialUrl(previewMaterial()!.ruta)" [alt]="previewMaterial()!.nombre"
+                    class="mx-auto" />
+                } @else if (isPdfFile(previewMaterial()!.ruta)) {
+                <iframe [src]="getSafeUrl(getMaterialUrl(previewMaterial()!.ruta))" frameborder="0">
+                </iframe>
+                } @else if (isVideoFile(previewMaterial()!.ruta)) {
+                <video [src]="getMaterialUrl(previewMaterial()!.ruta)" controls>
+                </video>
+                }
+            </div>
+
+            <div
+                class="mt-6 flex flex-col md:flex-row gap-6 p-7 bg-white/5 backdrop-blur-xl rounded-5xl border border-white/10 text-white">
+                <div class="flex-1">
+                    <h4 class="text-xs font-black text-white/40 uppercase tracking-[0.2em] mb-3">Descripción del recurso
+                    </h4>
+                    <p class="text-sm font-medium leading-relaxed italic text-white/80">
+                        {{ previewMaterial()!.descripcion || 'Sin descripción adicional disponible.' }}
+                    </p>
+                </div>
+                <div class="shrink-0 w-px bg-white/10 hidden md:block"></div>
+                <div class="flex gap-8">
+                    <div>
+                        <h4 class="text-xs font-black text-white/40 uppercase tracking-[0.2em] mb-3">Autor</h4>
+                        <div class="flex items-center gap-2">
+                            <div
+                                class="w-9 h-9 rounded-xl bg-purple-500/20 border border-purple-500/30 flex items-center justify-center">
+                                <i class="pi pi-user text-purple-400"></i>
+                            </div>
+                            <p class="text-sm font-bold text-white/90">{{ previewMaterial()!.trabajador.nombres }} {{
+                                previewMaterial()!.trabajador.apellidos }}</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    }
+
+</main>

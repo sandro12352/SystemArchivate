@@ -1,0 +1,249 @@
+<main class="relative mx-auto px-4 sm:px-6 lg:px-8 py-8 min-h-screen bg-gray-50/80 overflow-hidden">
+
+    <!-- Ambient decorative orbs -->
+    <div class="ambient-orb"
+        style="top: -120px; right: -80px; width: 500px; height: 500px; background: rgba(139, 92, 246, 0.06);"></div>
+    <div class="ambient-orb"
+        style="bottom: -100px; left: -60px; width: 400px; height: 400px; background: rgba(99, 102, 241, 0.04);"></div>
+
+    <!-- ========== PAGE HEADER ========== -->
+    <div class="relative z-10 flex flex-col md:flex-row justify-between items-start md:items-center mb-8 gap-5">
+        <div>
+            <div class="flex items-center gap-3 mb-1">
+                <div class="w-10 h-10 bg-purple-100 rounded-xl flex items-center justify-center shrink-0">
+                    <i class="pi pi-briefcase text-purple-600 text-lg"></i>
+                </div>
+                <h1 class="text-2xl lg:text-3xl font-extrabold text-gray-900 tracking-tight">Mis Proyectos</h1>
+            </div>
+            <p class="text-gray-400 text-sm mt-1 pl-[52px]">Gestiona y navega todos tus proyectos activos</p>
+        </div>
+
+        <!-- Summary pill -->
+        <div class="flex items-center gap-3">
+            <div class="flex items-center gap-2 bg-white border border-gray-100 rounded-2xl px-5 py-2.5 shadow-sm">
+                <div class="w-2 h-2 rounded-full bg-green-500"></div>
+                <span class="text-xs font-bold text-gray-600">{{ getActiveCount() }} activos</span>
+                <span class="text-gray-200 mx-1">|</span>
+                <span class="text-xs font-bold text-gray-400">{{ proyectos().length }} total</span>
+            </div>
+        </div>
+    </div>
+
+    <!-- ========== SEARCH & FILTERS ========== -->
+    <div class="relative z-10 flex flex-col sm:flex-row items-start sm:items-center gap-4 mb-8">
+
+        <!-- Search -->
+        <div class="search-glass flex items-center gap-3 rounded-2xl px-5 py-3 w-full sm:max-w-md">
+            <i class="pi pi-search text-gray-300 text-sm"></i>
+            <input type="text" placeholder="Buscar proyecto por nombre..."
+                class="bg-transparent border-none outline-none w-full text-sm text-gray-700 placeholder:text-gray-300 font-medium"
+                [ngModel]="searchTerm()" (ngModelChange)="onSearchChange($event)" />
+            @if (searchTerm()) {
+            <button class="text-gray-300 hover:text-gray-500 transition-colors cursor-pointer" (click)="clearSearch()">
+                <i class="pi pi-times text-xs"></i>
+            </button>
+            }
+        </div>
+
+        <!-- Filter chips -->
+        <div class="flex items-center gap-2 flex-wrap">
+            <button class="filter-chip px-4 py-2 rounded-xl text-xs font-bold bg-white text-gray-500 border-gray-100"
+                [class.active]="filtroActivo() === 'todos'" (click)="setFiltro('todos')">
+                Todos
+            </button>
+            <button class="filter-chip px-4 py-2 rounded-xl text-xs font-bold bg-white text-gray-500 border-gray-100"
+                [class.active]="filtroActivo() === 'activo'" (click)="setFiltro('activo')">
+                <i class="pi pi-bolt text-[10px] mr-1"></i> Activos
+            </button>
+            <button class="filter-chip px-4 py-2 rounded-xl text-xs font-bold bg-white text-gray-500 border-gray-100"
+                [class.active]="filtroActivo() === 'en_progreso'" (click)="setFiltro('en_progreso')">
+                <i class="pi pi-sync text-[10px] mr-1"></i> En Progreso
+            </button>
+            <button class="filter-chip px-4 py-2 rounded-xl text-xs font-bold bg-white text-gray-500 border-gray-100"
+                [class.active]="filtroActivo() === 'completado'" (click)="setFiltro('completado')">
+                <i class="pi pi-check-circle text-[10px] mr-1"></i> Completados
+            </button>
+        </div>
+    </div>
+
+    <!-- ========== CONTENT ========== -->
+    @if (cargandoProyectos()) {
+    <!-- ===== LOADING SKELETON ===== -->
+    <div class="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-6 relative z-10">
+        @for (i of [1, 2, 3, 4, 5, 6]; track i) {
+        <div class="bg-white rounded-3xl border border-gray-100 p-6 overflow-hidden">
+            <div class="skeleton-shimmer h-3 w-20 mb-5"></div>
+            <div class="skeleton-shimmer h-5 w-3/4 mb-3"></div>
+            <div class="skeleton-shimmer h-3 w-full mb-2"></div>
+            <div class="skeleton-shimmer h-3 w-2/3 mb-6"></div>
+            <div class="flex items-center gap-3">
+                <div class="skeleton-shimmer w-8 h-8 rounded-lg"></div>
+                <div class="skeleton-shimmer h-3 w-24"></div>
+            </div>
+        </div>
+        }
+    </div>
+    } @else if (proyectosFiltrados().length === 0) {
+    <!-- ===== EMPTY STATE ===== -->
+    <div class="relative z-10 flex flex-col items-center justify-center py-24">
+        <div class="w-24 h-24 bg-purple-50 rounded-3xl flex items-center justify-center mb-6 empty-icon-float">
+            <i class="pi pi-folder-open text-purple-300 text-4xl"></i>
+        </div>
+        @if (searchTerm() || filtroActivo() !== 'todos') {
+        <h3 class="text-xl font-extrabold text-gray-800 mb-2">Sin resultados</h3>
+        <p class="text-gray-400 text-sm text-center max-w-sm mb-6">
+            No se encontraron proyectos que coincidan con tu búsqueda o filtro actual.
+        </p>
+        <button
+            class="inline-flex items-center gap-2 px-5 py-2.5 bg-purple-50 text-purple-600 hover:bg-purple-100 rounded-xl text-xs font-bold transition-all cursor-pointer"
+            (click)="resetFilters()">
+            <i class="pi pi-filter-slash text-xs"></i> Limpiar filtros
+        </button>
+        } @else {
+        <h3 class="text-xl font-extrabold text-gray-800 mb-2">No hay proyectos</h3>
+        <p class="text-gray-400 text-sm text-center max-w-sm">
+            Aún no tienes proyectos asignados. Contacta con tu asesor para iniciar uno nuevo.
+        </p>
+        }
+    </div>
+    } @else {
+    <!-- ===== PROJECT CARDS GRID ===== -->
+    <div class="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-6 relative z-10">
+
+        @for (proyecto of proyectosPaginados(); track proyecto.id_proyecto) {
+        <div class="project-card bg-white rounded-3xl border border-gray-100 shadow-sm overflow-hidden">
+
+            <!-- Accent bar -->
+            <div class="card-accent" [ngStyle]="{
+            'background': getAccentGradient(proyecto.estado)
+          }"></div>
+
+            <div class="p-6 pt-5">
+
+                <!-- Estado badge + Fecha -->
+                <div class="flex items-center justify-between mb-4">
+                    <span
+                        class="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-lg text-[10px] font-black uppercase tracking-widest"
+                        [ngClass]="{
+                  'bg-amber-50 text-amber-600': proyecto.estado === 'planificacion',
+                  'bg-green-50 text-green-600': proyecto.estado === 'completado',
+                  'bg-blue-50 text-blue-600': proyecto.estado === 'activo',
+                  'bg-gray-100 text-gray-400': proyecto.estado === 'en_progreso'
+                }">
+                        <span class="status-dot w-1.5 h-1.5 rounded-full" [class.active]="proyecto.estado === 'activo'"
+                            [ngClass]="{
+                    'bg-amber-500': proyecto.estado === 'planificacion',
+                    'bg-green-500': proyecto.estado === 'completado',
+                    'bg-blue-500': proyecto.estado === 'activo',
+                    'bg-gray-400': proyecto.estado === 'en_progreso'
+                  }">
+                        </span>
+                        {{ getEstadoLabel(proyecto.estado) }}
+                    </span>
+                    <span class="text-[10px] font-semibold text-gray-300">
+                        {{ formatDate(proyecto.fecha_registro) }}
+                    </span>
+                </div>
+
+                <!-- Project name -->
+                <h3 class="text-lg font-extrabold text-gray-900 mb-2 leading-snug line-clamp-2">
+                    {{ proyecto.nombre }}
+                </h3>
+
+                <!-- Description -->
+                @if (proyecto.descripcion) {
+                <p class="text-xs text-gray-400 font-medium leading-relaxed line-clamp-2 mb-5">
+                    {{ proyecto.descripcion }}
+                </p>
+                } @else {
+                <p class="text-xs text-gray-300 italic mb-5">Sin descripción</p>
+                }
+
+                <!-- Dates info row -->
+                <div class="flex items-center gap-4 mb-5">
+                    <div class="flex items-center gap-2">
+                        <div class="w-7 h-7 bg-purple-50 rounded-lg flex items-center justify-center">
+                            <i class="pi pi-calendar text-purple-400 text-[10px]"></i>
+                        </div>
+                        <div>
+                            <p class="text-[9px] text-gray-300 font-semibold uppercase tracking-wider">Inicio</p>
+                            <p class="text-xs font-bold text-gray-600">{{ formatDateShort(proyecto.fecha_registro) }}
+                            </p>
+                        </div>
+                    </div>
+                    @if (proyecto.fecha_termino) {
+                    <div class="flex items-center gap-2">
+                        <div class="w-7 h-7 bg-indigo-50 rounded-lg flex items-center justify-center">
+                            <i class="pi pi-flag text-indigo-400 text-[10px]"></i>
+                        </div>
+                        <div>
+                            <p class="text-[9px] text-gray-300 font-semibold uppercase tracking-wider">Fin</p>
+                            <p class="text-xs font-bold text-gray-600">{{ formatDateShort(proyecto.fecha_termino!) }}
+                            </p>
+                        </div>
+                    </div>
+                    }
+                </div>
+
+                <!-- Divider -->
+                <div class="border-t border-gray-50 pt-4">
+                    <div class="flex items-center justify-between">
+                        <!-- Folder counter -->
+                        <div class="folder-counter flex items-center gap-2 px-3 py-1.5 rounded-lg">
+                            <i class="pi pi-folder text-purple-400 text-xs"></i>
+                            <span class="text-[10px] font-bold text-gray-500">Proyecto #{{ proyecto.id_proyecto
+                                }}</span>
+                        </div>
+
+                        <!-- Action button -->
+                        <button [routerLink]="['/home/proyectos', proyecto.id_proyecto]"
+                            class="inline-flex items-center gap-2 px-4 py-2.5 bg-linear-to-r from-purple-600 to-indigo-600 text-white rounded-xl text-xs font-bold transition-all duration-300 cursor-pointer group hover:shadow-lg hover:shadow-purple-200/50 hover:-translate-y-0.5">
+                            Ver Contenido
+                            <i
+                                class="pi pi-arrow-right text-[9px] opacity-70 group-hover:opacity-100 group-hover:translate-x-0.5 transition-all duration-200"></i>
+                        </button>
+                    </div>
+                </div>
+
+            </div>
+        </div>
+        }
+
+    </div>
+
+    <!-- ========== PAGINATION ========== -->
+    @if (totalPaginas() > 1) {
+    <div
+        class="relative z-10 flex flex-col sm:flex-row justify-between items-center gap-4 mt-8 bg-white rounded-2xl border border-gray-100 shadow-sm px-6 py-4">
+        <p class="text-xs text-gray-300 font-medium tracking-tight">
+            Mostrando <span class="text-gray-600 font-bold">{{ proyectosPaginados().length }}</span> de
+            <span class="text-gray-600 font-bold">{{ proyectosFiltrados().length }}</span> proyectos
+        </p>
+
+        <div class="flex items-center gap-1">
+            <button
+                class="page-btn w-9 h-9 flex items-center justify-center rounded-xl cursor-pointer disabled:opacity-20 disabled:cursor-default"
+                [disabled]="paginaActual() === 1" (click)="cambiarPagina(paginaActual() - 1)">
+                <i class="pi pi-angle-left text-sm text-gray-500"></i>
+            </button>
+
+            @for (p of getPaginasArray(); track $index) {
+            <button (click)="cambiarPagina($index + 1)"
+                class="page-btn w-9 h-9 font-bold text-xs rounded-xl cursor-pointer"
+                [class.page-active]="paginaActual() === ($index + 1)"
+                [class.text-gray-400]="paginaActual() !== ($index + 1)">
+                {{ $index + 1 }}
+            </button>
+            }
+
+            <button
+                class="page-btn w-9 h-9 flex items-center justify-center rounded-xl cursor-pointer disabled:opacity-20 disabled:cursor-default"
+                [disabled]="paginaActual() === totalPaginas()" (click)="cambiarPagina(paginaActual() + 1)">
+                <i class="pi pi-angle-right text-sm text-gray-500"></i>
+            </button>
+        </div>
+    </div>
+    }
+    }
+
+</main>

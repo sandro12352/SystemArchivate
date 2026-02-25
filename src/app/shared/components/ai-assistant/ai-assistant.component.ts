@@ -44,7 +44,7 @@ export class AiAssistantComponent implements OnInit {
         setTimeout(() => {
             this.messages.set([
                 ...this.messages(),
-                { role: 'ai', content: 'Aún estoy en desarrollo, pero pronto podré ayudarte con tus contratos y proyectos.' }
+                { role: 'ai', content: 'Para poder conquistar a una chica, debes ir ala tienda de Fortnite y luego comprar un set de 74 soles, despues regalarselo , es ahí donde se gana la chica ' }
             ]);
             this.isTyping.set(false);
         }, 1500);

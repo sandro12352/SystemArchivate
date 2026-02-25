@@ -3,6 +3,7 @@ import { inject, Injectable } from '@angular/core';
 import { environment } from '../../../../environments/environment';
 import { Observable } from 'rxjs';
 import { Proyecto } from '../interfaces/plan-marketing.interface';
+import { ProyectoMaterial } from '../../projects/interfaces/project-content.interface';
 
 @Injectable({
     providedIn: 'root',
@@ -14,7 +15,7 @@ export class ProyectoService {
      * Obtiene todos los proyectos del cliente autenticado
      */
     getProyectosByCliente(token: string): Observable<Proyecto[]> {
-        return this.http.get<Proyecto[]>(`${environment.API_URL}/api/proyectos`, {
+        return this.http.get<Proyecto[]>(`${environment.API_URL}/api/projects`, {
             headers: {
                 Authorization: `Bearer ${token}`
             }
@@ -30,5 +31,28 @@ export class ProyectoService {
                 Authorization: `Bearer ${token}`
             }
         });
+    }
+
+    /**
+     * Obtiene un proyecto con todo su contenido (materiales)
+     */
+    getProyectoConContenido(idProyecto: number, token: string): Observable<ProyectoMaterial[]> {
+        return this.http.get<ProyectoMaterial[]>(`${environment.API_URL}/api/project-material/project/${idProyecto}`, {
+            headers: {
+                Authorization: `Bearer ${token}`
+            }
+        });
+    }
+    /**
+     * Actualiza el estado de un material (aceptado/rechazado)
+     */
+    actualizarEstadoMaterial(idMaterial: number, estado: string, observacion: string | null, token: string): Observable<any> {
+        return this.http.patch(`${environment.API_URL}/api/project-material/${idMaterial}/status`,
+            { estado, observacion },
+            {
+                headers: {
+                    Authorization: `Bearer ${token}`
+                }
+            });
     }
 }
