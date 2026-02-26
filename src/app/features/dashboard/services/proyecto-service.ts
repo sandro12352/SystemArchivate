@@ -47,8 +47,36 @@ export class ProyectoService {
      * Actualiza el estado de un material (aceptado/rechazado)
      */
     actualizarEstadoMaterial(idMaterial: number, estado: string, observacion: string | null, token: string): Observable<any> {
-        return this.http.patch(`${environment.API_URL}/api/project-material/${idMaterial}/status`,
+        return this.http.patch(`${environment.API_URL}/api/project-material/cambiar-estado/${idMaterial}`,
             { estado, observacion },
+            {
+                headers: {
+                    Authorization: `Bearer ${token}`
+                }
+            });
+    }
+
+    /**
+     * Actualiza la referencia de un material con un enlace
+     */
+    actualizarReferencia(idMaterial: number, referencia: string, token: string): Observable<any> {
+        return this.http.patch(`${environment.API_URL}/api/project-material/${idMaterial}`,
+            { referencia },
+            {
+                headers: {
+                    Authorization: `Bearer ${token}`
+                }
+            });
+    }
+
+    /**
+     * Sube un archivo como referencia de un material
+     */
+    subirArchivoReferencia(idMaterial: number, archivo: File, token: string): Observable<any> {
+        const formData = new FormData();
+        formData.append('referencia', archivo);
+        return this.http.patch(`${environment.API_URL}/api/project-material/${idMaterial}`,
+            formData,
             {
                 headers: {
                     Authorization: `Bearer ${token}`

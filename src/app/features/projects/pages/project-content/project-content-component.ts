@@ -1,8 +1,9 @@
-import { Component, computed, inject, OnInit, signal } from '@angular/core';
+import { Component, computed, inject, OnInit, signal, HostListener } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { ActivatedRoute, RouterLink } from '@angular/router';
 import { DomSanitizer, SafeResourceUrl } from '@angular/platform-browser';
 import { FormsModule } from '@angular/forms';
+import { HttpClient } from '@angular/common/http';
 import { finalize } from 'rxjs';
 import { AuthService } from '../../../auth/services/auth-service';
 import { ProyectoService } from '../../../dashboard/services/proyecto-service';
@@ -38,6 +39,14 @@ export class ProjectContentComponent implements OnInit {
     observacionRechazo = signal<string>('');
     procesandoEstado = signal<boolean>(false);
 
+    // Panel de Referencia
+    showReferencePanel = signal<boolean>(false);
+    referenciaMode = signal<'file' | 'link'>('file');
+    referenciaFile = signal<File | null>(null);
+    referenciaLink = signal<string>('');
+    subiendoReferencia = signal<boolean>(false);
+    isDraggingRef = signal<boolean>(false);
+
     // ── Computed ──
     proyecto = computed(() => {
         const list = this.materiales();
@@ -65,6 +74,7 @@ export class ProjectContentComponent implements OnInit {
             .subscribe({
                 next: (data: ProyectoMaterial[]) => {
                     this.materiales.set(data);
+                    console.log(this.materiales());
                 },
                 error: (err) => {
                     console.error('Error al cargar contenido del proyecto:', err);
@@ -78,6 +88,10 @@ export class ProjectContentComponent implements OnInit {
 
     cerrarPreview(): void {
         this.previewMaterial.set(null);
+        this.showReferencePanel.set(false);
+        this.referenciaFile.set(null);
+        this.referenciaLink.set('');
+        this.referenciaMode.set('file');
     }
 
     getMaterialUrl(ruta: string): string {
@@ -216,5 +230,85 @@ export class ProjectContentComponent implements OnInit {
                 },
                 error: (err) => console.error('Error al rechazar material:', err)
             });
+    }
+
+    // ── Referencia ──
+    toggleReferencePanel(): void {
+        this.showReferencePanel.update(v => !v);
+    }
+
+    isReferenceLink(ref: string): boolean {
+        return ref.startsWith('http://') || ref.startsWith('https://');
+    }
+
+    onReferenceFileSelected(event: Event): void {
+        const input = event.target as HTMLInputElement;
+        if (input.files && input.files.length > 0) {
+            this.referenciaFile.set(input.files[0]);
+        }
+    }
+
+    onDragOver(event: DragEvent): void {
+        event.preventDefault();
+        event.stopPropagation();
+        this.isDraggingRef.set(true);
+    }
+
+    onDragLeave(event: DragEvent): void {
+        event.preventDefault();
+        event.stopPropagation();
+        this.isDraggingRef.set(false);
+    }
+
+    onDropReference(event: DragEvent): void {
+        event.preventDefault();
+        event.stopPropagation();
+        this.isDraggingRef.set(false);
+        if (event.dataTransfer?.files && event.dataTransfer.files.length > 0) {
+            this.referenciaFile.set(event.dataTransfer.files[0]);
+        }
+    }
+
+    subirReferencia(): void {
+        const material = this.previewMaterial();
+        if (!material || !this.user?.token) return;
+
+        const idProyecto = Number(this.route.snapshot.paramMap.get('id'));
+        this.subiendoReferencia.set(true);
+
+        if (this.referenciaMode() === 'link' && this.referenciaLink()) {
+            // Enviar link como referencia
+            this.proyectoService.actualizarReferencia(material.id_proyecto_material, this.referenciaLink(), this.user.token)
+                .pipe(finalize(() => this.subiendoReferencia.set(false)))
+                .subscribe({
+                    next: () => {
+                        this.showReferencePanel.set(false);
+                        this.referenciaLink.set('');
+                        this.cargarContenido(idProyecto);
+                    },
+                    error: (err) => console.error('Error al guardar referencia:', err)
+                });
+        } else if (this.referenciaMode() === 'file' && this.referenciaFile()) {
+            // Subir archivo como referencia
+            this.proyectoService.subirArchivoReferencia(material.id_proyecto_material, this.referenciaFile()!, this.user.token)
+                .pipe(finalize(() => this.subiendoReferencia.set(false)))
+                .subscribe({
+                    next: () => {
+                        this.showReferencePanel.set(false);
+                        this.referenciaFile.set(null);
+                        this.cargarContenido(idProyecto);
+                    },
+                    error: (err) => console.error('Error al subir archivo de referencia:', err)
+                });
+        }
+    }
+
+    @HostListener('document:keydown.escape')
+    onEscapeKey() {
+        if (this.previewMaterial()) {
+            this.cerrarPreview();
+        } else if (this.materialARechazar()) {
+            this.cerrarModalRechazo();
+        }
     }
 }
