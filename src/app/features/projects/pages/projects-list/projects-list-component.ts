@@ -4,7 +4,7 @@ import { FormsModule } from '@angular/forms';
 import { RouterLink } from '@angular/router';
 import { finalize } from 'rxjs';
 import { AuthService } from '../../../auth/services/auth-service';
-import { ProyectoService } from '../../../dashboard/services/proyecto-service';
+import { ProyectoService } from '../../services/proyecto-service';
 import { Proyecto, EstadoProyecto } from '../../../dashboard/interfaces/plan-marketing.interface';
 
 type FiltroEstado = 'todos' | 'activo' | 'en_progreso' | 'completado' | 'planificacion';

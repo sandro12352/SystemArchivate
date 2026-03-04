@@ -2,8 +2,8 @@ import { HttpClient } from '@angular/common/http';
 import { inject, Injectable } from '@angular/core';
 import { environment } from '../../../../environments/environment';
 import { Observable } from 'rxjs';
-import { Proyecto } from '../interfaces/plan-marketing.interface';
-import { ProyectoMaterial } from '../../projects/interfaces/project-content.interface';
+import { Proyecto } from '../../dashboard/interfaces/plan-marketing.interface';
+import { ProyectoMaterial } from '../interfaces/project-content.interface';
 
 @Injectable({
     providedIn: 'root',

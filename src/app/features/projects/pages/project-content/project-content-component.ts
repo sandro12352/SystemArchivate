@@ -6,7 +6,7 @@ import { FormsModule } from '@angular/forms';
 import { HttpClient } from '@angular/common/http';
 import { finalize } from 'rxjs';
 import { AuthService } from '../../../auth/services/auth-service';
-import { ProyectoService } from '../../../dashboard/services/proyecto-service';
+import { ProyectoService } from '../../services/proyecto-service';
 import { ProyectoMaterial } from '../../interfaces/project-content.interface';
 import { environment } from '../../../../../environments/environment';
 
@@ -46,6 +46,7 @@ export class ProjectContentComponent implements OnInit {
     referenciaLink = signal<string>('');
     subiendoReferencia = signal<boolean>(false);
     isDraggingRef = signal<boolean>(false);
+    copiadoExitoso = signal<boolean>(false);
 
     // ── Computed ──
     proyecto = computed(() => {
@@ -230,6 +231,17 @@ export class ProjectContentComponent implements OnInit {
                 },
                 error: (err) => console.error('Error al rechazar material:', err)
             });
+    }
+
+    // ── Copiar Copy ──
+    copiarCopy(): void {
+        const copy = this.previewMaterial()?.copy;
+        if (!copy) return;
+
+        navigator.clipboard.writeText(copy).then(() => {
+            this.copiadoExitoso.set(true);
+            setTimeout(() => this.copiadoExitoso.set(false), 2000);
+        }).catch(err => console.error('Error al copiar:', err));
     }
 
     // ── Referencia ──

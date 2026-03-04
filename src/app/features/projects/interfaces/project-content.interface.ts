@@ -14,6 +14,9 @@ export interface ProyectoMaterial {
     tamanio: number;
     trabajador: Trabajador;
     carpeta_material: CarpetaMaterial;
+    copy?: string,
+    fecha_publicacion?: Date,
+    visible?: boolean
 }
 
 export interface Trabajador {

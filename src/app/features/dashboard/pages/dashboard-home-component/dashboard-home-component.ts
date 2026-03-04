@@ -8,7 +8,7 @@ import { DialogModule } from 'primeng/dialog';
 import { TextareaModule } from 'primeng/textarea';
 import { AuthService } from '../../../auth/services/auth-service';
 import { PlanMarketingService } from '../../services/plan-marketing-service';
-import { ProyectoService } from '../../services/proyecto-service';
+import { ProyectoService } from '../../../projects/services/proyecto-service';
 import { PlanMarketing, Proyecto, EstadoProyecto } from '../../interfaces/plan-marketing.interface';
 import { finalize } from 'rxjs';
 import { RouterLink } from "@angular/router";

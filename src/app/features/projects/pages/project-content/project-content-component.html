@@ -299,238 +299,280 @@
     </div>
     }
 
-    <!-- ========== PREVIEW OVERLAY (Fullscreen Dark Editorial) ========== -->
+    <!-- ========== PREVIEW SPLIT VIEW (Studio Editorial) ========== -->
     @if (previewMaterial()) {
-    <div class="preview-overlay" (click)="cerrarPreview()">
+    <div class="preview-overlay-v2" (click)="cerrarPreview()">
 
-        <!-- ── Header Controls ── -->
-        <div class="preview-header" (click)="$event.stopPropagation()">
-            <div class="flex items-center gap-4">
-                <div class="preview-icon-badge">
-                    <i class="pi pi-sparkles text-white text-lg"></i>
-                </div>
-                <div>
-                    <h4 class="text-base font-extrabold text-white leading-tight tracking-tight">{{
-                        previewMaterial()!.nombre }}</h4>
-                    <div class="flex items-center gap-3 mt-1">
-                        <p class="text-[10px] text-neutral-500 uppercase tracking-[0.2em] font-black">
-                            {{ previewMaterial()!.tamanio }}MB • {{ formatDateShort(previewMaterial()!.fecha_subida) }}
-                        </p>
-                        <span class="w-1 h-1 rounded-full bg-white/20"></span>
-                        <span class="preview-status-badge" [ngClass]="{
-                            'bg-amber-500/15 text-amber-400 border-amber-500/30': previewMaterial()!.estado === 'pendiente',
-                            'bg-emerald-500/15 text-emerald-400 border-emerald-500/30': previewMaterial()!.estado === 'aprobado',
-                            'bg-rose-500/15 text-rose-400 border-rose-500/30': previewMaterial()!.estado === 'rechazado'
-                        }">
-                            {{ getEstadoLabel(previewMaterial()!.estado) }}
-                        </span>
-                        <span class="w-1 h-1 rounded-full bg-white/20"></span>
-                        <p
-                            class="text-[10px] text-neutral-500 uppercase tracking-[0.2em] font-black flex items-center gap-1.5">
-                            <i class="pi pi-user text-[10px]"></i>
-                            {{ previewMaterial()!.trabajador.nombres }} {{ previewMaterial()!.trabajador.apellidos }}
-                        </p>
-                    </div>
-                </div>
-            </div>
+        <div class="preview-app-container" (click)="$event.stopPropagation()">
 
-            <div class="flex items-center gap-3">
-                <!-- Toggle Reference Panel -->
-                <button (click)="toggleReferencePanel()" class="preview-action-btn"
-                    [class.preview-action-btn--active]="showReferencePanel()" title="Referencias">
-                    <i class="pi pi-paperclip text-lg"></i>
-                </button>
-                <button (click)="downloadFile(previewMaterial()!); $event.stopPropagation()" class="preview-action-btn"
-                    title="Descargar">
-                    <i class="pi pi-download text-lg"></i>
-                </button>
-                <button (click)="cerrarPreview()" class="preview-action-btn preview-action-btn--close">
-                    <i class="pi pi-times text-lg"></i>
-                </button>
-            </div>
-        </div>
-
-        <!-- ── Main Content View ── -->
-        <div class="preview-main-content" (click)="$event.stopPropagation()">
-            @if (isImageFile(previewMaterial()!.ruta)) {
-            <img [src]="getMaterialUrl(previewMaterial()!.ruta)" [alt]="previewMaterial()!.nombre"
-                class="preview-media-image" />
-            } @else if (isVideoFile(previewMaterial()!.ruta)) {
-            <div class="preview-media-video-wrapper">
-                <video [src]="getMaterialUrl(previewMaterial()!.ruta)" controls autoplay class="w-full h-full"></video>
-            </div>
-            } @else if (isPdfFile(previewMaterial()!.ruta)) {
-            <div class="preview-media-video-wrapper">
-                <iframe [src]="getSafeUrl(getMaterialUrl(previewMaterial()!.ruta))" frameborder="0"
-                    class="w-full h-full"></iframe>
-            </div>
-            } @else {
-            <!-- Non-previewable file -->
-            <div class="preview-fallback">
-                <div class="preview-fallback-icon">
-                    <i class="pi pi-file text-6xl text-purple-400"></i>
-                </div>
-                <div class="text-center space-y-2">
-                    <p class="text-2xl font-extrabold text-white">Vista previa no disponible</p>
-                    <p class="text-neutral-500 max-w-xs mx-auto leading-relaxed text-sm">Este tipo de archivo debe
-                        descargarse para ser visualizado correctamente.</p>
-                </div>
-                <button (click)="downloadFile(previewMaterial()!)" class="preview-download-btn">
-                    <i class="pi pi-download text-sm"></i>
-                    Descargar ahora
-                </button>
-            </div>
-            }
-        </div>
-
-        <!-- ── Description Overlay (Bottom) ── -->
-        @if (previewMaterial()!.descripcion && !showReferencePanel()) {
-        <div class="preview-bottom-overlay" (click)="$event.stopPropagation()">
-            <div class="max-w-2xl mx-auto text-center space-y-2">
-                <p class="text-[10px] font-black uppercase tracking-[0.25em] text-purple-400">Observaciones</p>
-                <p class="text-[15px] text-neutral-300 leading-relaxed font-medium">{{ previewMaterial()!.descripcion }}
-                </p>
-            </div>
-        </div>
-        }
-
-        <!-- ── Reference Panel (Slide-up) ── -->
-        @if (showReferencePanel()) {
-        <div class="reference-panel" (click)="$event.stopPropagation()">
-            <div class="reference-panel-inner">
-                <!-- Panel Header -->
-                <div class="flex items-center justify-between mb-6">
+            <!-- ── LEFT COLUMN: Media Viewer ── -->
+            <div class="preview-viewer-section">
+                <!-- Header inside viewer for close button and main title -->
+                <div class="viewer-top-bar">
                     <div class="flex items-center gap-3">
-                        <div
-                            class="w-9 h-9 rounded-xl bg-purple-500/15 border border-purple-500/25 flex items-center justify-center">
-                            <i class="pi pi-paperclip text-purple-400 text-sm"></i>
-                        </div>
-                        <div>
-                            <h5 class="text-sm font-extrabold text-white">Referencia del material</h5>
-                            <p class="text-[9px] text-neutral-500 uppercase tracking-[0.2em] font-black mt-0.5">Subir
-                                imagen, video o enlace</p>
-                        </div>
+                        <div class="badge-type">{{ previewMaterial()!.tipo }}</div>
+                        <span class="text-white/40 text-[10px] font-bold tracking-widest uppercase">v{{
+                            previewMaterial()!.version }}</span>
                     </div>
-                    <button (click)="toggleReferencePanel()"
-                        class="w-8 h-8 rounded-lg bg-white/5 hover:bg-white/10 text-white/40 hover:text-white flex items-center justify-center transition-all cursor-pointer">
-                        <i class="pi pi-times text-xs"></i>
+                    <button (click)="cerrarPreview()" class="close-minimal-btn">
+                        <i class="pi pi-times"></i>
                     </button>
                 </div>
 
-                <!-- Current Reference -->
-                @if (previewMaterial()!.referencia) {
-                <div class="reference-current">
-                    <p class="text-[9px] font-black uppercase tracking-[0.2em] text-emerald-400 mb-3">Referencia actual
-                    </p>
-                    @if (isReferenceLink(previewMaterial()!.referencia!)) {
-                    <a [href]="previewMaterial()!.referencia" target="_blank" rel="noopener"
-                        class="flex items-center gap-3 p-3 bg-white/5 rounded-xl border border-white/10 hover:bg-white/10 transition-all group">
-                        <div class="w-8 h-8 rounded-lg bg-blue-500/15 flex items-center justify-center shrink-0">
-                            <i class="pi pi-external-link text-blue-400 text-xs"></i>
-                        </div>
-                        <p class="text-xs text-blue-300 truncate group-hover:text-blue-200 transition-colors">{{
-                            previewMaterial()!.referencia }}</p>
-                    </a>
+                <div class="viewer-main-display">
+                    @if (isImageFile(previewMaterial()!.ruta)) {
+                    <img [src]="getMaterialUrl(previewMaterial()!.ruta)" [alt]="previewMaterial()!.nombre"
+                        class="viewer-img" />
+                    } @else if (isVideoFile(previewMaterial()!.ruta)) {
+                    <video [src]="getMaterialUrl(previewMaterial()!.ruta)" controls autoplay
+                        class="viewer-video"></video>
+                    } @else if (isPdfFile(previewMaterial()!.ruta)) {
+                    <iframe [src]="getSafeUrl(getMaterialUrl(previewMaterial()!.ruta))" class="viewer-pdf"></iframe>
                     } @else {
-                    <div class="reference-preview-thumb">
-                        @if (isImageFile(previewMaterial()!.referencia!)) {
-                        <img [src]="getMaterialUrl(previewMaterial()!.referencia!)"
-                            class="w-full h-full object-cover rounded-xl" />
-                        } @else if (isVideoFile(previewMaterial()!.referencia!)) {
-                        <video [src]="getMaterialUrl(previewMaterial()!.referencia!)"
-                            class="w-full h-full object-cover rounded-xl" muted></video>
+                    <div class="viewer-fallback">
+                        <i class="pi pi-file-excel text-6xl text-white/10 mb-4"></i>
+                        <p class="text-white/60 font-medium">Previsualización no disponible para este formato</p>
+                    </div>
+                    }
+                </div>
+            </div>
+
+            <!-- ── RIGHT COLUMN: Sidebar Info ── -->
+            <aside class="preview-sidebar-v2">
+                <div class="sidebar-scroll-content">
+
+                    <!-- Header Info -->
+                    <div class="sidebar-header">
+                        <h2 class="sidebar-title">{{ previewMaterial()!.nombre }}</h2>
+                        <div class="flex flex-wrap gap-2 mt-3">
+                            <span class="status-pill-v2" [ngClass]="{
+                                'status--pendiente': previewMaterial()!.estado === 'pendiente',
+                                'status--aprobado': previewMaterial()!.estado === 'aprobado',
+                                'status--rechazado': previewMaterial()!.estado === 'rechazado'
+                            }">
+                                {{ getEstadoLabel(previewMaterial()!.estado) }}
+                            </span>
+                        </div>
+                    </div>
+
+                    <!-- Copy Section -->
+                    @if (previewMaterial()!.copy) {
+                    <div class="sidebar-section">
+                        <div class="section-label">
+                            <div class="flex items-center gap-2">
+                                <i class="pi pi-align-left text-indigo-400"></i>
+                                <span>Copy de la publicación</span>
+                            </div>
+                            <button class="copy-tiny-btn" (click)="copiarCopy()">
+                                <i class="pi" [ngClass]="copiadoExitoso() ? 'pi-check' : 'pi-copy'"></i>
+                                {{ copiadoExitoso() ? 'Copiado' : 'Copiar' }}
+                            </button>
+                        </div>
+                        <div class="copy-box">
+                            {{ previewMaterial()!.copy }}
+                        </div>
+                    </div>
+                    }
+
+                    <!-- Publish Date -->
+                    <div class="sidebar-section">
+                        <div class="section-label">
+                            <div class="flex items-center gap-2">
+                                <i class="pi pi-calendar text-indigo-400"></i>
+                                <span>Fecha de Publicación</span>
+                            </div>
+                        </div>
+                        <div class="date-display">
+                            {{ previewMaterial()!.fecha_publicacion ? formatDate(previewMaterial()!.fecha_publicacion!)
+                            :
+                            'Pendiente de asignar' }}
+                        </div>
+                    </div>
+
+                    <!-- Details Accordion-like Info -->
+                    <div class="sidebar-separator"></div>
+
+                    <div class="metadata-grid">
+                        <div class="meta-item">
+                            <span class="meta-label">Subido por</span>
+                            <span class="meta-value">{{ previewMaterial()!.trabajador.nombres }}</span>
+                        </div>
+                        <div class="meta-item">
+                            <span class="meta-label">Fecha Subida</span>
+                            <span class="meta-value">{{ formatDateShort(previewMaterial()!.fecha_subida) }}</span>
+                        </div>
+                        <div class="meta-item">
+                            <span class="meta-label">Tamaño</span>
+                            <span class="meta-value">{{ previewMaterial()!.tamanio }} MB</span>
+                        </div>
+                    </div>
+
+                    <!-- Description -->
+                    @if (previewMaterial()!.descripcion) {
+                    <div class="sidebar-section mt-6">
+                        <div class="section-label mb-2">Observaciones</div>
+                        <p class="text-xs text-white/50 leading-relaxed italic">
+                            "{{ previewMaterial()!.descripcion }}"
+                        </p>
+                    </div>
+                    }
+
+                    <!-- Reference Button -->
+                    <button (click)="toggleReferencePanel()" class="sidebar-action-btn mt-4"
+                        [class.btn--active]="showReferencePanel()">
+                        <i class="pi pi-paperclip"></i>
+                        Ver Referencias
+                    </button>
+
+                </div>
+
+                <!-- Footer Actions -->
+                <div class="sidebar-footer">
+                    <button (click)="downloadFile(previewMaterial()!)" class="footer-btn btn--download">
+                        <i class="pi pi-download"></i>
+                        Descargar
+                    </button>
+                </div>
+            </aside>
+
+        </div>
+
+        <!-- ========== REFERENCE MODAL (Redesigned) ========== -->
+        @if (showReferencePanel()) {
+        <div class="ref-modal-backdrop" (click)="toggleReferencePanel()">
+            <div class="ref-modal-shell" (click)="$event.stopPropagation()">
+
+                <!-- ── Header ── -->
+                <div class="ref-modal-header">
+                    <div class="ref-modal-header-left">
+                        <div class="ref-header-icon">
+                            <i class="pi pi-paperclip"></i>
+                        </div>
+                        <div>
+                            <h3 class="ref-modal-title">Referencia</h3>
+                            <p class="ref-modal-subtitle">Adjunta material de referencia</p>
+                        </div>
+                    </div>
+                    <button (click)="toggleReferencePanel()" class="ref-close-btn">
+                        <i class="pi pi-times"></i>
+                    </button>
+                </div>
+
+                <!-- ── Body ── -->
+                <div class="ref-modal-body">
+
+                    <!-- Current reference preview -->
+                    @if (previewMaterial()!.referencia) {
+                    <div class="ref-current-section">
+                        <span class="ref-section-label">
+                            <i class="pi pi-check-circle"></i>
+                            Referencia actual
+                        </span>
+                        @if (isReferenceLink(previewMaterial()!.referencia!)) {
+                        <a [href]="previewMaterial()!.referencia" target="_blank" class="ref-current-link">
+                            <div class="ref-link-icon-wrapper">
+                                <i class="pi pi-external-link"></i>
+                            </div>
+                            <div class="ref-link-text">
+                                <span class="ref-link-label">Enlace externo</span>
+                                <span class="ref-link-url">{{ previewMaterial()!.referencia }}</span>
+                            </div>
+                            <i class="pi pi-arrow-up-right ref-link-arrow"></i>
+                        </a>
                         } @else {
-                        <div class="w-full h-full flex items-center justify-center bg-white/5 rounded-xl">
-                            <i class="pi pi-file text-2xl text-neutral-500"></i>
+                        <div class="ref-current-media">
+                            <img *ngIf="isImageFile(previewMaterial()!.referencia!)"
+                                [src]="getMaterialUrl(previewMaterial()!.referencia!)" class="ref-current-media-img" />
+                            <video *ngIf="isVideoFile(previewMaterial()!.referencia!)"
+                                [src]="getMaterialUrl(previewMaterial()!.referencia!)" class="ref-current-media-vid"
+                                muted></video>
                         </div>
                         }
                     </div>
                     }
-                </div>
-                }
 
-                <!-- Upload / Link Tabs -->
-                <div class="reference-tabs">
-                    <button (click)="referenciaMode.set('file')" class="reference-tab"
-                        [class.reference-tab--active]="referenciaMode() === 'file'">
-                        <i class="pi pi-upload text-xs"></i>
-                        Subir archivo
-                    </button>
-                    <button (click)="referenciaMode.set('link')" class="reference-tab"
-                        [class.reference-tab--active]="referenciaMode() === 'link'">
-                        <i class="pi pi-link text-xs"></i>
-                        Pegar enlace
-                    </button>
-                </div>
+                    <!-- Separator -->
+                    <div class="ref-divider">
+                        <span class="ref-divider-text">Agregar nueva</span>
+                    </div>
 
-                <!-- File Upload Mode -->
-                @if (referenciaMode() === 'file') {
-                <div class="reference-dropzone" (click)="referenceFileInput.click()" (dragover)="onDragOver($event)"
-                    (dragleave)="onDragLeave($event)" (drop)="onDropReference($event)"
-                    [class.reference-dropzone--active]="isDraggingRef()">
-                    <input #referenceFileInput type="file" accept="image/*,video/*" class="hidden"
-                        (change)="onReferenceFileSelected($event)" />
-                    @if (referenciaFile()) {
-                    <div class="flex items-center gap-3">
-                        <div
-                            class="w-10 h-10 rounded-xl bg-purple-500/15 border border-purple-500/25 flex items-center justify-center">
-                            <i class="pi text-purple-400" [class.pi-image]="isImageFile(referenciaFile()!.name)"
-                                [class.pi-video]="isVideoFile(referenciaFile()!.name)"
-                                [class.pi-file]="!isImageFile(referenciaFile()!.name) && !isVideoFile(referenciaFile()!.name)"></i>
-                        </div>
-                        <div class="flex-1 min-w-0">
-                            <p class="text-xs font-bold text-white truncate">{{ referenciaFile()!.name }}</p>
-                            <p class="text-[10px] text-neutral-500">{{ (referenciaFile()!.size / 1024 / 1024).toFixed(2)
-                                }} MB</p>
-                        </div>
-                        <button (click)="referenciaFile.set(null); $event.stopPropagation()"
-                            class="w-7 h-7 rounded-lg bg-rose-500/15 hover:bg-rose-500/25 text-rose-400 flex items-center justify-center transition-all">
-                            <i class="pi pi-times text-[10px]"></i>
+                    <!-- Tab Toggle -->
+                    <div class="ref-tab-toggle">
+                        <button (click)="referenciaMode.set('file')" class="ref-tab-btn"
+                            [class.ref-tab--active]="referenciaMode() === 'file'">
+                            <i class="pi pi-upload"></i>
+                            Archivo
+                        </button>
+                        <button (click)="referenciaMode.set('link')" class="ref-tab-btn"
+                            [class.ref-tab--active]="referenciaMode() === 'link'">
+                            <i class="pi pi-link"></i>
+                            Link
                         </button>
                     </div>
+
+                    <!-- File upload mode -->
+                    @if (referenciaMode() === 'file') {
+                    <div class="ref-dropzone" [class.ref-dropzone--active]="isDraggingRef()"
+                        [class.ref-dropzone--has-file]="referenciaFile()" (click)="referenceFileInput.click()"
+                        (dragover)="onDragOver($event)" (dragleave)="onDragLeave($event)"
+                        (drop)="onDropReference($event)">
+                        <input #referenceFileInput type="file" class="hidden"
+                            (change)="onReferenceFileSelected($event)" />
+
+                        @if (referenciaFile()) {
+                        <div class="ref-file-selected">
+                            <div class="ref-file-icon">
+                                <i class="pi pi-file"></i>
+                            </div>
+                            <div class="ref-file-info">
+                                <span class="ref-file-name">{{ referenciaFile()!.name }}</span>
+                                <span class="ref-file-size">{{ (referenciaFile()!.size / 1024 / 1024).toFixed(2) }}
+                                    MB</span>
+                            </div>
+                            <i class="pi pi-check-circle ref-file-check"></i>
+                        </div>
+                        } @else {
+                        <div class="ref-dropzone-empty">
+                            <div class="ref-upload-icon-ring">
+                                <i class="pi pi-cloud-upload"></i>
+                            </div>
+                            <p class="ref-upload-text">Arrastra un archivo aquí</p>
+                            <p class="ref-upload-hint">o haz clic para seleccionar</p>
+                        </div>
+                        }
+                    </div>
                     } @else {
-                    <div class="flex flex-col items-center gap-3">
-                        <div
-                            class="w-14 h-14 rounded-2xl bg-white/5 border border-dashed border-white/15 flex items-center justify-center">
-                            <i class="pi pi-cloud-upload text-2xl text-neutral-500"></i>
-                        </div>
-                        <div class="text-center">
-                            <p class="text-xs font-bold text-neutral-400">Arrastra o haz clic para subir</p>
-                            <p class="text-[10px] text-neutral-600 mt-1">Imágenes y videos aceptados</p>
-                        </div>
+                    <!-- Link mode -->
+                    <div class="ref-link-input-wrapper">
+                        <i class="pi pi-globe ref-link-input-icon"></i>
+                        <input type="url" [(ngModel)]="referenciaLink" placeholder="https://ejemplo.com/referencia"
+                            class="ref-link-input" />
                     </div>
                     }
                 </div>
-                }
 
-                <!-- Link Mode -->
-                @if (referenciaMode() === 'link') {
-                <div class="mt-4">
-                    <div class="relative">
-                        <div class="absolute left-4 top-1/2 -translate-y-1/2">
-                            <i class="pi pi-link text-neutral-500 text-sm"></i>
-                        </div>
-                        <input type="url" [(ngModel)]="referenciaLink" placeholder="https://ejemplo.com/referencia..."
-                            class="reference-link-input" />
-                    </div>
+                <!-- ── Footer ── -->
+                <div class="ref-modal-footer">
+                    <button (click)="toggleReferencePanel()" class="ref-btn-cancel">
+                        Cancelar
+                    </button>
+                    <button (click)="subirReferencia()"
+                        [disabled]="subiendoReferencia() || (!referenciaFile() && !referenciaLink())"
+                        class="ref-btn-save">
+                        @if (subiendoReferencia()) {
+                        <i class="pi pi-spin pi-spinner"></i>
+                        Subiendo...
+                        } @else {
+                        <i class="pi pi-check"></i>
+                        Guardar
+                        }
+                    </button>
                 </div>
-                }
 
-                <!-- Submit Button -->
-                <button (click)="subirReferencia()"
-                    [disabled]="subiendoReferencia() || (!referenciaFile() && !referenciaLink())"
-                    class="reference-submit-btn">
-                    @if (subiendoReferencia()) {
-                    <i class="pi pi-spin pi-spinner text-xs"></i>
-                    Subiendo...
-                    } @else {
-                    <i class="pi pi-check text-xs"></i>
-                    Guardar referencia
-                    }
-                </button>
             </div>
         </div>
         }
+
     </div>
     }
 
