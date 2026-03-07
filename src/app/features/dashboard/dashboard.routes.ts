@@ -32,5 +32,10 @@ export const DASHBOARD_ROUTES: Routes = [
     path: 'proyectos/:id',
     loadComponent: () => import('../projects/pages/project-content/project-content-component').then(m => m.ProjectContentComponent),
     canActivate: [isApprovedGuard]
+  },
+  {
+    path: 'campanas',
+    loadComponent: () => import('../campaigns/pages/campaigns-component/campaigns-component').then(m => m.CampaignsComponent),
+    canActivate: [isApprovedGuard]
   }
 ];
